@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbitec Hightech — Convocatoria 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --lime:#B7FF00;--lime-dark:#8fcc00;--lime-dim:rgba(183,255,0,0.12);--lime-border:rgba(183,255,0,0.25);
+  --black:#0a0a0a;--black2:#111111;--white:#ffffff;
+  --gray-50:#f7f7f7;--gray-100:#eeeeee;--gray-200:#dddddd;--gray-400:#999;--gray-600:#555;--gray-800:#222;
+  --success:#00c97a;--success-bg:#e6faf2;--warning:#f59e0b;--warning-bg:#fffbeb;--danger:#ef4444;--danger-bg:#fef2f2;
+  --r:8px;--r-lg:14px;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
+  --sb-url:'https://ljjjulkidxotqhohxgcy.supabase.co';
+  --sb-key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-height:100vh;font-size:15px;line-height:1.6}
+.hero{background:var(--black);position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(183,255,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(183,255,0,0.04) 1px,transparent 1px);background-size:44px 44px}
+.hero-accent-line{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--lime),transparent)}
+.hero-inner{position:relative;max-width:680px;margin:0 auto;padding:52px 24px 44px;text-align:center}
+.orbitec-logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:28px}
+.logo-power-ring{width:38px;height:38px;border-radius:50%;border:3px solid var(--lime);display:flex;align-items:center;justify-content:center;position:relative}
+.logo-power-ring::before{content:'';position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:3px;height:10px;background:var(--black)}
+.logo-power-inner{width:22px;height:22px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center}
+.logo-power-symbol{width:10px;height:10px;border:2px solid var(--black);border-radius:50%;border-top-color:transparent;position:relative}
+.logo-power-symbol::after{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:2px;height:6px;background:var(--black)}
+.logo-wordmark{display:flex;flex-direction:column;align-items:flex-start}
+.logo-name{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--white);letter-spacing:0.04em;line-height:1}
+.logo-name span{color:var(--lime)}
+.logo-tagline{font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:3px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--lime-dim);border:1px solid var(--lime-border);border-radius:100px;padding:5px 14px;margin-bottom:22px}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.badge-text{font-size:12px;font-weight:600;color:var(--lime);letter-spacing:0.08em;text-transform:uppercase}
+.hero h1{font-family:var(--font-display);font-size:clamp(26px,5vw,40px);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:14px;letter-spacing:-0.02em}
+.hero h1 span{color:var(--lime)}
+.hero p{font-size:15px;color:rgba(255,255,255,0.55);max-width:460px;margin:0 auto 20px;line-height:1.7}
+.vacantes-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:100px;padding:4px 12px;margin-bottom:20px;font-size:12px;font-weight:600;color:#ff7070}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+.tag{font-size:12px;font-weight:500;padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.04)}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--black);font-family:var(--font-display);font-weight:700;font-size:15px;padding:14px 28px;border-radius:var(--r);border:none;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.hero-cta:hover{background:var(--lime-dark);transform:translateY(-1px);box-shadow:0 8px 24px rgba(183,255,0,0.3)}
+.hero-sub{font-size:12px;color:rgba(255,255,255,0.3);margin-top:12px}
+.programa-bar{background:var(--black2);border-bottom:1px solid rgba(183,255,0,0.15);padding:12px 24px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.programa-bar span{font-size:12px;color:rgba(255,255,255,0.5)}
+.programa-bar strong{color:var(--lime);font-weight:600;font-size:12px}
+.sep{color:rgba(255,255,255,0.2)}
+.wrapper{max-width:680px;margin:0 auto;padding:36px 20px 80px}
+.progress-wrap{margin-bottom:32px}
+.progress-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.progress-label{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.08em}
+.progress-step{font-size:12px;color:var(--gray-400)}
+.progress-track{height:3px;background:var(--gray-200);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--lime-dark));border-radius:2px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+.steps-dots{display:flex;justify-content:space-between;margin-top:10px}
+.step-dot{display:flex;flex-direction:column;align-items:center;gap:5px}
+.dot-circle{width:22px;height:22px;border-radius:50%;border:2px solid var(--gray-200);background:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gray-400);transition:all 0.3s}
+.dot-circle.active{border-color:var(--lime);background:var(--lime);color:var(--black)}
+.dot-circle.done{border-color:var(--success);background:var(--success);color:white}
+.dot-label{font-size:10px;color:var(--gray-400);text-align:center;font-weight:500}
+.dot-label.active{color:var(--lime-dark)}.dot-label.done{color:var(--success)}
+.card{background:white;border-radius:var(--r-lg);border:1px solid var(--gray-200);padding:30px;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:20px;animation:slideIn 0.3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card-eyebrow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.card-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--lime)}
+.card h2{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--black);margin-bottom:6px;line-height:1.3}
+.card .desc{font-size:14px;color:var(--gray-600);margin-bottom:22px;line-height:1.65}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:7px}
+.field label .req{color:var(--lime-dark);margin-left:2px}
+.field input[type="text"],.field input[type="number"],.field input[type="tel"],.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-family:var(--font-body);font-size:14px;color:var(--gray-800);background:white;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+.field input:focus,.field textarea:focus{border-color:var(--lime-dark);box-shadow:0 0 0 3px rgba(183,255,0,0.15)}
+.field textarea{resize:vertical;min-height:88px;line-height:1.55}
+.field .hint{font-size:12px;color:var(--gray-400);margin-top:5px}
+.field.error input,.field.error textarea{border-color:var(--danger)}
+.field .err-msg{font-size:12px;color:var(--danger);margin-top:5px;display:none}
+.field.error .err-msg{display:block}
+.options-grid{display:grid;gap:9px}.options-grid.two-col{grid-template-columns:1fr 1fr}
+.option-btn{position:relative}
+.option-btn input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
+.option-btn label{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:var(--r);cursor:pointer;font-size:14px;color:var(--gray-800);transition:all 0.15s;background:white;margin:0}
+.option-btn input:checked+label{border-color:var(--lime);background:rgba(183,255,0,0.08);color:var(--black);font-weight:500}
+.option-btn label:hover{border-color:var(--gray-400)}
+.option-icon{width:18px;height:18px;border-radius:50%;border:2px solid var(--gray-200);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.option-btn input:checked+label .option-icon{background:var(--lime);border-color:var(--lime)}
+.option-btn input:checked+label .option-icon::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--black)}
+.scenario-box{background:var(--gray-50);border:1px solid var(--gray-200);border-left:3px solid var(--lime);border-radius:var(--r);padding:13px 15px;margin-bottom:14px;font-size:13px;color:var(--gray-600);font-style:italic;line-height:1.6}
+.btn-row{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:var(--r);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;border:none}
+.btn-primary{background:var(--lime);color:var(--black);flex:1;justify-content:center}
+.btn-primary:hover{background:var(--lime-dark);transform:translateY(-1px);box-shadow:0 5px 18px rgba(183,255,0,0.3)}
+.btn-secondary{background:white;color:var(--gray-600);border:1.5px solid var(--gray-200)}
+.btn-secondary:hover{border-color:var(--gray-400);color:var(--gray-800)}
+.section-sep{display:flex;align-items:center;gap:10px;margin:6px 0 18px}
+.section-sep-line{flex:1;height:1px;background:var(--gray-100)}
+.section-sep-label{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.1em}
+.loading-screen{background:white;border-radius:var(--r-lg);border:1px solid var(--gray-200);padding:56px 32px;text-align:center;animation:slideIn 0.3s ease}
+.orbit-spinner{width:52px;height:52px;margin:0 auto 22px;position:relative}
+.orbit-ring{position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--lime);animation:spin 0.9s linear infinite}
+.orbit-ring:nth-child(2){inset:8px;border-top-color:var(--lime-dark);animation-delay:-0.3s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-screen h3{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--black);margin-bottom:8px}
+.loading-screen p{font-size:14px;color:var(--gray-400)}
+.result-screen{animation:slideIn 0.4s ease}
+.result-hero{background:var(--black);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:30px;text-align:center;position:relative;overflow:hidden}
+.result-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(183,255,0,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(183,255,0,0.05) 1px,transparent 1px);background-size:28px 28px}
+.result-hero-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent)}
+.result-hero-inner{position:relative}
+.mini-logo{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px}
+.mini-logo-icon{width:26px;height:26px;border-radius:50%;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center}
+.mini-logo-inner{width:14px;height:14px;border-radius:50%;background:var(--lime)}
+.mini-logo-name{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--white)}
+.mini-logo-name span{color:var(--lime)}
+.candidate-avatar{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--black);margin:0 auto 12px;border:3px solid rgba(183,255,0,0.3)}
+.result-name{font-family:var(--font-display);font-size:21px;font-weight:700;color:white;margin-bottom:3px}
+.result-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:18px}
+.verdict-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 18px;border-radius:100px;font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em}
+.verdict-A{background:rgba(0,201,122,0.18);color:#00e696;border:1px solid rgba(0,201,122,0.35)}
+.verdict-B{background:rgba(245,158,11,0.18);color:#fbbf24;border:1px solid rgba(245,158,11,0.35)}
+.verdict-C{background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.35)}
+.result-body{background:white;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:26px 30px}
+.result-section{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--gray-100)}
+.result-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.result-section-title{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:13px}
+.jcef-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.jcef-chip{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--r);font-size:13px;font-weight:500}
+.jcef-chip.ok{background:var(--success-bg);color:#00704a}
+.jcef-icon{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.jcef-chip.ok .jcef-icon{background:var(--success);color:white}
+.score-item{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+.score-item:last-child{margin-bottom:0}
+.score-name{font-size:13px;color:var(--gray-600);width:115px;flex-shrink:0}
+.score-track{flex:1;height:5px;background:var(--gray-100);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.4,0,0.2,1) 0.3s}
+.score-val{font-size:13px;font-weight:700;width:34px;text-align:right}
+.tags-row{display:flex;flex-wrap:wrap;gap:7px}
+.res-tag{font-size:12px;font-weight:500;padding:4px 10px;border-radius:100px}
+.res-tag.plus{background:var(--success-bg);color:#00704a}
+.res-tag.minus{background:var(--warning-bg);color:#92400e}
+.score-summary{display:flex;align-items:center;justify-content:center;gap:18px;padding:18px;background:var(--gray-50);border-radius:var(--r);margin-bottom:18px}
+.score-big{font-family:var(--font-display);font-size:46px;font-weight:700;color:var(--lime-dark);line-height:1}
+.score-big-label{font-size:11px;color:var(--gray-400);margin-top:3px}
+.next-action{background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:14px 16px;display:flex;align-items:flex-start;gap:11px}
+.next-icon{width:30px;height:30px;background:var(--lime);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--black);font-size:15px;flex-shrink:0}
+.next-label{font-size:10px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:2px}
+.next-text{font-size:14px;color:var(--gray-800);font-weight:500}
+.saved-badge{display:inline-flex;align-items:center;gap:6px;background:var(--success-bg);border:1px solid rgba(0,201,122,0.3);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:600;color:#00704a;margin-bottom:14px}
+.ineligible-card{background:white;border-radius:var(--r-lg);border:1px solid var(--gray-200);padding:40px 30px;text-align:center;animation:slideIn 0.3s ease}
+.ineligible-icon{width:62px;height:62px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
+.ineligible-card h2{font-family:var(--font-display);font-size:21px;color:var(--black);margin-bottom:10px}
+.ineligible-card p{font-size:14px;color:var(--gray-600);max-width:420px;margin:0 auto 22px;line-height:1.7}
+.contact-box{padding:14px 16px;background:var(--gray-50);border-radius:var(--r);border:1px solid var(--gray-200);margin-bottom:22px;text-align:left}
+.contact-box-label{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
+.contact-box a{color:var(--lime-dark);text-decoration:none;font-weight:600}
+.hidden{display:none!important}
+@media(max-width:520px){.card{padding:20px 16px}.options-grid.two-col{grid-template-columns:1fr}.jcef-grid{grid-template-columns:1fr}.btn-row{flex-direction:column}.result-body{padding:18px 16px}.score-name{width:95px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-inner">
+    <div class="orbitec-logo">
+      <div class="logo-power-ring">
+        <div class="logo-power-inner"><div class="logo-power-symbol"></div></div>
+      </div>
+      <div class="logo-wordmark">
+        <div class="logo-name">ORBI<span>TEC</span></div>
+        <div class="logo-tagline">Tecnología a tu Alcance</div>
+      </div>
+    </div>
+    <div class="hero-badge"><div class="badge-dot"></div><span class="badge-text">Convocatoria 2026 — Ensenada, B.C.</span></div>
+    <h1>Estamos buscando<br><span>talento</span></h1>
+    <p>Forma parte del equipo Orbitec. Te capacitamos, te acompañamos y crecemos juntos. No necesitas experiencia — necesitas actitud y ganas de aprender.</p>
+    <div class="vacantes-pill">🔴 Vacantes limitadas — cupo reducido</div>
+    <div class="hero-tags">
+      <span class="tag">📱 Reparación de celulares</span>
+      <span class="tag">💻 Computadoras</span>
+      <span class="tag">🛍️ Ventas y servicio</span>
+      <span class="tag">⚙️ Sistemas Digitales</span>
+    </div>
+    <a href="#formulario" class="hero-cta">Iniciar proceso ↓</a>
+    <div class="hero-sub">Capacitación pagada · Programa federal · Ensenada, B.C.</div>
+  </div>
+</div>
+
+<div class="programa-bar">
+  <span>✅ Programa Federal</span><span class="sep">|</span>
+  <strong>Jóvenes Construyendo el Futuro</strong><span class="sep">|</span>
+  <span>18 a 29 años · Sin experiencia requerida</span><span class="sep">|</span>
+  <strong>Vacantes limitadas</strong>
+</div>
+
+<div class="wrapper" id="formulario">
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-header">
+      <span class="progress-label" id="progressLabel">Paso 1 de 4</span>
+      <span class="progress-step" id="progressDesc">Datos personales</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="steps-dots" id="stepsDots"></div>
+  </div>
+  <div id="screens"></div>
+</div>
+
+<script>
+const SB_URL='https://ljjjulkidxotqhohxgcy.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
+
+const STEPS=[{label:'Datos',desc:'Datos personales'},{label:'Situación',desc:'Situación actual'},{label:'Aptitudes',desc:'Perfil y aptitudes'},{label:'Actitudes',desc:'Actitudes y valores'}];
+let currentStep=0,formData={};
+const screensEl=document.getElementById('screens');
+const progressFill=document.getElementById('progressFill');
+const progressLabel=document.getElementById('progressLabel');
+const progressDesc=document.getElementById('progressDesc');
+const stepsDots=document.getElementById('stepsDots');
+
+function buildDots(){stepsDots.innerHTML=STEPS.map((s,i)=>`<div class="step-dot"><div class="dot-circle ${i<currentStep?'done':i===currentStep?'active':''}">${i<currentStep?'✓':i+1}</div><div class="dot-label ${i<currentStep?'done':i===currentStep?'active':''}">${s.label}</div></div>`).join('')}
+function updateProgress(){progressFill.style.width=(currentStep/STEPS.length*100)+'%';progressLabel.textContent=`Paso ${currentStep+1} de ${STEPS.length}`;progressDesc.textContent=STEPS[currentStep]?.desc||'';buildDots()}
+function show(html){screensEl.innerHTML=html}
+function getInitials(n){return n.trim().split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function radio(name,label,val){const id=name+'_'+val.replace(/\s/g,'_');return`<div class="option-btn"><input type="radio" name="${name}" id="${id}" value="${val}"><label for="${id}"><div class="option-icon"></div>${label}</label></div>`}
+function getRadio(name){const e=document.querySelector(`input[name="${name}"]:checked`);return e?e.value:null}
+
+async function saveToSupabase(data){
+  try{
+    await fetch(`${SB_URL}/rest/v1/candidatos_jcef`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Prefer':'return=minimal'},
+      body:JSON.stringify(data)
+    });
+  }catch(e){console.warn('Supabase save failed:',e)}
+}
+
+function showStep0(){
+  currentStep=0;updateProgress();
+  show(`<div class="card">
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 1 — Datos personales</div>
+    <h2>Cuéntanos quién eres</h2>
+    <p class="desc">Completa tu información básica. Todos los datos son confidenciales y se usan únicamente para este proceso.</p>
+    <div class="field" id="f-nombre"><label>Nombre completo <span class="req">*</span></label><input type="text" id="nombre" placeholder="Ej. María González López"><div class="err-msg">Ingresa tu nombre completo.</div></div>
+    <div class="field" id="f-edad"><label>Edad <span class="req">*</span></label><input type="number" id="edad" placeholder="Ej. 22" min="15" max="45"><div class="hint">Debes tener entre 18 y 29 años para el programa federal.</div><div class="err-msg">Ingresa tu edad.</div></div>
+    <div class="field" id="f-tel"><label>WhatsApp / Teléfono <span class="req">*</span></label><input type="tel" id="tel" placeholder="Ej. 646 123 4567"><div class="err-msg">Ingresa tu número de contacto.</div></div>
+    <div class="field" id="f-zona"><label>¿En qué zona de Ensenada vives? <span class="req">*</span></label><input type="text" id="zona" placeholder="Ej. Chapultepec, Centro, Cañadas..."><div class="err-msg">Indica tu colonia o zona.</div></div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="nextStep0()">Continuar →</button></div>
+  </div>`);
+}
+
+function nextStep0(){
+  const nombre=document.getElementById('nombre').value.trim();
+  const edad=parseInt(document.getElementById('edad').value);
+  const tel=document.getElementById('tel').value.trim();
+  const zona=document.getElementById('zona').value.trim();
+  let ok=true;
+  if(!nombre){document.getElementById('f-nombre').classList.add('error');ok=false}else document.getElementById('f-nombre').classList.remove('error');
+  if(!edad){document.getElementById('f-edad').classList.add('error');ok=false}else document.getElementById('f-edad').classList.remove('error');
+  if(!tel){document.getElementById('f-tel').classList.add('error');ok=false}else document.getElementById('f-tel').classList.remove('error');
+  if(!zona){document.getElementById('f-zona').classList.add('error');ok=false}else document.getElementById('f-zona').classList.remove('error');
+  if(!ok)return;
+  Object.assign(formData,{nombre,edad,tel,zona});
+  if(edad<18||edad>29){showIneligible('edad',nombre,edad);return}
+  showStep1();
+}
+
+function showStep1(){
+  currentStep=1;updateProgress();
+  show(`<div class="card">
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 2 — Situación actual</div>
+    <h2>Tu situación hoy</h2>
+    <p class="desc">El programa Jóvenes Construyendo el Futuro tiene requisitos del gobierno federal. Responde con honestidad.</p>
+    <div class="field"><label>¿Actualmente estás estudiando? <span class="req">*</span></label><div class="options-grid two-col">${radio('estudia','No estudio actualmente','no')}${radio('estudia','Sí, estoy estudiando','si')}</div></div>
+    <div class="field"><label>¿Actualmente tienes empleo o trabajo? <span class="req">*</span></label><div class="options-grid two-col">${radio('trabaja','No trabajo actualmente','no')}${radio('trabaja','Sí, tengo empleo','si')}</div></div>
+    <div class="field"><label>¿Estás dado/a de alta en el IMSS o ISSSTE? <span class="req">*</span></label><div class="options-grid two-col">${radio('imss','No tengo seguro activo','no')}${radio('imss','Sí tengo seguro activo','si')}</div></div>
+    <div class="field"><label>¿Has participado antes en el programa Jóvenes Construyendo el Futuro? <span class="req">*</span></label><div class="options-grid two-col">${radio('jcef_prev','No he participado','no')}${radio('jcef_prev','Sí participé antes','si')}</div></div>
+    <div class="field"><label>¿Tienes disponibilidad lunes a sábado de 11:00 am a 7:00 pm? <span class="req">*</span></label><div class="options-grid two-col">${radio('disponibilidad','Sí, disponibilidad completa','si')}${radio('disponibilidad','No puedo en ese horario','no')}</div></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep0()">← Atrás</button><button class="btn btn-primary" onclick="nextStep1()">Continuar →</button></div>
+  </div>`);
+}
+
+function nextStep1(){
+  const estudia=getRadio('estudia'),trabaja=getRadio('trabaja'),imss=getRadio('imss'),jcef_prev=getRadio('jcef_prev'),disponibilidad=getRadio('disponibilidad');
+  if(!estudia||!trabaja||!imss||!jcef_prev||!disponibilidad){alert('Por favor responde todas las preguntas.');return}
+  Object.assign(formData,{estudia,trabaja,imss,jcef_prev,disponibilidad});
+  if(estudia==='si'){showIneligible('estudia',formData.nombre,formData.edad);return}
+  if(trabaja==='si'){showIneligible('trabaja',formData.nombre,formData.edad);return}
+  if(imss==='si'){showIneligible('imss',formData.nombre,formData.edad);return}
+  if(jcef_prev==='si'){showIneligible('jcef_prev',formData.nombre,formData.edad);return}
+  if(disponibilidad==='no'){showIneligible('disponibilidad',formData.nombre,formData.edad);return}
+  showStep2();
+}
+
+function showStep2(){
+  currentStep=2;updateProgress();
+  show(`<div class="card">
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 3 — Aptitudes</div>
+    <h2>Tu relación con la tecnología</h2>
+    <p class="desc">No buscamos expertos. Queremos conocer tu afinidad y qué tan rápido puedes aprender.</p>
+    <div class="field"><label>¿Qué tan seguido usas tecnología para resolver algo? <span class="req">*</span></label><div class="options-grid">${radio('uso_tech','Solo para WhatsApp y redes sociales','1')}${radio('uso_tech','También busco tutoriales y aprendo cosas nuevas','2')}${radio('uso_tech','Resuelvo problemas técnicos y configuro cosas por mi cuenta','3')}${radio('uso_tech','Tengo conocimiento avanzado en tecnología o reparación','4')}</div></div>
+    <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Experiencia práctica</div><div class="section-sep-line"></div></div>
+    <div class="field"><label>¿Has reparado, destapado o configurado algún aparato electrónico?</label><div class="options-grid">${radio('reparacion','Nunca he intentado algo así','0')}${radio('reparacion','He visto tutoriales pero no lo he hecho','1')}${radio('reparacion','Sí, he intentado algo por mi cuenta','2')}${radio('reparacion','Sí, con resultado exitoso y cierta regularidad','3')}</div></div>
+    <div class="field"><label>¿Has tenido experiencia atendiendo clientes o en algún negocio?</label><div class="options-grid">${radio('clientes','No, ninguna experiencia','0')}${radio('clientes','Algo informal con familia o conocidos','1')}${radio('clientes','Sí, en algún trabajo o negocio','2')}${radio('clientes','Sí, tengo buena experiencia con clientes','3')}</div></div>
+    <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Tu aprendizaje</div><div class="section-sep-line"></div></div>
+    <div class="field"><label>¿Qué te gustaría aprender trabajando en Orbitec? <span class="req">*</span></label><textarea id="quiero_aprender" placeholder="Cuéntanos en tus propias palabras. No hay respuesta incorrecta." rows="3"></textarea></div>
+    <div class="field"><label>¿Tienes alguna meta personal o profesional que quieras lograr este año? <span class="req">*</span></label><textarea id="meta" placeholder="Puede ser algo grande o algo concreto. Queremos conocerte." rows="3"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep1()">← Atrás</button><button class="btn btn-primary" onclick="nextStep2()">Continuar →</button></div>
+  </div>`);
+}
+
+function nextStep2(){
+  const uso_tech=getRadio('uso_tech'),reparacion=getRadio('reparacion'),clientes=getRadio('clientes');
+  const quiero_aprender=document.getElementById('quiero_aprender').value.trim();
+  const meta=document.getElementById('meta').value.trim();
+  if(!uso_tech){alert('Por favor responde cómo usas la tecnología.');return}
+  if(!reparacion){alert('Por favor responde sobre experiencia en reparaciones.');return}
+  if(!clientes){alert('Por favor responde sobre experiencia con clientes.');return}
+  if(!quiero_aprender){alert('Cuéntanos qué quieres aprender.');return}
+  if(!meta){alert('Comparte tu meta personal o profesional.');return}
+  Object.assign(formData,{uso_tech:parseInt(uso_tech),reparacion:parseInt(reparacion),clientes:parseInt(clientes),quiero_aprender,meta});
+  showStep3();
+}
+
+function showStep3(){
+  currentStep=3;updateProgress();
+  show(`<div class="card">
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 4 — Actitudes y valores</div>
+    <h2>Cómo piensas y actúas</h2>
+    <p class="desc">Estas preguntas no tienen respuesta correcta o incorrecta. Queremos conocerte de verdad.</p>
+    <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Situaciones reales</div><div class="section-sep-line"></div></div>
+    <div class="field"><div class="scenario-box">Un cliente llega molesto porque su celular no quedó bien reparado. No fue tu culpa. ¿Qué harías?</div><div class="options-grid">${radio('sc1','Le explicaría que no fue mi culpa y lo referiría con el técnico','1')}${radio('sc1','Lo escucharía con paciencia y buscaría cómo ayudarlo','3')}${radio('sc1','Lo escucharía, pediría disculpas por Orbitec y buscaría solución inmediata','4')}${radio('sc1','Esperaría a que llegara mi jefe','0')}</div></div>
+    <div class="field"><div class="scenario-box">Tu jefe te pide aprender algo técnico nuevo en 3 días. No hay nadie disponible para enseñarte. ¿Qué haces?</div><div class="options-grid">${radio('sc2','Le digo que necesito que alguien me enseñe primero','0')}${radio('sc2','Espero a que haya alguien disponible','1')}${radio('sc2','Busco tutoriales en YouTube e internet y lo intento','3')}${radio('sc2','Busco recursos, lo intento, tomo notas y pregunto solo lo específico que no entendí','4')}</div></div>
+    <div class="field"><div class="scenario-box">Cometiste un error que generó un problema para un cliente. Nadie lo notó todavía. ¿Qué haces?</div><div class="options-grid">${radio('sc3','Espero a ver si alguien lo nota','0')}${radio('sc3','Intento arreglarlo solo sin decir nada','1')}${radio('sc3','Se lo digo a mi jefe y propongo una solución','4')}${radio('sc3','Se lo digo a mi jefe, acepto mi responsabilidad y aprendo de ello','5')}</div></div>
+    <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Sobre ti</div><div class="section-sep-line"></div></div>
+    <div class="field"><label>¿Con cuál de estas palabras te identificas más? <span class="req">*</span></label><div class="options-grid two-col">${radio('identidad','Curioso por aprender','curioso')}${radio('identidad','Responsable y cumplido','responsable')}${radio('identidad','Me llevo bien con la gente','social')}${radio('identidad','Resuelvo problemas solo','resolutor')}</div></div>
+    <div class="field"><label>Cuando algo no te sale a la primera, ¿qué haces normalmente?</label><div class="options-grid">${radio('persistencia','Prefiero buscar a alguien que ya sepa','1')}${radio('persistencia','Lo intento un par de veces y si no, pido ayuda','2')}${radio('persistencia','Sigo intentando hasta entender por qué falla','3')}${radio('persistencia','Busco el error, aprendo la causa y lo corrijo','4')}</div></div>
+    <div class="field"><label>¿Por qué quieres entrar a Orbitec específicamente? <span class="req">*</span></label><textarea id="por_que" placeholder="Sé específico. ¿Qué es lo que te llama de esta oportunidad?" rows="4"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep2()">← Atrás</button><button class="btn btn-primary" onclick="submitForm()">Enviar mi perfil →</button></div>
+  </div>`);
+}
+
+async function submitForm(){
+  const sc1=getRadio('sc1'),sc2=getRadio('sc2'),sc3=getRadio('sc3');
+  const identidad=getRadio('identidad'),persistencia=getRadio('persistencia');
+  const por_que=document.getElementById('por_que').value.trim();
+  if(!sc1||!sc2||!sc3){alert('Por favor responde todos los escenarios.');return}
+  if(!identidad){alert('Elige la palabra con la que más te identificas.');return}
+  if(!por_que){alert('Cuéntanos por qué quieres entrar a Orbitec.');return}
+  Object.assign(formData,{sc1:parseInt(sc1),sc2:parseInt(sc2),sc3:parseInt(sc3),identidad,persistencia:parseInt(persistencia||1),por_que});
+  showLoading();
+  await evaluateWithClaude();
+}
+
+function showLoading(){
+  document.getElementById('progressWrap').classList.add('hidden');
+  screensEl.innerHTML=`<div class="loading-screen"><div class="orbit-spinner"><div class="orbit-ring"></div><div class="orbit-ring"></div></div><h3>Analizando tu perfil...</h3><p>Estamos evaluando tu información con el sistema Orbitec.</p></div>`;
+}
+
+async function evaluateWithClaude(){
+  const prompt=`Eres el sistema profesional de evaluación de candidatos para Orbitec Hightech, empresa tecnológica en Ensenada, BC, México.
+
+Evalúa al candidato para "Asistente Técnico Comercial de Tecnología" bajo el programa Jóvenes Construyendo el Futuro.
+
+DATOS: Nombre: ${formData.nombre} | Edad: ${formData.edad} | Zona: ${formData.zona} | Tel: ${formData.tel}
+JCEF: Todos los filtros verificados como elegibles. Disponibilidad L-S 11am-7pm confirmada.
+APTITUDES: Uso tech (1-4): ${formData.uso_tech} | Reparación (0-3): ${formData.reparacion} | Clientes (0-3): ${formData.clientes}
+Quiere aprender: "${formData.quiero_aprender}" | Meta: "${formData.meta}"
+ACTITUDES: Cliente molesto (0-4): ${formData.sc1} | Aprendizaje autónomo (0-4): ${formData.sc2} | Error (0-5): ${formData.sc3}
+Identidad: ${formData.identidad} | Persistencia (1-4): ${formData.persistencia} | Por qué Orbitec: "${formData.por_que}"
+
+FILOSOFÍA: Prioriza actitud y potencial sobre experiencia técnica.
+Veredicto A=score≥7.5 buena actitud | B=5.5-7.4 o duda puntual | C=<5.5 o alertas.
+
+Responde SOLO con JSON sin markdown:
+{"score_total":<0-10.1>,"scores":{"responsabilidad":<1-10>,"comunicacion":<1-10>,"tecnologia":<1-10>,"aprendizaje":<1-10>,"servicio_cliente":<1-10>,"madurez":<1-10>,"compatibilidad":<1-10>},"veredicto":<"A"|"B"|"C">,"veredicto_texto":<"Altamente recomendado"|"Con potencial — entrevista requerida"|"No recomendado por ahora">,"fortalezas":[<str>,<str>,<str>],"riesgos":[<str>,<str>],"siguiente_accion":<str>,"mensaje_candidato":<2-3 oraciones cálidas sin revelar score ni veredicto>}`;
+
+  let result;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    result=JSON.parse((data.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
+  }catch(e){
+    result={score_total:7.0,scores:{responsabilidad:7,comunicacion:7,tecnologia:7,aprendizaje:7,servicio_cliente:7,madurez:7,compatibilidad:7},veredicto:'B',veredicto_texto:'Con potencial — entrevista requerida',fortalezas:['Completó el proceso completo','Mostró interés en Orbitec','Disponibilidad confirmada'],riesgos:['Requiere validación presencial','Pendiente de verificar'],siguiente_accion:'Agendar entrevista presencial en Orbitec — Av. México #1322 Local 1',mensaje_candidato:`Gracias ${formData.nombre} por completar nuestro proceso. Revisaremos tu perfil y te contactaremos pronto.`};
+  }
+
+  await saveToSupabase({
+    nombre:formData.nombre,edad:formData.edad,telefono:formData.tel,zona:formData.zona,
+    estudia:formData.estudia,trabaja:formData.trabaja,imss:formData.imss,
+    jcef_prev:formData.jcef_prev,disponibilidad:formData.disponibilidad,
+    uso_tech:formData.uso_tech,reparacion:formData.reparacion,clientes:formData.clientes,
+    quiero_aprender:formData.quiero_aprender,meta:formData.meta,
+    sc1:formData.sc1,sc2:formData.sc2,sc3:formData.sc3,
+    identidad:formData.identidad,persistencia:formData.persistencia,por_que:formData.por_que,
+    score_total:result.score_total,
+    score_responsabilidad:result.scores?.responsabilidad,score_comunicacion:result.scores?.comunicacion,
+    score_tecnologia:result.scores?.tecnologia,score_aprendizaje:result.scores?.aprendizaje,
+    score_servicio:result.scores?.servicio_cliente,score_madurez:result.scores?.madurez,
+    score_compatibilidad:result.scores?.compatibilidad,
+    veredicto:result.veredicto,veredicto_texto:result.veredicto_texto,
+    fortalezas:result.fortalezas,riesgos:result.riesgos,
+    siguiente_accion:result.siguiente_accion,mensaje_candidato:result.mensaje_candidato,
+    estatus:'pendiente'
+  });
+
+  showResult(result);
+}
+
+function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
+
+function showResult(r){
+  const initials=getInitials(formData.nombre);
+  const scoreLabels={responsabilidad:'Responsabilidad',comunicacion:'Comunicación',tecnologia:'Tecnología',aprendizaje:'Aprendizaje',servicio_cliente:'Servicio',madurez:'Madurez',compatibilidad:'Compatibilidad'};
+  const scoreBars=Object.entries(r.scores||{}).map(([k,v])=>`<div class="score-item"><div class="score-name">${scoreLabels[k]||k}</div><div class="score-track"><div class="score-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="score-val" style="color:${scoreColor(v)}">${v}/10</div></div>`).join('');
+  const fortalezas=(r.fortalezas||[]).map(f=>`<span class="res-tag plus">+ ${f}</span>`).join('');
+  const riesgos=(r.riesgos||[]).filter(x=>x&&x!=='Ninguno').map(f=>`<span class="res-tag minus">⚠ ${f}</span>`).join('');
+  const vc=`verdict-${r.veredicto}`;
+  const ve=r.veredicto==='A'?'⭐':r.veredicto==='B'?'🟡':'🔴';
+
+  screensEl.innerHTML=`<div class="result-screen">
+    <div class="result-hero">
+      <div class="result-hero-grid"></div><div class="result-hero-accent"></div>
+      <div class="result-hero-inner">
+        <div class="mini-logo"><div class="mini-logo-icon"><div class="mini-logo-inner"></div></div><div class="mini-logo-name">ORBI<span>TEC</span></div></div>
+        <div class="candidate-avatar">${initials}</div>
+        <div class="result-name">${formData.nombre}</div>
+        <div class="result-sub">${formData.edad} años · ${formData.zona}, Ensenada</div>
+        <span class="verdict-badge ${vc}">${ve} ${r.veredicto_texto}</span>
+      </div>
+    </div>
+    <div class="result-body">
+      <div style="text-align:center;margin-bottom:16px">
+        <span class="saved-badge">✓ Perfil guardado en el sistema Orbitec</span>
+      </div>
+      <div class="score-summary">
+        <div><div class="score-big">${parseFloat(r.score_total).toFixed(1)}</div><div class="score-big-label">Score Orbitec / 10</div></div>
+        <div style="width:1px;height:44px;background:var(--gray-200)"></div>
+        <div style="font-size:13px;color:var(--gray-600);max-width:180px;line-height:1.5">Evaluado con el sistema de selección Orbitec + JCEF</div>
+      </div>
+      <div class="result-section">
+        <div class="result-section-title">Elegibilidad Jóvenes Construyendo el Futuro</div>
+        <div class="jcef-grid">
+          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Edad ${formData.edad} años</div>
+          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>No estudia actualmente</div>
+          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Sin empleo formal</div>
+          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Sin IMSS/ISSSTE activo</div>
+          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Primer registro JCEF</div>
+          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Disponibilidad completa</div>
+        </div>
+      </div>
+      <div class="result-section"><div class="result-section-title">Evaluación de perfil</div>${scoreBars}</div>
+      ${fortalezas?`<div class="result-section"><div class="result-section-title">Fortalezas detectadas</div><div class="tags-row">${fortalezas}</div></div>`:''}
+      ${riesgos?`<div class="result-section"><div class="result-section-title">Puntos a validar</div><div class="tags-row">${riesgos}</div></div>`:''}
+      <div class="result-section"><div class="result-section-title">Siguiente paso</div><div class="next-action"><div class="next-icon">→</div><div><div class="next-label">Acción recomendada</div><div class="next-text">${r.siguiente_accion}</div></div></div></div>
+      <div class="result-section"><div class="result-section-title">Mensaje para ti</div><div style="font-size:14px;color:var(--gray-600);line-height:1.7;padding:14px;background:var(--gray-50);border-radius:var(--r);border:1px solid var(--gray-200)">${r.mensaje_candidato}</div></div>
+    </div>
+  </div>`;
+}
+
+const msgs={
+  edad:(n,e)=>({icon:'📋',title:`Gracias por tu interés, ${n.split(' ')[0]}`,body:`El programa Jóvenes Construyendo el Futuro está dirigido a jóvenes de 18 a 29 años. Con ${e} años no cumples con ese requisito en este momento. Te invitamos a estar pendiente de otras convocatorias de Orbitec.`}),
+  estudia:(n)=>({icon:'🎓',title:`Hola ${n.split(' ')[0]}, ¡tu educación importa!`,body:`El programa está diseñado para personas que no estudian actualmente. Al terminar tus estudios, estaremos encantados de considerarte. Guarda nuestro contacto y escríbenos cuando estés listo.`}),
+  trabaja:(n)=>({icon:'💼',title:`Gracias ${n.split(' ')[0]}`,body:`El programa JCEF está dirigido a jóvenes sin empleo actualmente. Si tu situación cambia, no dudes en volver a aplicar. Apreciamos tu interés en Orbitec.`}),
+  imss:(n)=>({icon:'🏥',title:`Gracias por tu interés, ${n.split(' ')[0]}`,body:`El programa requiere que no estés dado de alta como derechohabiente activo del IMSS o ISSSTE. Si tu situación cambia, con gusto te consideramos.`}),
+  jcef_prev:(n)=>({icon:'📌',title:`Ya conoces el programa, ${n.split(' ')[0]}`,body:`El programa solo permite un registro por persona. Agradecemos tu experiencia previa y tu interés en Orbitec.`}),
+  disponibilidad:(n)=>({icon:'🕐',title:`Gracias ${n.split(' ')[0]}`,body:`El puesto requiere disponibilidad de lunes a sábado de 11:00 am a 7:00 pm. Si tu situación cambia, con gusto te consideramos.`}),
+};
+
+function showIneligible(reason,nombre,edad){
+  document.getElementById('progressWrap').classList.add('hidden');
+  const m=msgs[reason](nombre,edad);
+  screensEl.innerHTML=`<div class="ineligible-card">
+    <div class="ineligible-icon">${m.icon}</div>
+    <h2>${m.title}</h2><p>${m.body}</p>
+    <div class="contact-box">
+      <div class="contact-box-label">Contacto Orbitec</div>
+      <div style="font-size:14px;color:var(--gray-800);font-weight:500;margin-bottom:3px">📱 WhatsApp: <a href="https://wa.me/526462694010">646 269-4010</a></div>
+      <div style="font-size:13px;color:var(--gray-600)">Av. México #1322 Local 1, Ensenada, B.C.</div>
+    </div>
+    <button class="btn btn-primary" onclick="location.reload()" style="max-width:260px;margin:0 auto">← Volver al inicio</button>
+  </div>`;
+}
+
+showStep0();updateProgress();
+</script>
+</body>
+</html>

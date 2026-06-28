@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbitec — Panel de Candidatos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--lime:#B7FF00;--lime-dark:#8fcc00;--black:#0a0a0a;--white:#fff;--gray-50:#f7f7f7;--gray-100:#eee;--gray-200:#ddd;--gray-400:#999;--gray-600:#555;--gray-800:#222;--success:#00c97a;--warning:#f59e0b;--danger:#ef4444;--r:8px;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif}
+body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800);min-height:100vh;font-size:14px}
+.topbar{background:var(--black);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(183,255,0,0.15)}
+.topbar-logo{display:flex;align-items:center;gap:8px}
+.tl-ring{width:28px;height:28px;border-radius:50%;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center}
+.tl-inner{width:14px;height:14px;border-radius:50%;background:var(--lime)}
+.tl-name{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--white)}
+.tl-name span{color:var(--lime)}
+.topbar-title{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn-refresh{display:flex;align-items:center;gap:6px;background:rgba(183,255,0,0.1);border:1px solid rgba(183,255,0,0.25);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
+.btn-refresh:hover{background:rgba(183,255,0,0.2)}
+.main{max-width:1100px;margin:0 auto;padding:28px 20px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:16px 18px}
+.stat-val{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--black);line-height:1}
+.stat-label{font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;font-weight:600}
+.stat-card.green .stat-val{color:var(--success)}
+.stat-card.yellow .stat-val{color:var(--warning)}
+.stat-card.red .stat-val{color:var(--danger)}
+.stat-card.lime .stat-val{color:var(--lime-dark)}
+.filters{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:12px;font-weight:600;color:var(--gray-600)}
+.filter-btn{padding:5px 12px;border-radius:100px;border:1.5px solid var(--gray-200);background:white;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
+.filter-btn:hover{border-color:var(--gray-400)}
+.filter-btn.active{background:var(--lime);border-color:var(--lime);color:var(--black)}
+.filter-sep{width:1px;height:20px;background:var(--gray-200)}
+.search-input{padding:5px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);outline:none;font-family:var(--font-body);flex:1;min-width:160px}
+.search-input:focus{border-color:var(--lime-dark)}
+.table-wrap{background:white;border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden}
+.table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr 1fr;gap:0;padding:10px 18px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+.th{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.09em}
+.row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr 1fr;gap:0;padding:13px 18px;border-bottom:1px solid var(--gray-100);align-items:center;transition:background 0.1s;cursor:pointer}
+.row:last-child{border-bottom:none}
+.row:hover{background:var(--gray-50)}
+.cname{font-weight:600;color:var(--black);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.czone{font-size:12px;color:var(--gray-400);margin-top:1px}
+.cage{font-size:13px;color:var(--gray-600)}
+.cscore{font-family:var(--font-display);font-size:16px;font-weight:700}
+.cscore.high{color:var(--success)}.cscore.mid{color:var(--warning)}.cscore.low{color:var(--danger)}
+.vbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700}
+.vbadge.A{background:rgba(0,201,122,0.12);color:#00704a}
+.vbadge.B{background:rgba(245,158,11,0.12);color:#92400e}
+.vbadge.C{background:rgba(239,68,68,0.12);color:#b91c1c}
+.cdate{font-size:12px;color:var(--gray-400)}
+.cstatus select{padding:4px 8px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;color:var(--gray-800);background:white;cursor:pointer;font-family:var(--font-body);outline:none}
+.empty-state{padding:56px 32px;text-align:center;color:var(--gray-400)}
+.empty-state h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:8px}
+.empty-state p{font-size:14px;line-height:1.6}
+.loading-row{padding:40px;text-align:center;color:var(--gray-400);font-size:14px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:white;border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s ease}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{background:var(--black);border-radius:14px 14px 0 0;padding:22px 24px;position:relative}
+.modal-header-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent);border-radius:14px 14px 0 0}
+.modal-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--black);margin-bottom:10px;border:2px solid rgba(183,255,0,0.3)}
+.modal-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:white;margin-bottom:2px}
+.modal-sub{font-size:12px;color:rgba(255,255,255,0.4)}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(255,255,255,0.2)}
+.modal-body{padding:22px 24px}
+.modal-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--gray-100)}
+.modal-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.modal-section-title{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px}
+.detail-label{font-size:12px;color:var(--gray-600);flex-shrink:0;width:120px}
+.detail-val{font-size:13px;color:var(--gray-800);font-weight:500;text-align:right;flex:1}
+.detail-text{font-size:13px;color:var(--gray-800);line-height:1.55;padding:10px 12px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
+.ms-score{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.ms-name{font-size:12px;color:var(--gray-600);width:100px;flex-shrink:0}
+.ms-bar{flex:1;height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden}
+.ms-fill{height:100%;border-radius:2px}
+.ms-val{font-size:12px;font-weight:600;width:28px;text-align:right}
+.tag{font-size:11px;font-weight:500;padding:3px 9px;border-radius:100px}
+.tag.plus{background:rgba(0,201,122,0.1);color:#00704a}
+.tag.minus{background:rgba(245,158,11,0.1);color:#92400e}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.next-box{background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--gray-800);font-weight:500}
+.msg-box{font-size:13px;color:var(--gray-600);line-height:1.6;padding:12px;background:var(--gray-50);border-radius:var(--r);border:1px solid var(--gray-200)}
+.status-select{width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);font-family:var(--font-body);outline:none;cursor:pointer}
+.status-select:focus{border-color:var(--lime-dark)}
+.btn-wa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:white;border:none;padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font-body)}
+.btn-wa:hover{background:#1ebe5d}
+
+@media(max-width:700px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .table-header{display:none}
+  .row{grid-template-columns:1fr;gap:4px;padding:14px 16px}
+  .th{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="tl-ring"><div class="tl-inner"></div></div>
+    <div class="tl-name">ORBI<span>TEC</span></div>
+  </div>
+  <div class="topbar-title">Panel de candidatos — JCEF 2026</div>
+  <div class="topbar-right">
+    <button class="btn-refresh" onclick="loadCandidatos()">↻ Actualizar</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card lime"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Total candidatos</div></div>
+    <div class="stat-card green"><div class="stat-val" id="statA">—</div><div class="stat-label">Recomendados ⭐</div></div>
+    <div class="stat-card yellow"><div class="stat-val" id="statB">—</div><div class="stat-label">Con potencial 🟡</div></div>
+    <div class="stat-card red"><div class="stat-val" id="statC">—</div><div class="stat-label">No recomendados 🔴</div></div>
+  </div>
+
+  <div class="filters">
+    <span class="filter-label">Filtrar:</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('A',this)">⭐ Recomendados</button>
+    <button class="filter-btn" onclick="setFilter('B',this)">🟡 Con potencial</button>
+    <button class="filter-btn" onclick="setFilter('C',this)">🔴 No recomendados</button>
+    <div class="filter-sep"></div>
+    <input class="search-input" type="text" placeholder="Buscar por nombre o zona..." oninput="setSearch(this.value)">
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="th">Candidato</div>
+      <div class="th">Edad</div>
+      <div class="th">Score</div>
+      <div class="th">Veredicto</div>
+      <div class="th">Fecha</div>
+      <div class="th">Estatus</div>
+    </div>
+    <div id="tableBody"><div class="loading-row">Cargando candidatos...</div></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const SB_URL='https://ljjjulkidxotqhohxgcy.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
+
+let allData=[],filterV='all',searchQ='';
+
+function getInitials(n){return(n||'').trim().split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
+function scoreClass(n){return n>=8?'high':n>=6?'mid':'low'}
+function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}
+
+async function loadCandidatos(){
+  document.getElementById('tableBody').innerHTML='<div class="loading-row">Cargando...</div>';
+  try{
+    const resp=await fetch(`${SB_URL}/rest/v1/candidatos_jcef?select=*&order=created_at.desc`,{headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}});
+    allData=await resp.json();
+    updateStats();
+    renderTable();
+  }catch(e){document.getElementById('tableBody').innerHTML='<div class="loading-row">Error al cargar. Verifica la conexión.</div>'}
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent=allData.length;
+  document.getElementById('statA').textContent=allData.filter(c=>c.veredicto==='A').length;
+  document.getElementById('statB').textContent=allData.filter(c=>c.veredicto==='B').length;
+  document.getElementById('statC').textContent=allData.filter(c=>c.veredicto==='C').length;
+}
+
+function setFilter(v,btn){
+  filterV=v;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function setSearch(v){searchQ=v.toLowerCase();renderTable()}
+
+function renderTable(){
+  let data=allData;
+  if(filterV!=='all')data=data.filter(c=>c.veredicto===filterV);
+  if(searchQ)data=data.filter(c=>(c.nombre||'').toLowerCase().includes(searchQ)||(c.zona||'').toLowerCase().includes(searchQ));
+
+  if(!data.length){
+    document.getElementById('tableBody').innerHTML=`<div class="empty-state"><h3>Sin candidatos</h3><p>No hay candidatos que coincidan con el filtro actual.</p></div>`;
+    return;
+  }
+
+  document.getElementById('tableBody').innerHTML=data.map(c=>`
+    <div class="row" onclick="openModal('${c.id}')">
+      <div><div class="cname">${c.nombre||'—'}</div><div class="czone">${c.zona||''}</div></div>
+      <div class="cage">${c.edad||'—'} años</div>
+      <div class="cscore ${scoreClass(c.score_total)}">${c.score_total!=null?parseFloat(c.score_total).toFixed(1):'—'}</div>
+      <div><span class="vbadge ${c.veredicto||'B'}">${c.veredicto==='A'?'⭐ Recomendado':c.veredicto==='B'?'🟡 Potencial':'🔴 No rec.'}</span></div>
+      <div class="cdate">${fmtDate(c.created_at)}</div>
+      <div class="cstatus" onclick="event.stopPropagation()">
+        <select onchange="updateStatus('${c.id}',this.value)">
+          <option value="pendiente" ${c.estatus==='pendiente'?'selected':''}>Pendiente</option>
+          <option value="contactado" ${c.estatus==='contactado'?'selected':''}>Contactado</option>
+          <option value="entrevista" ${c.estatus==='entrevista'?'selected':''}>Entrevista</option>
+          <option value="aceptado" ${c.estatus==='aceptado'?'selected':''}>Aceptado</option>
+          <option value="rechazado" ${c.estatus==='rechazado'?'selected':''}>Rechazado</option>
+        </select>
+      </div>
+    </div>`).join('');
+}
+
+async function updateStatus(id,status){
+  await fetch(`${SB_URL}/rest/v1/candidatos_jcef?id=eq.${id}`,{
+    method:'PATCH',
+    headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`},
+    body:JSON.stringify({estatus:status})
+  });
+  const idx=allData.findIndex(c=>c.id===id);
+  if(idx>-1)allData[idx].estatus=status;
+}
+
+function openModal(id){
+  const c=allData.find(x=>x.id===id);
+  if(!c)return;
+  const vc=c.veredicto||'B';
+  const scoreLabels={score_responsabilidad:'Responsabilidad',score_comunicacion:'Comunicación',score_tecnologia:'Tecnología',score_aprendizaje:'Aprendizaje',score_servicio:'Servicio',score_madurez:'Madurez',score_compatibilidad:'Compatibilidad'};
+  const scoreBars=Object.entries(scoreLabels).map(([k,l])=>{
+    const v=c[k]||0;
+    return`<div class="ms-score"><div class="ms-name">${l}</div><div class="ms-bar"><div class="ms-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="ms-val" style="color:${scoreColor(v)}">${v}</div></div>`;
+  }).join('');
+  const fortalezas=Array.isArray(c.fortalezas)?c.fortalezas.map(f=>`<span class="tag plus">+ ${f}</span>`).join(''):'';
+  const riesgos=Array.isArray(c.riesgos)?c.riesgos.filter(r=>r&&r!=='Ninguno').map(r=>`<span class="tag minus">⚠ ${r}</span>`).join(''):'';
+  const waLink=`https://wa.me/52${(c.telefono||'').replace(/\D/g,'')}`;
+
+  document.getElementById('modal').innerHTML=`
+    <div class="modal-header">
+      <div class="modal-header-accent"></div>
+      <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.add('hidden')">✕</button>
+      <div class="modal-avatar">${getInitials(c.nombre)}</div>
+      <div class="modal-name">${c.nombre}</div>
+      <div class="modal-sub">${c.edad} años · ${c.zona} · ${fmtDate(c.created_at)}</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Contacto</div>
+        <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-val">${c.telefono||'—'}</span></div>
+        <div style="margin-top:8px"><a class="btn-wa" href="${waLink}" target="_blank">💬 Abrir WhatsApp</a></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Score y veredicto</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:${scoreColor(c.score_total)}">${parseFloat(c.score_total||0).toFixed(1)}</div>
+          <span class="vbadge ${vc}" style="font-size:12px">${vc==='A'?'⭐ Altamente recomendado':vc==='B'?'🟡 Con potencial':'🔴 No recomendado'}</span>
+        </div>
+        ${scoreBars}
+      </div>
+      ${fortalezas?`<div class="modal-section"><div class="modal-section-title">Fortalezas</div><div class="tags-wrap">${fortalezas}</div></div>`:''}
+      ${riesgos?`<div class="modal-section"><div class="modal-section-title">Riesgos</div><div class="tags-wrap">${riesgos}</div></div>`:''}
+      <div class="modal-section">
+        <div class="modal-section-title">Qué quiere aprender</div>
+        <div class="detail-text">${c.quiero_aprender||'—'}</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Por qué Orbitec</div>
+        <div class="detail-text">${c.por_que||'—'}</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Siguiente acción recomendada</div>
+        <div class="next-box">${c.siguiente_accion||'—'}</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Mensaje generado para el candidato</div>
+        <div class="msg-box">${c.mensaje_candidato||'—'}</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Actualizar estatus</div>
+        <select class="status-select" onchange="updateStatus('${c.id}',this.value);allData.find(x=>x.id==='${c.id}').estatus=this.value;renderTable()">
+          <option value="pendiente" ${c.estatus==='pendiente'?'selected':''}>⏳ Pendiente</option>
+          <option value="contactado" ${c.estatus==='contactado'?'selected':''}>📞 Contactado</option>
+          <option value="entrevista" ${c.estatus==='entrevista'?'selected':''}>🤝 Entrevista agendada</option>
+          <option value="aceptado" ${c.estatus==='aceptado'?'selected':''}>✅ Aceptado</option>
+          <option value="rechazado" ${c.estatus==='rechazado'?'selected':''}>❌ Rechazado</option>
+        </select>
+      </div>
+    </div>`;
+
+  document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.add('hidden');
+}
+
+loadCandidatos();
+</script>
+</body>
+</html>
