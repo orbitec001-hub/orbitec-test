@@ -414,13 +414,7 @@ function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
 
 function showResult(r){
   const initials=getInitials(formData.nombre);
-  const scoreLabels={responsabilidad:'Responsabilidad',comunicacion:'Comunicación',tecnologia:'Tecnología',aprendizaje:'Aprendizaje',servicio_cliente:'Servicio',madurez:'Madurez',compatibilidad:'Compatibilidad'};
-  const scoreBars=Object.entries(r.scores||{}).map(([k,v])=>`<div class="score-item"><div class="score-name">${scoreLabels[k]||k}</div><div class="score-track"><div class="score-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="score-val" style="color:${scoreColor(v)}">${v}/10</div></div>`).join('');
-  const fortalezas=(r.fortalezas||[]).map(f=>`<span class="res-tag plus">+ ${f}</span>`).join('');
-  const riesgos=(r.riesgos||[]).filter(x=>x&&x!=='Ninguno').map(f=>`<span class="res-tag minus">⚠ ${f}</span>`).join('');
-  const vc=`verdict-${r.veredicto}`;
-  const ve=r.veredicto==='A'?'⭐':r.veredicto==='B'?'🟡':'🔴';
-
+  const nombre=formData.nombre.split(' ')[0];
   screensEl.innerHTML=`<div class="result-screen">
     <div class="result-hero">
       <div class="result-hero-grid"></div><div class="result-hero-accent"></div>
@@ -429,34 +423,33 @@ function showResult(r){
         <div class="candidate-avatar">${initials}</div>
         <div class="result-name">${formData.nombre}</div>
         <div class="result-sub">${formData.edad} años · ${formData.zona}, Ensenada</div>
-        <span class="verdict-badge ${vc}">${ve} ${r.veredicto_texto}</span>
       </div>
     </div>
     <div class="result-body">
-      <div style="text-align:center;margin-bottom:16px">
-        <span class="saved-badge">✓ Perfil guardado en el sistema Orbitec</span>
+
+      <div style="text-align:center;padding:8px 0 20px">
+        <div style="width:56px;height:56px;background:rgba(183,255,0,0.12);border:2px solid rgba(183,255,0,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px">✓</div>
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--black);margin-bottom:10px">¡Gracias, ${nombre}!</div>
+        <div style="font-size:14px;color:var(--gray-600);line-height:1.7;max-width:400px;margin:0 auto">${r.mensaje_candidato}</div>
       </div>
-      <div class="score-summary">
-        <div><div class="score-big">${parseFloat(r.score_total).toFixed(1)}</div><div class="score-big-label">Score Orbitec / 10</div></div>
-        <div style="width:1px;height:44px;background:var(--gray-200)"></div>
-        <div style="font-size:13px;color:var(--gray-600);max-width:180px;line-height:1.5">Evaluado con el sistema de selección Orbitec + JCEF</div>
-      </div>
-      <div class="result-section">
-        <div class="result-section-title">Elegibilidad Jóvenes Construyendo el Futuro</div>
-        <div class="jcef-grid">
-          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Edad ${formData.edad} años</div>
-          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>No estudia actualmente</div>
-          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Sin empleo formal</div>
-          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Sin IMSS/ISSSTE activo</div>
-          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Primer registro JCEF</div>
-          <div class="jcef-chip ok"><div class="jcef-icon">✓</div>Disponibilidad completa</div>
+
+      <div style="background:rgba(183,255,0,0.06);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:16px 18px;margin-bottom:16px">
+        <div style="font-size:10px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">Tus datos fueron registrados</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)"><span style="color:var(--success);font-weight:700">✓</span> Perfil guardado en el sistema Orbitec</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)"><span style="color:var(--success);font-weight:700">✓</span> Elegibilidad JCEF verificada</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)"><span style="color:var(--success);font-weight:700">✓</span> En revisión por el equipo Orbitec</div>
         </div>
       </div>
-      <div class="result-section"><div class="result-section-title">Evaluación de perfil</div>${scoreBars}</div>
-      ${fortalezas?`<div class="result-section"><div class="result-section-title">Fortalezas detectadas</div><div class="tags-row">${fortalezas}</div></div>`:''}
-      ${riesgos?`<div class="result-section"><div class="result-section-title">Puntos a validar</div><div class="tags-row">${riesgos}</div></div>`:''}
-      <div class="result-section"><div class="result-section-title">Siguiente paso</div><div class="next-action"><div class="next-icon">→</div><div><div class="next-label">Acción recomendada</div><div class="next-text">${r.siguiente_accion}</div></div></div></div>
-      <div class="result-section"><div class="result-section-title">Mensaje para ti</div><div style="font-size:14px;color:var(--gray-600);line-height:1.7;padding:14px;background:var(--gray-50);border-radius:var(--r);border:1px solid var(--gray-200)">${r.mensaje_candidato}</div></div>
+
+      <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--r);padding:16px 18px;text-align:center">
+        <div style="font-size:13px;color:var(--gray-600);margin-bottom:10px">¿Tienes alguna duda? Escríbenos directamente</div>
+        <a href="https://wa.me/526462694010" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#25d366;color:white;border:none;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:600;text-decoration:none;font-family:var(--font-body)">
+          💬 WhatsApp Orbitec
+        </a>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:8px">646 269-4010 · Av. México #1322 Local 1, Ensenada</div>
+      </div>
+
     </div>
   </div>`;
 }
