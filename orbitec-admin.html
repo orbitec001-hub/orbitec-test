@@ -113,6 +113,8 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .status-select:focus{border-color:var(--lime-dark)}
 .btn-wa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:white;border:none;padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font-body)}
 .btn-wa:hover{background:#1ebe5d}
+.btn-recalc{display:inline-flex;align-items:center;gap:6px;background:rgba(183,255,0,0.1);border:1.5px solid rgba(183,255,0,0.3);color:var(--lime-dark);border-radius:var(--r);padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all 0.2s}
+.btn-recalc:hover{background:rgba(183,255,0,0.2)}.btn-recalc:disabled{opacity:0.5;cursor:not-allowed}
 
 /* Respuestas candidato */
 .respuesta-item{margin-bottom:12px}
@@ -654,6 +656,123 @@ Responde SOLO con este JSON exacto sin markdown:
   }
 }
 
+// ===== RECALCULAR SCORE =====
+const uso_tech_labels_r=['','Solo redes sociales','Busca tutoriales y aprende','Resuelve problemas técnicos solo','Conocimiento avanzado'];
+const reparacion_labels_r=['Nunca ha intentado','Ha visto tutoriales','Ha intentado por su cuenta','Con resultado exitoso'];
+const clientes_labels_r=['Sin experiencia','Algo informal','En algún trabajo/negocio','Buena experiencia con clientes'];
+const sc1_labels_r={0:'espera jefe',1:'culpa técnico',3:'escucha y ayuda',4:'disculpa+solución'};
+const sc2_labels_r={0:'pide que le enseñen',1:'espera',3:'busca tutoriales',4:'busca+intenta+pregunta específico'};
+const sc3_labels_r={0:'espera que lo noten',1:'arregla solo sin decir',4:'dice al jefe+propone',5:'dice+acepta+aprende'};
+const persistencia_labels_r=['','busca a alguien','intenta 2-3 veces','sigue hasta entender','busca causa y corrige'];
+
+async function recalcularScore(id){
+  const c=allData.find(x=>x.id===id);
+  if(!c)return;
+  const btn=document.getElementById('btn-recalc-'+id);
+  if(btn){btn.disabled=true;btn.textContent='⏳ Calculando...';}
+
+  const prompt=`Eres el evaluador de talento de Orbitec Hightech, empresa de reparación tecnológica en Ensenada, México. Evalúas candidatos para "Asistente Técnico Comercial" — programa JCEF, sin experiencia requerida.
+
+DATOS DEL CANDIDATO:
+Nombre: ${c.nombre} | Edad: ${c.edad} | Zona: ${c.zona}
+Uso tecnología (1=solo redes, 2=busca tutoriales, 3=resuelve problemas, 4=avanzado): ${c.uso_tech}
+Reparación (0=nunca, 1=vio tutoriales, 2=intentó, 3=éxito real): ${c.reparacion}
+Clientes (0=ninguna, 1=informal, 2=trabajo/negocio, 3=buena exp): ${c.clientes}
+Cliente molesto (0=espera jefe, 1=culpa técnico, 3=escucha y ayuda, 4=disculpa+solución): ${c.sc1}
+Aprendizaje autónomo (0=pide que le enseñen, 1=espera, 3=busca tutoriales, 4=busca+intenta+pregunta específico): ${c.sc2}
+Manejo de error propio (0=espera que lo noten, 1=arregla solo sin decir, 4=dice al jefe+propone, 5=dice+acepta+aprende): ${c.sc3}
+Identidad: ${c.identidad} | Persistencia (1=busca a alguien, 2=intenta 2-3 veces, 3=sigue hasta entender, 4=busca causa y corrige): ${c.persistencia}
+Qué quiere aprender: "${c.quiero_aprender}"
+Meta personal: "${c.meta}"
+Por qué Orbitec: "${c.por_que}"
+
+CRITERIOS DE PUNTUACIÓN — USA TODO EL RANGO 1-10, no te centres en 6-8:
+- 9-10: Respuesta excepcional, va más allá, demuestra madurez real y pensamiento propio
+- 7-8: Buena respuesta, actitud positiva, potencial claro
+- 5-6: Aceptable pero genérica, vaga o inconsistente
+- 3-4: Señal de alerta, actitud pasiva o respuesta preocupante
+- 1-2: Descarta al candidato en esa dimensión
+
+DIMENSIONES — sé estricto y diferenciador:
+RESPONSABILIDAD: sc3 alto (4-5)=honestidad ante error=sube. sc3 bajo (0-1)=oculta errores=baja a 2-3.
+COMUNICACIÓN: respuestas abiertas específicas con ejemplos propios=sube. Frases genéricas de una línea=baja a 3-4.
+TECNOLOGÍA: uso_tech=3-4 + reparacion=2-3=curiosidad real=sube. Solo redes + nunca intentó=2-3.
+APRENDIZAJE: sc2=4 + persistencia=3-4=autonomía genuina=sube. sc2=0-1=dependencia total=baja a 2.
+SERVICIO: sc1=4=empatía+acción=sube. sc1=0-1=actitud defensiva o pasiva=baja a 2-3.
+MADUREZ: metas concretas y realizables, reflexión real=sube. genérico=4-5.
+COMPATIBILIDAD: por_que menciona algo específico de Orbitec=sube. genérico=3-4.
+
+REGLAS DE VEREDICTO:
+- A: score_total >= 7.5 Y sc2>=3 Y sc3>=4
+- B: score_total 5.5-7.4 O una dimensión baja compensada
+- C: score_total < 5.5 O sc3<=1 O sc2<=1
+
+Responde SOLO con JSON sin markdown:
+{"score_total":<número decimal 1-10>,"scores":{"responsabilidad":<1-10>,"comunicacion":<1-10>,"tecnologia":<1-10>,"aprendizaje":<1-10>,"servicio_cliente":<1-10>,"madurez":<1-10>,"compatibilidad":<1-10>},"veredicto":"A"|"B"|"C","veredicto_texto":"Altamente recomendado"|"Con potencial — entrevista requerida"|"No recomendado por ahora","fortalezas":["str","str","str"],"riesgos":["str"],"siguiente_accion":"str","mensaje_candidato":"str"}`;
+
+  try{
+    const resp=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    const raw=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
+    const r=JSON.parse(raw);
+
+    // Actualizar en Supabase
+    await fetch(`${SB_URL}/rest/v1/candidatos_jcef?id=eq.${id}`,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`},
+      body:JSON.stringify({
+        score_total:r.score_total,
+        score_responsabilidad:r.scores.responsabilidad,
+        score_comunicacion:r.scores.comunicacion,
+        score_tecnologia:r.scores.tecnologia,
+        score_aprendizaje:r.scores.aprendizaje,
+        score_servicio:r.scores.servicio_cliente,
+        score_madurez:r.scores.madurez,
+        score_compatibilidad:r.scores.compatibilidad,
+        veredicto:r.veredicto,
+        veredicto_texto:r.veredicto_texto,
+        fortalezas:r.fortalezas,
+        riesgos:r.riesgos,
+        siguiente_accion:r.siguiente_accion
+      })
+    });
+
+    // Actualizar en memoria
+    const idx=allData.findIndex(x=>x.id===id);
+    if(idx>-1){
+      allData[idx]={...allData[idx],...{
+        score_total:r.score_total,
+        score_responsabilidad:r.scores.responsabilidad,
+        score_comunicacion:r.scores.comunicacion,
+        score_tecnologia:r.scores.tecnologia,
+        score_aprendizaje:r.scores.aprendizaje,
+        score_servicio:r.scores.servicio_cliente,
+        score_madurez:r.scores.madurez,
+        score_compatibilidad:r.scores.compatibilidad,
+        veredicto:r.veredicto,
+        veredicto_texto:r.veredicto_texto,
+        fortalezas:r.fortalezas,
+        riesgos:r.riesgos,
+        siguiente_accion:r.siguiente_accion
+      }};
+    }
+
+    renderTable();
+    updateStats();
+    toast(`✓ Score recalculado: ${r.score_total}/10 — Veredicto ${r.veredicto}`);
+    if(btn){btn.textContent='✓ Recalculado';btn.style.color='var(--success)';}
+
+    // Refrescar justificación en el modal
+    const justId=`just_${id.replace(/-/g,'')}`;
+    const justEl=document.getElementById(justId);
+    if(justEl) generarJustificacion(allData.find(x=>x.id===id), justId);
+
+  }catch(e){
+    toast('Error al recalcular. Intenta de nuevo.','error');
+    if(btn){btn.disabled=false;btn.textContent='⚡ Recalcular score IA';}
+  }
+}
+
 // ===== MODAL =====
 function openModal(id){
   const c=allData.find(x=>x.id===id);
@@ -677,7 +796,10 @@ function openModal(id){
         <div class="modal-section-title">Contacto</div>
         <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-val">${c.telefono||'—'}</span></div>
         <div class="detail-row"><span class="detail-label">Zona</span><span class="detail-val">${c.zona||'—'}</span></div>
-        <div style="margin-top:8px"><a class="btn-wa" href="${waLink}" target="_blank">💬 Abrir WhatsApp</a></div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn-wa" href="${waLink}" target="_blank">💬 Abrir WhatsApp</a>
+          <button class="btn-recalc" id="btn-recalc-${c.id}" onclick="recalcularScore('${c.id}')">⚡ Recalcular score IA</button>
+        </div>
       </div>
 
       <div class="modal-section">
