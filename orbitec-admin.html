@@ -36,8 +36,13 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .tl-name{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--white)}
 .tl-name span{color:var(--lime)}
 .topbar-title{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500}
+.topbar-actions{display:flex;align-items:center;gap:8px}
 .btn-refresh{display:flex;align-items:center;gap:6px;background:rgba(183,255,0,0.1);border:1px solid rgba(183,255,0,0.25);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
 .btn-refresh:hover{background:rgba(183,255,0,0.2)}
+.btn-export{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
+.btn-export:hover{background:rgba(255,255,255,0.12);color:white}
+.btn-rank{display:flex;align-items:center;gap:6px;background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
+.btn-rank:hover{background:rgba(183,255,0,0.15)}
 
 /* MAIN */
 .main{max-width:1100px;margin:0 auto;padding:28px 20px}
@@ -117,17 +122,54 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 /* Justificación IA */
 .justificacion-box{background:linear-gradient(135deg,rgba(183,255,0,0.05),rgba(183,255,0,0.02));border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:14px 16px}
 .justificacion-loading{text-align:center;padding:20px;color:var(--gray-400);font-size:13px}
-.just-veredicto{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(183,255,0,0.15)}
-.just-score-big{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--lime-dark);line-height:1}
-.just-texto{font-size:13px;color:var(--gray-700);line-height:1.65}
 .just-bloque{margin-bottom:10px}
 .just-bloque-titulo{font-size:11px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
 .just-bloque-texto{font-size:13px;color:var(--gray-700);line-height:1.6}
+
+/* ===== RANKING PANEL ===== */
+.rank-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
+.rank-overlay.hidden{display:none}
+.rank-panel{background:white;border-radius:14px;width:100%;max-width:760px;max-height:92vh;overflow-y:auto;animation:slideUp 0.25s ease}
+.rank-header{background:var(--black);border-radius:14px 14px 0 0;padding:20px 24px;position:relative;display:flex;align-items:center;justify-content:space-between}
+.rank-header-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent)}
+.rank-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:white}
+.rank-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px}
+.rank-close{background:rgba(255,255,255,0.1);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.rank-close:hover{background:rgba(255,255,255,0.2)}
+.rank-body{padding:22px 24px}
+.rank-controls{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.rank-sort-label{font-size:12px;font-weight:600;color:var(--gray-600)}
+.rank-sort-btn{padding:5px 12px;border-radius:100px;border:1.5px solid var(--gray-200);background:white;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
+.rank-sort-btn.active{background:var(--lime);border-color:var(--lime);color:var(--black)}
+.rank-filter-v{padding:5px 12px;border:1.5px solid var(--gray-200);border-radius:100px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;background:white;font-family:var(--font-body)}
+.rank-card{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.15s}
+.rank-card:hover{border-color:var(--lime);background:rgba(183,255,0,0.03)}
+.rank-pos{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--gray-200);width:28px;flex-shrink:0;text-align:center}
+.rank-pos.gold{color:#f59e0b}.rank-pos.silver{color:#94a3b8}.rank-pos.bronze{color:#cd7c3c}
+.rank-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--black);flex-shrink:0}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-weight:700;font-size:14px;color:var(--black);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-meta{font-size:12px;color:var(--gray-400);margin-top:2px}
+.rank-bars{display:flex;flex-direction:column;gap:3px;width:160px;flex-shrink:0}
+.rank-bar-row{display:flex;align-items:center;gap:5px}
+.rank-bar-label{font-size:10px;color:var(--gray-400);width:60px;flex-shrink:0}
+.rank-bar-track{flex:1;height:3px;background:var(--gray-100);border-radius:2px;overflow:hidden}
+.rank-bar-fill{height:100%;border-radius:2px}
+.rank-score-big{font-family:var(--font-display);font-size:24px;font-weight:700;flex-shrink:0;width:44px;text-align:right}
+.rank-badge{flex-shrink:0}
+.rank-empty{text-align:center;padding:40px;color:var(--gray-400)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--black);color:white;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;border-left:3px solid var(--lime);z-index:9999;animation:toastIn 0.3s ease;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.toast.error{border-left-color:var(--danger)}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:700px){
   .stats-row{grid-template-columns:1fr 1fr}
   .table-header{display:none}
   .row{grid-template-columns:1fr;gap:4px;padding:14px 16px}
+  .topbar-title{display:none}
+  .rank-bars{display:none}
 }
 </style>
 </head>
@@ -150,7 +192,6 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 </div>
 
 <script>
-// Ocultar overlay inmediatamente si ya autenticado
 if(sessionStorage.getItem('orbitec_auth')==='ok'){
   document.getElementById('loginOverlay').style.display='none';
 }
@@ -177,7 +218,11 @@ function checkLogin(){
     <div class="tl-name">ORBI<span>TEC</span></div>
   </div>
   <div class="topbar-title">Panel de candidatos — JCEF 2026</div>
-  <button class="btn-refresh" onclick="loadCandidatos()">↻ Actualizar</button>
+  <div class="topbar-actions">
+    <button class="btn-rank" onclick="openRanking()">🏆 Ranking</button>
+    <button class="btn-export" onclick="showExportMenu()">⬇ Exportar</button>
+    <button class="btn-refresh" onclick="loadCandidatos()">↻ Actualizar</button>
+  </div>
 </div>
 
 <div class="main">
@@ -211,22 +256,63 @@ function checkLogin(){
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL CANDIDATO -->
 <div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal"></div>
+</div>
+
+<!-- RANKING PANEL -->
+<div class="rank-overlay hidden" id="rankOverlay" onclick="closeRankingClick(event)">
+  <div class="rank-panel" id="rankPanel">
+    <div class="rank-header">
+      <div class="rank-header-accent"></div>
+      <div>
+        <div class="rank-title">🏆 Ranking de Candidatos</div>
+        <div class="rank-sub">Comparativa general — ordenado por score total</div>
+      </div>
+      <button class="rank-close" onclick="closeRanking()">✕</button>
+    </div>
+    <div class="rank-body">
+      <div class="rank-controls">
+        <span class="rank-sort-label">Ordenar por:</span>
+        <button class="rank-sort-btn active" onclick="setRankSort('score_total',this)">Score total</button>
+        <button class="rank-sort-btn" onclick="setRankSort('score_actitud',this)">Actitud</button>
+        <button class="rank-sort-btn" onclick="setRankSort('score_tecnologia',this)">Tecnología</button>
+        <button class="rank-sort-btn" onclick="setRankSort('score_aprendizaje',this)">Aprendizaje</button>
+        <button class="rank-sort-btn" onclick="setRankSort('score_responsabilidad',this)">Responsabilidad</button>
+        <select class="rank-filter-v" onchange="setRankFilter(this.value)">
+          <option value="all">Todos los veredictos</option>
+          <option value="A">⭐ Solo recomendados</option>
+          <option value="B">🟡 Solo con potencial</option>
+          <option value="AB">⭐🟡 A + B</option>
+        </select>
+      </div>
+      <div id="rankList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPORT MENU (floating) -->
+<div id="exportMenu" style="display:none;position:fixed;top:64px;right:20px;background:white;border:1px solid var(--gray-200);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:500;min-width:200px;overflow:hidden">
+  <div style="padding:10px 14px;font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--gray-100)">Exportar candidatos</div>
+  <button onclick="exportCSV('all')" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">📄 CSV — Todos</button>
+  <button onclick="exportCSV('A')" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">⭐ CSV — Solo recomendados (A)</button>
+  <button onclick="exportCSV('AB')" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">⭐🟡 CSV — A + B (entrevistar)</button>
+  <button onclick="exportXLSX()" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px;border-top:1px solid var(--gray-100)" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">📊 Excel — Completo (.xlsx)</button>
 </div>
 
 <script>
 const SB_URL='https://ljjjulkidxotqhohxgcy.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
-const WORKER='https://orbitec-proxy.orbitecensenada.com';
+const WORKER='https://orbitec-proxy.orbitecensenada.workers.dev';
 
-let allData=[],filterV='all',searchQ='';
+let allData=[],filterV='all',searchQ='',rankSort='score_total',rankFilter='all';
 
 function getInitials(n){return(n||'').trim().split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
 function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
 function scoreClass(n){return n>=8?'high':n>=6?'mid':'low'}
 function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}
+function fmtDateFull(d){if(!d)return'';const dt=new Date(d);return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
 
 const uso_tech_labels=['','Solo redes sociales','Busca tutoriales y aprende','Resuelve problemas técnicos solo','Conocimiento avanzado'];
 const reparacion_labels=['Nunca ha intentado','Ha visto tutoriales','Ha intentado por su cuenta','Con resultado exitoso'];
@@ -236,6 +322,16 @@ const sc2_labels={0:'Dice que necesita que le enseñen',1:'Espera a que haya alg
 const sc3_labels={0:'Espera a que alguien lo note',1:'Lo arregla solo sin decir nada',4:'Se lo dice al jefe y propone solución',5:'Lo dice, acepta responsabilidad y aprende'};
 const persistencia_labels=['','Busca a alguien que ya sepa','Intenta 2-3 veces y pide ayuda','Sigue hasta entender por qué falla','Busca el error, aprende y lo corrige'];
 
+// ===== TOAST =====
+function toast(msg, type='ok'){
+  const t=document.createElement('div');
+  t.className='toast'+(type==='error'?' error':'');
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+// ===== LOAD =====
 async function loadCandidatos(){
   document.getElementById('tableBody').innerHTML='<div class="loading-row">Cargando...</div>';
   try{
@@ -285,6 +381,187 @@ async function updateStatus(id,status){
   if(idx>-1)allData[idx].estatus=status;
 }
 
+// ===== EXPORTAR =====
+function showExportMenu(){
+  const menu=document.getElementById('exportMenu');
+  menu.style.display=menu.style.display==='none'?'block':'none';
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#exportMenu')&&!e.target.closest('.btn-export'))
+    document.getElementById('exportMenu').style.display='none';
+});
+
+function getExportData(filter){
+  if(filter==='all') return allData;
+  if(filter==='A') return allData.filter(c=>c.veredicto==='A');
+  if(filter==='AB') return allData.filter(c=>c.veredicto==='A'||c.veredicto==='B');
+  return allData;
+}
+
+function escapeCsv(v){
+  if(v==null)return'';
+  const s=String(v).replace(/"/g,'""');
+  return s.includes(',')||s.includes('"')||s.includes('\n')?`"${s}"`:s;
+}
+
+function exportCSV(filter){
+  document.getElementById('exportMenu').style.display='none';
+  const data=getExportData(filter);
+  if(!data.length){toast('No hay candidatos para exportar','error');return}
+
+  const headers=['Nombre','Edad','Teléfono','Zona','Score Total','Veredicto','Veredicto Texto',
+    'Responsabilidad','Comunicación','Tecnología','Aprendizaje','Servicio','Madurez','Compatibilidad',
+    'Uso Tech','Reparación','Clientes','Sc1 Cliente Molesto','Sc2 Aprendizaje','Sc3 Error',
+    'Persistencia','Identidad','Estudia','Trabaja','IMSS','JCEF Previo','Disponibilidad',
+    'Qué quiere aprender','Meta','Por qué Orbitec','Estatus','Fortalezas','Riesgos','Siguiente Acción','Fecha'];
+
+  const rows=data.map(c=>[
+    c.nombre,c.edad,c.telefono,c.zona,c.score_total,c.veredicto,c.veredicto_texto,
+    c.score_responsabilidad,c.score_comunicacion,c.score_tecnologia,c.score_aprendizaje,c.score_servicio,c.score_madurez,c.score_compatibilidad,
+    uso_tech_labels[c.uso_tech]||c.uso_tech,reparacion_labels[c.reparacion]||c.reparacion,clientes_labels[c.clientes]||c.clientes,
+    sc1_labels[c.sc1]||c.sc1,sc2_labels[c.sc2]||c.sc2,sc3_labels[c.sc3]||c.sc3,
+    persistencia_labels[c.persistencia]||c.persistencia,c.identidad,c.estudia,c.trabaja,c.imss,c.jcef_prev,c.disponibilidad,
+    c.quiero_aprender,c.meta,c.por_que,c.estatus,
+    (c.fortalezas||[]).join(' | '),(c.riesgos||[]).join(' | '),c.siguiente_accion,
+    fmtDateFull(c.created_at)
+  ].map(escapeCsv).join(','));
+
+  const bom='\uFEFF'; // BOM para Excel en español
+  const csv=bom+[headers.join(','),...rows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`orbitec-candidatos-${filter}-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`✓ CSV exportado — ${data.length} candidatos`);
+}
+
+function exportXLSX(){
+  document.getElementById('exportMenu').style.display='none';
+  const data=allData;
+  if(!data.length){toast('No hay candidatos para exportar','error');return}
+
+  // Generar HTML table que Excel puede abrir como .xls
+  const headers=['Nombre','Edad','Tel','Zona','Score','Veredicto','Responsabilidad','Comunicación',
+    'Tecnología','Aprendizaje','Servicio','Madurez','Compatibilidad','Estatus','Fecha','Qué quiere aprender','Meta','Por qué Orbitec'];
+
+  const rows=data.map(c=>`<tr>
+    <td>${c.nombre||''}</td><td>${c.edad||''}</td><td>${c.telefono||''}</td><td>${c.zona||''}</td>
+    <td>${c.score_total!=null?parseFloat(c.score_total).toFixed(1):''}</td><td>${c.veredicto||''}</td>
+    <td>${c.score_responsabilidad||''}</td><td>${c.score_comunicacion||''}</td>
+    <td>${c.score_tecnologia||''}</td><td>${c.score_aprendizaje||''}</td>
+    <td>${c.score_servicio||''}</td><td>${c.score_madurez||''}</td><td>${c.score_compatibilidad||''}</td>
+    <td>${c.estatus||''}</td><td>${fmtDateFull(c.created_at)}</td>
+    <td>${(c.quiero_aprender||'').replace(/</g,'&lt;')}</td>
+    <td>${(c.meta||'').replace(/</g,'&lt;')}</td>
+    <td>${(c.por_que||'').replace(/</g,'&lt;')}</td>
+  </tr>`).join('');
+
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+  <head><meta charset="UTF-8">
+  <style>
+    table{border-collapse:collapse}th{background:#B7FF00;font-weight:bold;padding:6px 10px;border:1px solid #ccc}
+    td{padding:5px 10px;border:1px solid #ddd}tr:nth-child(even){background:#f9f9f9}
+  </style></head>
+  <body><table>
+    <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table></body></html>`;
+
+  const blob=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`orbitec-candidatos-${new Date().toISOString().slice(0,10)}.xls`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`✓ Excel exportado — ${data.length} candidatos`);
+}
+
+// ===== RANKING =====
+function openRanking(){
+  document.getElementById('rankOverlay').classList.remove('hidden');
+  renderRanking();
+}
+function closeRanking(){document.getElementById('rankOverlay').classList.add('hidden')}
+function closeRankingClick(e){if(e.target===document.getElementById('rankOverlay'))closeRanking()}
+
+function setRankSort(key,btn){
+  rankSort=key;
+  document.querySelectorAll('.rank-sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRanking();
+}
+function setRankFilter(v){rankFilter=v;renderRanking()}
+
+function calcActitudScore(c){
+  // Score sintético de actitud basado en escenarios + persistencia
+  const sc1n=(c.sc1||0)/4*10;
+  const sc2n=(c.sc2||0)/4*10;
+  const sc3n=(c.sc3||0)/5*10;
+  const persn=((c.persistencia||1)-1)/3*10;
+  return Math.round((sc1n+sc2n+sc3n+persn)/4*10)/10;
+}
+
+function renderRanking(){
+  let data=[...allData];
+  if(rankFilter==='A') data=data.filter(c=>c.veredicto==='A');
+  else if(rankFilter==='B') data=data.filter(c=>c.veredicto==='B');
+  else if(rankFilter==='AB') data=data.filter(c=>c.veredicto==='A'||c.veredicto==='B');
+
+  // Ordenar
+  data.sort((a,b)=>{
+    if(rankSort==='score_actitud'){
+      return calcActitudScore(b)-calcActitudScore(a);
+    }
+    const ka=parseFloat(a[rankSort])||0;
+    const kb=parseFloat(b[rankSort])||0;
+    return kb-ka;
+  });
+
+  if(!data.length){
+    document.getElementById('rankList').innerHTML='<div class="rank-empty">No hay candidatos con el filtro seleccionado.</div>';
+    return;
+  }
+
+  const posClass=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  const posLabel=(i)=>i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`;
+
+  document.getElementById('rankList').innerHTML=data.map((c,i)=>{
+    const sc=parseFloat(c.score_total)||0;
+    const actitud=calcActitudScore(c);
+    const scoreToShow=rankSort==='score_total'?sc
+      :rankSort==='score_actitud'?actitud
+      :parseFloat(c[rankSort])||0;
+
+    const bars=[
+      {label:'Score',val:sc,max:10,color:scoreColor(sc)},
+      {label:'Actitud',val:actitud,max:10,color:scoreColor(actitud)},
+      {label:'Tecnología',val:c.score_tecnologia||0,max:10,color:scoreColor(c.score_tecnologia)},
+      {label:'Aprend.',val:c.score_aprendizaje||0,max:10,color:scoreColor(c.score_aprendizaje)},
+    ];
+
+    return`<div class="rank-card" onclick="closeRanking();openModal('${c.id}')">
+      <div class="rank-pos ${posClass(i)}">${posLabel(i)}</div>
+      <div class="rank-avatar">${getInitials(c.nombre)}</div>
+      <div class="rank-info">
+        <div class="rank-name">${c.nombre}</div>
+        <div class="rank-meta">${c.edad} años · ${c.zona} · <span class="vbadge ${c.veredicto||'B'}" style="font-size:10px;padding:2px 7px">${c.veredicto==='A'?'⭐ A':c.veredicto==='B'?'🟡 B':'🔴 C'}</span></div>
+      </div>
+      <div class="rank-bars">
+        ${bars.map(b=>`<div class="rank-bar-row">
+          <div class="rank-bar-label">${b.label}</div>
+          <div class="rank-bar-track"><div class="rank-bar-fill" style="width:${(b.val/b.max)*100}%;background:${b.color}"></div></div>
+        </div>`).join('')}
+      </div>
+      <div class="rank-score-big" style="color:${scoreColor(scoreToShow)}">${scoreToShow.toFixed(1)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===== IA JUSTIFICACIÓN =====
 async function generarJustificacion(c, containerId){
   const el=document.getElementById(containerId);
   if(!el)return;
@@ -377,10 +654,10 @@ Responde SOLO con este JSON exacto sin markdown:
   }
 }
 
+// ===== MODAL =====
 function openModal(id){
   const c=allData.find(x=>x.id===id);
   if(!c)return;
-  const vc=c.veredicto||'B';
   const scoreLabels={score_responsabilidad:'Responsabilidad',score_comunicacion:'Comunicación',score_tecnologia:'Tecnología',score_aprendizaje:'Aprendizaje',score_servicio:'Servicio',score_madurez:'Madurez',score_compatibilidad:'Compatibilidad'};
   const scoreBars=Object.entries(scoreLabels).map(([k,l])=>{const v=c[k]||0;return`<div class="ms-score"><div class="ms-name">${l}</div><div class="ms-bar"><div class="ms-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="ms-val" style="color:${scoreColor(v)}">${v}</div></div>`;}).join('');
   const waLink=`https://wa.me/52${(c.telefono||'').replace(/\D/g,'')}`;
@@ -453,7 +730,6 @@ function openModal(id){
     </div>`;
 
   document.getElementById('modalOverlay').classList.remove('hidden');
-  // Generar justificación IA automáticamente al abrir
   generarJustificacion(c, justId);
 }
 
