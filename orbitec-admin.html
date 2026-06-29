@@ -102,7 +102,65 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 }
 </style>
 </head>
+<style>
+.login-overlay{position:fixed;inset:0;background:var(--black);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:#111;border:1px solid rgba(183,255,0,0.2);border-radius:16px;padding:40px 32px;width:100%;max-width:360px;text-align:center}
+.login-logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.ll-ring{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--lime);display:flex;align-items:center;justify-content:center}
+.ll-inner{width:16px;height:16px;border-radius:50%;background:var(--lime)}
+.ll-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:white}
+.ll-name span{color:var(--lime)}
+.login-title{font-family:var(--font-display);font-size:16px;font-weight:600;color:white;margin-bottom:6px}
+.login-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:24px}
+.login-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:var(--r);color:white;font-size:15px;font-family:var(--font-body);outline:none;text-align:center;letter-spacing:0.15em;margin-bottom:14px;transition:border-color 0.2s}
+.login-input:focus{border-color:var(--lime)}
+.login-input.error{border-color:var(--danger);animation:shake 0.3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.login-btn{width:100%;padding:12px;background:var(--lime);color:var(--black);border:none;border-radius:var(--r);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.login-btn:hover{background:var(--lime-dark)}
+.login-err{font-size:12px;color:var(--danger);margin-top:8px;min-height:18px}
+</style>
+
 <body>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="ll-ring"><div class="ll-inner"></div></div>
+      <div class="ll-name">ORBI<span>TEC</span></div>
+    </div>
+    <div class="login-title">Panel de Reclutamiento</div>
+    <div class="login-sub">Acceso restringido — solo personal autorizado</div>
+    <input class="login-input" type="password" id="loginInput" placeholder="••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter')checkLogin()">
+    <button class="login-btn" onclick="checkLogin()">Ingresar →</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<script>
+function checkLogin(){
+  const val=document.getElementById('loginInput').value;
+  const input=document.getElementById('loginInput');
+  const err=document.getElementById('loginErr');
+  if(val==='197311'){
+    document.getElementById('loginOverlay').style.display='none';
+    sessionStorage.setItem('orbitec_auth','ok');
+  } else {
+    input.classList.add('error');
+    err.textContent='Contraseña incorrecta. Intenta de nuevo.';
+    input.value='';
+    setTimeout(()=>input.classList.remove('error'),400);
+  }
+}
+// Si ya está autenticado en esta sesión, no pedir login
+if(sessionStorage.getItem('orbitec_auth')==='ok'){
+  document.addEventListener('DOMContentLoaded',()=>{
+    const ov=document.getElementById('loginOverlay');
+    if(ov)ov.style.display='none';
+  });
+}
+</script>
 
 <div class="topbar">
   <div class="topbar-logo">
