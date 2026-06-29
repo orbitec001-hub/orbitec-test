@@ -9,6 +9,26 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--lime:#B7FF00;--lime-dark:#8fcc00;--black:#0a0a0a;--white:#fff;--gray-50:#f7f7f7;--gray-100:#eee;--gray-200:#ddd;--gray-400:#999;--gray-600:#555;--gray-800:#222;--success:#00c97a;--warning:#f59e0b;--danger:#ef4444;--r:8px;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif}
 body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800);min-height:100vh;font-size:14px}
+
+/* LOGIN */
+.login-overlay{position:fixed;inset:0;background:var(--black);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:#111;border:1px solid rgba(183,255,0,0.2);border-radius:16px;padding:40px 32px;width:100%;max-width:360px;text-align:center}
+.login-logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.ll-ring{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--lime);display:flex;align-items:center;justify-content:center}
+.ll-inner{width:16px;height:16px;border-radius:50%;background:var(--lime)}
+.ll-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:white}
+.ll-name span{color:var(--lime)}
+.login-title{font-family:var(--font-display);font-size:16px;font-weight:600;color:white;margin-bottom:6px}
+.login-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:24px}
+.login-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:var(--r);color:white;font-size:18px;font-family:var(--font-body);outline:none;text-align:center;letter-spacing:0.2em;margin-bottom:14px;transition:border-color 0.2s}
+.login-input:focus{border-color:var(--lime)}
+.login-input.shake{animation:shake 0.3s ease;border-color:var(--danger)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.login-btn{width:100%;padding:12px;background:var(--lime);color:var(--black);border:none;border-radius:var(--r);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.login-btn:hover{background:var(--lime-dark)}
+.login-err{font-size:12px;color:var(--danger);margin-top:8px;min-height:18px}
+
+/* TOPBAR */
 .topbar{background:var(--black);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(183,255,0,0.15)}
 .topbar-logo{display:flex;align-items:center;gap:8px}
 .tl-ring{width:28px;height:28px;border-radius:50%;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center}
@@ -16,18 +36,16 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .tl-name{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--white)}
 .tl-name span{color:var(--lime)}
 .topbar-title{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500}
-.topbar-right{display:flex;align-items:center;gap:10px}
 .btn-refresh{display:flex;align-items:center;gap:6px;background:rgba(183,255,0,0.1);border:1px solid rgba(183,255,0,0.25);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
 .btn-refresh:hover{background:rgba(183,255,0,0.2)}
+
+/* MAIN */
 .main{max-width:1100px;margin:0 auto;padding:28px 20px}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:16px 18px}
 .stat-val{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--black);line-height:1}
 .stat-label{font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;font-weight:600}
-.stat-card.green .stat-val{color:var(--success)}
-.stat-card.yellow .stat-val{color:var(--warning)}
-.stat-card.red .stat-val{color:var(--danger)}
-.stat-card.lime .stat-val{color:var(--lime-dark)}
+.stat-card.green .stat-val{color:var(--success)}.stat-card.yellow .stat-val{color:var(--warning)}.stat-card.red .stat-val{color:var(--danger)}.stat-card.lime .stat-val{color:var(--lime-dark)}
 .filters{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .filter-label{font-size:12px;font-weight:600;color:var(--gray-600)}
 .filter-btn{padding:5px 12px;border-radius:100px;border:1.5px solid var(--gray-200);background:white;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
@@ -40,28 +58,25 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr 1fr;gap:0;padding:10px 18px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
 .th{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.09em}
 .row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr 1fr;gap:0;padding:13px 18px;border-bottom:1px solid var(--gray-100);align-items:center;transition:background 0.1s;cursor:pointer}
-.row:last-child{border-bottom:none}
-.row:hover{background:var(--gray-50)}
+.row:last-child{border-bottom:none}.row:hover{background:var(--gray-50)}
 .cname{font-weight:600;color:var(--black);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .czone{font-size:12px;color:var(--gray-400);margin-top:1px}
 .cage{font-size:13px;color:var(--gray-600)}
 .cscore{font-family:var(--font-display);font-size:16px;font-weight:700}
 .cscore.high{color:var(--success)}.cscore.mid{color:var(--warning)}.cscore.low{color:var(--danger)}
 .vbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700}
-.vbadge.A{background:rgba(0,201,122,0.12);color:#00704a}
-.vbadge.B{background:rgba(245,158,11,0.12);color:#92400e}
-.vbadge.C{background:rgba(239,68,68,0.12);color:#b91c1c}
+.vbadge.A{background:rgba(0,201,122,0.12);color:#00704a}.vbadge.B{background:rgba(245,158,11,0.12);color:#92400e}.vbadge.C{background:rgba(239,68,68,0.12);color:#b91c1c}
 .cdate{font-size:12px;color:var(--gray-400)}
 .cstatus select{padding:4px 8px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;color:var(--gray-800);background:white;cursor:pointer;font-family:var(--font-body);outline:none}
 .empty-state{padding:56px 32px;text-align:center;color:var(--gray-400)}
 .empty-state h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:8px}
-.empty-state p{font-size:14px;line-height:1.6}
 .loading-row{padding:40px;text-align:center;color:var(--gray-400);font-size:14px}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
+.modal-overlay.hidden{display:none}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:white;border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s ease}
+.modal{background:white;border-radius:14px;width:100%;max-width:580px;max-height:92vh;overflow-y:auto;animation:slideUp 0.25s ease}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-header{background:var(--black);border-radius:14px 14px 0 0;padding:22px 24px;position:relative}
 .modal-header-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent);border-radius:14px 14px 0 0}
@@ -71,58 +86,54 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
 .modal-close:hover{background:rgba(255,255,255,0.2)}
 .modal-body{padding:22px 24px}
-.modal-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--gray-100)}
+.modal-section{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--gray-100)}
 .modal-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.modal-section-title{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px}
-.detail-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px}
-.detail-label{font-size:12px;color:var(--gray-600);flex-shrink:0;width:120px}
+.modal-section-title{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:12px}
+.detail-label{font-size:12px;color:var(--gray-600);flex-shrink:0;width:130px;font-weight:500}
 .detail-val{font-size:13px;color:var(--gray-800);font-weight:500;text-align:right;flex:1}
-.detail-text{font-size:13px;color:var(--gray-800);line-height:1.55;padding:10px 12px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
+.detail-text{font-size:13px;color:var(--gray-800);line-height:1.6;padding:10px 12px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
 .ms-score{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.ms-name{font-size:12px;color:var(--gray-600);width:100px;flex-shrink:0}
+.ms-name{font-size:12px;color:var(--gray-600);width:105px;flex-shrink:0}
 .ms-bar{flex:1;height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden}
 .ms-fill{height:100%;border-radius:2px}
-.ms-val{font-size:12px;font-weight:600;width:28px;text-align:right}
+.ms-val{font-size:12px;font-weight:700;width:28px;text-align:right}
 .tag{font-size:11px;font-weight:500;padding:3px 9px;border-radius:100px}
 .tag.plus{background:rgba(0,201,122,0.1);color:#00704a}
 .tag.minus{background:rgba(245,158,11,0.1);color:#92400e}
 .tags-wrap{display:flex;flex-wrap:wrap;gap:5px}
-.next-box{background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--gray-800);font-weight:500}
+.next-box{background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--gray-800);font-weight:500;line-height:1.5}
 .msg-box{font-size:13px;color:var(--gray-600);line-height:1.6;padding:12px;background:var(--gray-50);border-radius:var(--r);border:1px solid var(--gray-200)}
 .status-select{width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);font-family:var(--font-body);outline:none;cursor:pointer}
 .status-select:focus{border-color:var(--lime-dark)}
 .btn-wa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:white;border:none;padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font-body)}
 .btn-wa:hover{background:#1ebe5d}
 
+/* Respuestas candidato */
+.respuesta-item{margin-bottom:12px}
+.respuesta-pregunta{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.respuesta-texto{font-size:13px;color:var(--gray-800);line-height:1.55;padding:9px 12px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
+
+/* Justificación IA */
+.justificacion-box{background:linear-gradient(135deg,rgba(183,255,0,0.05),rgba(183,255,0,0.02));border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:14px 16px}
+.justificacion-loading{text-align:center;padding:20px;color:var(--gray-400);font-size:13px}
+.just-veredicto{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(183,255,0,0.15)}
+.just-score-big{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--lime-dark);line-height:1}
+.just-texto{font-size:13px;color:var(--gray-700);line-height:1.65}
+.just-bloque{margin-bottom:10px}
+.just-bloque-titulo{font-size:11px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.just-bloque-texto{font-size:13px;color:var(--gray-700);line-height:1.6}
+
 @media(max-width:700px){
   .stats-row{grid-template-columns:1fr 1fr}
   .table-header{display:none}
   .row{grid-template-columns:1fr;gap:4px;padding:14px 16px}
-  .th{display:none}
 }
 </style>
 </head>
-<style>
-.login-overlay{position:fixed;inset:0;background:var(--black);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{background:#111;border:1px solid rgba(183,255,0,0.2);border-radius:16px;padding:40px 32px;width:100%;max-width:360px;text-align:center}
-.login-logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
-.ll-ring{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--lime);display:flex;align-items:center;justify-content:center}
-.ll-inner{width:16px;height:16px;border-radius:50%;background:var(--lime)}
-.ll-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:white}
-.ll-name span{color:var(--lime)}
-.login-title{font-family:var(--font-display);font-size:16px;font-weight:600;color:white;margin-bottom:6px}
-.login-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:24px}
-.login-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:var(--r);color:white;font-size:15px;font-family:var(--font-body);outline:none;text-align:center;letter-spacing:0.15em;margin-bottom:14px;transition:border-color 0.2s}
-.login-input:focus{border-color:var(--lime)}
-.login-input.error{border-color:var(--danger);animation:shake 0.3s ease}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.login-btn{width:100%;padding:12px;background:var(--lime);color:var(--black);border:none;border-radius:var(--r);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
-.login-btn:hover{background:var(--lime-dark)}
-.login-err{font-size:12px;color:var(--danger);margin-top:8px;min-height:18px}
-</style>
-
 <body>
 
+<!-- LOGIN -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
     <div class="login-logo">
@@ -139,6 +150,10 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 </div>
 
 <script>
+// Ocultar overlay inmediatamente si ya autenticado
+if(sessionStorage.getItem('orbitec_auth')==='ok'){
+  document.getElementById('loginOverlay').style.display='none';
+}
 function checkLogin(){
   const val=document.getElementById('loginInput').value;
   const input=document.getElementById('loginInput');
@@ -147,34 +162,26 @@ function checkLogin(){
     document.getElementById('loginOverlay').style.display='none';
     sessionStorage.setItem('orbitec_auth','ok');
   } else {
-    input.classList.add('error');
+    input.classList.add('shake');
     err.textContent='Contraseña incorrecta. Intenta de nuevo.';
     input.value='';
-    setTimeout(()=>input.classList.remove('error'),400);
+    setTimeout(()=>input.classList.remove('shake'),400);
   }
-}
-// Si ya está autenticado en esta sesión, no pedir login
-if(sessionStorage.getItem('orbitec_auth')==='ok'){
-  document.addEventListener('DOMContentLoaded',()=>{
-    const ov=document.getElementById('loginOverlay');
-    if(ov)ov.style.display='none';
-  });
 }
 </script>
 
+<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-logo">
     <div class="tl-ring"><div class="tl-inner"></div></div>
     <div class="tl-name">ORBI<span>TEC</span></div>
   </div>
   <div class="topbar-title">Panel de candidatos — JCEF 2026</div>
-  <div class="topbar-right">
-    <button class="btn-refresh" onclick="loadCandidatos()">↻ Actualizar</button>
-  </div>
+  <button class="btn-refresh" onclick="loadCandidatos()">↻ Actualizar</button>
 </div>
 
 <div class="main">
-  <div class="stats-row" id="statsRow">
+  <div class="stats-row">
     <div class="stat-card lime"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Total candidatos</div></div>
     <div class="stat-card green"><div class="stat-val" id="statA">—</div><div class="stat-label">Recomendados ⭐</div></div>
     <div class="stat-card yellow"><div class="stat-val" id="statB">—</div><div class="stat-label">Con potencial 🟡</div></div>
@@ -212,6 +219,7 @@ if(sessionStorage.getItem('orbitec_auth')==='ok'){
 <script>
 const SB_URL='https://ljjjulkidxotqhohxgcy.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
+const WORKER='https://orbitec-proxy.orbitecensenada.com';
 
 let allData=[],filterV='all',searchQ='';
 
@@ -220,13 +228,20 @@ function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
 function scoreClass(n){return n>=8?'high':n>=6?'mid':'low'}
 function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}
 
+const uso_tech_labels=['','Solo redes sociales','Busca tutoriales y aprende','Resuelve problemas técnicos solo','Conocimiento avanzado'];
+const reparacion_labels=['Nunca ha intentado','Ha visto tutoriales','Ha intentado por su cuenta','Con resultado exitoso'];
+const clientes_labels=['Sin experiencia','Algo informal','En algún trabajo/negocio','Buena experiencia con clientes'];
+const sc1_labels={0:'Espera al jefe',1:'Culpa al técnico anterior',3:'Escucha y busca ayuda',4:'Escucha, pide disculpas y busca solución'};
+const sc2_labels={0:'Dice que necesita que le enseñen',1:'Espera a que haya alguien',3:'Busca tutoriales y lo intenta',4:'Busca recursos, intenta y pregunta lo específico'};
+const sc3_labels={0:'Espera a que alguien lo note',1:'Lo arregla solo sin decir nada',4:'Se lo dice al jefe y propone solución',5:'Lo dice, acepta responsabilidad y aprende'};
+const persistencia_labels=['','Busca a alguien que ya sepa','Intenta 2-3 veces y pide ayuda','Sigue hasta entender por qué falla','Busca el error, aprende y lo corrige'];
+
 async function loadCandidatos(){
   document.getElementById('tableBody').innerHTML='<div class="loading-row">Cargando...</div>';
   try{
     const resp=await fetch(`${SB_URL}/rest/v1/candidatos_jcef?select=*&order=created_at.desc`,{headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}});
     allData=await resp.json();
-    updateStats();
-    renderTable();
+    updateStats();renderTable();
   }catch(e){document.getElementById('tableBody').innerHTML='<div class="loading-row">Error al cargar. Verifica la conexión.</div>'}
 }
 
@@ -237,25 +252,14 @@ function updateStats(){
   document.getElementById('statC').textContent=allData.filter(c=>c.veredicto==='C').length;
 }
 
-function setFilter(v,btn){
-  filterV=v;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTable();
-}
-
+function setFilter(v,btn){filterV=v;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTable()}
 function setSearch(v){searchQ=v.toLowerCase();renderTable()}
 
 function renderTable(){
   let data=allData;
   if(filterV!=='all')data=data.filter(c=>c.veredicto===filterV);
   if(searchQ)data=data.filter(c=>(c.nombre||'').toLowerCase().includes(searchQ)||(c.zona||'').toLowerCase().includes(searchQ));
-
-  if(!data.length){
-    document.getElementById('tableBody').innerHTML=`<div class="empty-state"><h3>Sin candidatos</h3><p>No hay candidatos que coincidan con el filtro actual.</p></div>`;
-    return;
-  }
-
+  if(!data.length){document.getElementById('tableBody').innerHTML=`<div class="empty-state"><h3>Sin candidatos</h3><p>No hay candidatos que coincidan con el filtro.</p></div>`;return}
   document.getElementById('tableBody').innerHTML=data.map(c=>`
     <div class="row" onclick="openModal('${c.id}')">
       <div><div class="cname">${c.nombre||'—'}</div><div class="czone">${c.zona||''}</div></div>
@@ -276,13 +280,101 @@ function renderTable(){
 }
 
 async function updateStatus(id,status){
-  await fetch(`${SB_URL}/rest/v1/candidatos_jcef?id=eq.${id}`,{
-    method:'PATCH',
-    headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`},
-    body:JSON.stringify({estatus:status})
-  });
+  await fetch(`${SB_URL}/rest/v1/candidatos_jcef?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`},body:JSON.stringify({estatus:status})});
   const idx=allData.findIndex(c=>c.id===id);
   if(idx>-1)allData[idx].estatus=status;
+}
+
+async function generarJustificacion(c, containerId){
+  const el=document.getElementById(containerId);
+  if(!el)return;
+  el.innerHTML='<div class="justificacion-loading">⏳ Generando análisis con IA...</div>';
+
+  const prompt=`Eres un Director Internacional de Recursos Humanos con 50 años de experiencia en selección de talento para empresas tecnológicas. Trabajas para Orbitec, empresa tecnológica en Ensenada, México especializada en reparación de celulares, computadoras y sistemas digitales.
+
+Tu misión es ayudar al dueño de Orbitec a tomar una decisión de contratación en el menor tiempo posible, con la mayor información posible. El dueño es un empresario ocupado que necesita tu criterio experto, no descripciones genéricas.
+
+CANDIDATO: ${c.nombre}, ${c.edad} años, zona ${c.zona}
+SCORE TOTAL: ${c.score_total}/10 | VEREDICTO: ${c.veredicto} — ${c.veredicto_texto}
+
+SCORES DETALLADOS (1-10):
+Responsabilidad:${c.score_responsabilidad} | Comunicación:${c.score_comunicacion} | Tecnología:${c.score_tecnologia} | Aprendizaje:${c.score_aprendizaje} | Servicio:${c.score_servicio} | Madurez:${c.score_madurez} | Compatibilidad:${c.score_compatibilidad}
+
+RESPUESTAS DEL CANDIDATO:
+- Nivel tecnológico: ${uso_tech_labels[c.uso_tech]||c.uso_tech}
+- Experiencia reparación: ${reparacion_labels[c.reparacion]||c.reparacion}
+- Experiencia con clientes: ${clientes_labels[c.clientes]||c.clientes}
+- Ante cliente molesto (sin culpa propia): ${sc1_labels[c.sc1]||c.sc1}
+- Ante aprendizaje autónomo bajo presión: ${sc2_labels[c.sc2]||c.sc2}
+- Ante un error que cometió: ${sc3_labels[c.sc3]||c.sc3}
+- Nivel de persistencia: ${persistencia_labels[c.persistencia]||c.persistencia}
+- Se identifica como: ${c.identidad}
+- Qué quiere aprender: "${c.quiero_aprender}"
+- Meta personal/profesional: "${c.meta}"
+- Por qué Orbitec: "${c.por_que}"
+
+PERFIL BUSCADO POR ORBITEC: No se requiere experiencia técnica. Se prioriza actitud, responsabilidad, autonomía, curiosidad tecnológica y potencial de crecimiento. La persona será capacitada desde cero en reparación, ventas y sistemas digitales.
+
+Dame un análisis ejecutivo completo. Sé directo, opina con criterio, no te limites a describir. Dime si lo contrato o no y por qué.
+
+Responde SOLO con este JSON exacto sin markdown:
+{"decision_rapida":"<Una línea directa: SÍ contratar / NO contratar / Entrevistar primero — y el motivo en 10 palabras>","analisis_ejecutivo":"<3-4 oraciones con tu análisis profesional real. Menciona lo que más te llamó la atención positiva o negativamente. Sé específico con las respuestas del candidato.>","fortalezas_clave":["<fortaleza específica basada en sus respuestas>","<fortaleza 2>","<fortaleza 3>"],"señales_alerta":["<señal de alerta concreta o NINGUNA>","<señal 2 o NINGUNA>"],"preguntas_entrevista":["<pregunta específica para validar algo de este candidato>","<pregunta 2>","<pregunta 3>"],"potencial_crecimiento":"<Dónde puede llegar este candidato dentro de Orbitec en 6-12 meses si se le capacita bien. Sé específico.>","recomendacion_final":"<Tu recomendación final como Director de RR.HH. senior. Una postura clara: qué hacer, cuándo y cómo abordarlo.>"}`;
+
+  try{
+    const resp=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    const raw=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
+    const j=JSON.parse(raw);
+
+    const dec=(j.decision_rapida||'').toLowerCase();
+    const decColor=dec.includes('sí')||dec.includes('si ')?'#00c97a':dec.includes('no ')||dec.includes('no c')?'#ef4444':'#f59e0b';
+
+    el.innerHTML=`
+      <div style="background:${decColor}18;border:1.5px solid ${decColor}50;border-radius:8px;padding:13px 15px;margin-bottom:16px">
+        <div style="font-size:10px;font-weight:700;color:${decColor};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px">⚡ Decisión rápida</div>
+        <div style="font-size:14px;font-weight:700;color:#111;line-height:1.4">${j.decision_rapida||'—'}</div>
+      </div>
+
+      <div class="just-bloque" style="margin-bottom:14px">
+        <div class="just-bloque-titulo">📋 Análisis ejecutivo</div>
+        <div class="just-bloque-texto" style="line-height:1.7">${j.analisis_ejecutivo||'—'}</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div>
+          <div class="just-bloque-titulo" style="margin-bottom:7px">✅ Fortalezas clave</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            ${(j.fortalezas_clave||[]).map(p=>`<div style="font-size:12px;background:rgba(0,201,122,0.07);border:1px solid rgba(0,201,122,0.2);border-radius:6px;padding:6px 9px;color:#006640;font-weight:500;line-height:1.4">+ ${p}</div>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="just-bloque-titulo" style="margin-bottom:7px">⚠️ Señales de alerta</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            ${(j.señales_alerta||[]).filter(p=>p&&p.toUpperCase()!=='NINGUNA').map(p=>`<div style="font-size:12px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:6px 9px;color:#854d0e;font-weight:500;line-height:1.4">△ ${p}</div>`).join('')||'<div style="font-size:12px;color:#aaa;padding:4px">Sin señales detectadas</div>'}
+          </div>
+        </div>
+      </div>
+
+      <div class="just-bloque" style="margin-bottom:14px">
+        <div class="just-bloque-titulo">🎯 Preguntas clave para la entrevista</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          ${(j.preguntas_entrevista||[]).map((p,i)=>`<div style="font-size:13px;color:#333;padding:8px 12px;background:#f7f7f7;border-radius:6px;border-left:3px solid var(--lime);line-height:1.5"><span style="font-weight:700;color:var(--lime-dark);margin-right:6px">${i+1}.</span>${p}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="just-bloque" style="margin-bottom:14px">
+        <div class="just-bloque-titulo">🚀 Potencial de crecimiento en Orbitec</div>
+        <div class="just-bloque-texto" style="line-height:1.7">${j.potencial_crecimiento||'—'}</div>
+      </div>
+
+      <div style="background:var(--black);border-radius:8px;padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">→ Recomendación final del Director de RR.HH.</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.88);font-weight:500;line-height:1.65">${j.recomendacion_final||'—'}</div>
+      </div>
+    `;
+  }catch(e){
+    el.innerHTML='<div style="font-size:13px;color:var(--gray-400);padding:8px">No se pudo generar el análisis. Verifica la conexión al Worker.</div>';
+  }
 }
 
 function openModal(id){
@@ -290,13 +382,9 @@ function openModal(id){
   if(!c)return;
   const vc=c.veredicto||'B';
   const scoreLabels={score_responsabilidad:'Responsabilidad',score_comunicacion:'Comunicación',score_tecnologia:'Tecnología',score_aprendizaje:'Aprendizaje',score_servicio:'Servicio',score_madurez:'Madurez',score_compatibilidad:'Compatibilidad'};
-  const scoreBars=Object.entries(scoreLabels).map(([k,l])=>{
-    const v=c[k]||0;
-    return`<div class="ms-score"><div class="ms-name">${l}</div><div class="ms-bar"><div class="ms-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="ms-val" style="color:${scoreColor(v)}">${v}</div></div>`;
-  }).join('');
-  const fortalezas=Array.isArray(c.fortalezas)?c.fortalezas.map(f=>`<span class="tag plus">+ ${f}</span>`).join(''):'';
-  const riesgos=Array.isArray(c.riesgos)?c.riesgos.filter(r=>r&&r!=='Ninguno').map(r=>`<span class="tag minus">⚠ ${r}</span>`).join(''):'';
+  const scoreBars=Object.entries(scoreLabels).map(([k,l])=>{const v=c[k]||0;return`<div class="ms-score"><div class="ms-name">${l}</div><div class="ms-bar"><div class="ms-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="ms-val" style="color:${scoreColor(v)}">${v}</div></div>`;}).join('');
   const waLink=`https://wa.me/52${(c.telefono||'').replace(/\D/g,'')}`;
+  const justId=`just_${c.id.replace(/-/g,'')}`;
 
   document.getElementById('modal').innerHTML=`
     <div class="modal-header">
@@ -307,37 +395,50 @@ function openModal(id){
       <div class="modal-sub">${c.edad} años · ${c.zona} · ${fmtDate(c.created_at)}</div>
     </div>
     <div class="modal-body">
+
       <div class="modal-section">
         <div class="modal-section-title">Contacto</div>
         <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-val">${c.telefono||'—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Zona</span><span class="detail-val">${c.zona||'—'}</span></div>
         <div style="margin-top:8px"><a class="btn-wa" href="${waLink}" target="_blank">💬 Abrir WhatsApp</a></div>
       </div>
+
       <div class="modal-section">
-        <div class="modal-section-title">Score y veredicto</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:${scoreColor(c.score_total)}">${parseFloat(c.score_total||0).toFixed(1)}</div>
-          <span class="vbadge ${vc}" style="font-size:12px">${vc==='A'?'⭐ Altamente recomendado':vc==='B'?'🟡 Con potencial':'🔴 No recomendado'}</span>
+        <div class="modal-section-title">🤖 Análisis IA — Justificación del veredicto</div>
+        <div class="justificacion-box" id="${justId}">
+          <div class="justificacion-loading">Cargando análisis...</div>
         </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Scores de evaluación</div>
         ${scoreBars}
       </div>
-      ${fortalezas?`<div class="modal-section"><div class="modal-section-title">Fortalezas</div><div class="tags-wrap">${fortalezas}</div></div>`:''}
-      ${riesgos?`<div class="modal-section"><div class="modal-section-title">Riesgos</div><div class="tags-wrap">${riesgos}</div></div>`:''}
+
       <div class="modal-section">
-        <div class="modal-section-title">Qué quiere aprender</div>
-        <div class="detail-text">${c.quiero_aprender||'—'}</div>
+        <div class="modal-section-title">Respuestas del candidato</div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Uso de tecnología</div><div class="respuesta-texto">${uso_tech_labels[c.uso_tech]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Experiencia en reparación</div><div class="respuesta-texto">${reparacion_labels[c.reparacion]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Experiencia con clientes</div><div class="respuesta-texto">${clientes_labels[c.clientes]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Escenario — Cliente molesto</div><div class="respuesta-texto">${sc1_labels[c.sc1]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Escenario — Aprendizaje autónomo</div><div class="respuesta-texto">${sc2_labels[c.sc2]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Escenario — Manejo de error</div><div class="respuesta-texto">${sc3_labels[c.sc3]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Persistencia</div><div class="respuesta-texto">${persistencia_labels[c.persistencia]||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Se identifica como</div><div class="respuesta-texto">${c.identidad||'—'}</div></div>
       </div>
+
       <div class="modal-section">
-        <div class="modal-section-title">Por qué Orbitec</div>
-        <div class="detail-text">${c.por_que||'—'}</div>
+        <div class="modal-section-title">Respuestas abiertas</div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">¿Qué quiere aprender en Orbitec?</div><div class="respuesta-texto">${c.quiero_aprender||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">Meta personal o profesional</div><div class="respuesta-texto">${c.meta||'—'}</div></div>
+        <div class="respuesta-item"><div class="respuesta-pregunta">¿Por qué Orbitec?</div><div class="respuesta-texto">${c.por_que||'—'}</div></div>
       </div>
+
       <div class="modal-section">
         <div class="modal-section-title">Siguiente acción recomendada</div>
         <div class="next-box">${c.siguiente_accion||'—'}</div>
       </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Mensaje generado para el candidato</div>
-        <div class="msg-box">${c.mensaje_candidato||'—'}</div>
-      </div>
+
       <div class="modal-section">
         <div class="modal-section-title">Actualizar estatus</div>
         <select class="status-select" onchange="updateStatus('${c.id}',this.value);allData.find(x=>x.id==='${c.id}').estatus=this.value;renderTable()">
@@ -348,9 +449,12 @@ function openModal(id){
           <option value="rechazado" ${c.estatus==='rechazado'?'selected':''}>❌ Rechazado</option>
         </select>
       </div>
+
     </div>`;
 
   document.getElementById('modalOverlay').classList.remove('hidden');
+  // Generar justificación IA automáticamente al abrir
+  generarJustificacion(c, justId);
 }
 
 function closeModal(e){
