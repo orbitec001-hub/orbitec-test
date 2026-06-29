@@ -362,22 +362,44 @@ function showLoading(){
 }
 
 async function evaluateWithClaude(){
-  const prompt=`Eres el sistema profesional de evaluación de candidatos para Orbitec Hightech, empresa tecnológica en Ensenada, BC, México.
+  const prompt=`Eres el evaluador de talento de Orbitec Hightech, empresa de reparación tecnológica en Ensenada, México. Evalúas candidatos para "Asistente Técnico Comercial" — programa JCEF, sin experiencia requerida.
 
-Evalúa al candidato para "Asistente Técnico Comercial de Tecnología" bajo el programa Jóvenes Construyendo el Futuro.
+DATOS DEL CANDIDATO:
+Nombre: ${formData.nombre} | Edad: ${formData.edad} | Zona: ${formData.zona}
+Uso tecnología (1=solo redes, 2=busca tutoriales, 3=resuelve problemas, 4=avanzado): ${formData.uso_tech}
+Reparación (0=nunca, 1=vio tutoriales, 2=intentó, 3=éxito real): ${formData.reparacion}
+Clientes (0=ninguna, 1=informal, 2=trabajo/negocio, 3=buena exp): ${formData.clientes}
+Cliente molesto (0=espera jefe, 1=culpa técnico, 3=escucha y ayuda, 4=disculpa+solución): ${formData.sc1}
+Aprendizaje autónomo (0=pide que le enseñen, 1=espera, 3=busca tutoriales, 4=busca+intenta+pregunta específico): ${formData.sc2}
+Manejo de error propio (0=espera que lo noten, 1=arregla solo sin decir, 4=dice al jefe+propone, 5=dice+acepta+aprende): ${formData.sc3}
+Identidad: ${formData.identidad} | Persistencia (1=busca a alguien, 2=intenta 2-3 veces, 3=sigue hasta entender, 4=busca causa y corrige): ${formData.persistencia}
+Qué quiere aprender: "${formData.quiero_aprender}"
+Meta personal: "${formData.meta}"
+Por qué Orbitec: "${formData.por_que}"
 
-DATOS: Nombre: ${formData.nombre} | Edad: ${formData.edad} | Zona: ${formData.zona} | Tel: ${formData.tel}
-JCEF: Todos los filtros verificados como elegibles. Disponibilidad L-S 11am-7pm confirmada.
-APTITUDES: Uso tech (1-4): ${formData.uso_tech} | Reparación (0-3): ${formData.reparacion} | Clientes (0-3): ${formData.clientes}
-Quiere aprender: "${formData.quiero_aprender}" | Meta: "${formData.meta}"
-ACTITUDES: Cliente molesto (0-4): ${formData.sc1} | Aprendizaje autónomo (0-4): ${formData.sc2} | Error (0-5): ${formData.sc3}
-Identidad: ${formData.identidad} | Persistencia (1-4): ${formData.persistencia} | Por qué Orbitec: "${formData.por_que}"
+CRITERIOS DE PUNTUACIÓN — USA TODO EL RANGO 1-10, no te centres en 6-8:
+- 9-10: Respuesta excepcional, va más allá, demuestra madurez real y pensamiento propio
+- 7-8: Buena respuesta, actitud positiva, potencial claro
+- 5-6: Aceptable pero genérica, vaga o inconsistente
+- 3-4: Señal de alerta, actitud pasiva o respuesta preocupante
+- 1-2: Descarta al candidato en esa dimensión
 
-FILOSOFÍA: Prioriza actitud y potencial sobre experiencia técnica.
-Veredicto A=score≥7.5 buena actitud | B=5.5-7.4 o duda puntual | C=<5.5 o alertas.
+DIMENSIONES — sé estricto y diferenciador:
+RESPONSABILIDAD: sc3 alto (4-5) = honestidad ante error = sube. sc3 bajo (0-1) = oculta errores = baja a 2-3.
+COMUNICACIÓN: respuestas abiertas específicas, con ejemplos propios = sube. Frases genéricas de una línea = baja a 3-4.
+TECNOLOGÍA: uso_tech=3-4 + reparacion=2-3 = curiosidad real = sube. Solo redes + nunca intentó = 2-3.
+APRENDIZAJE: sc2=4 + persistencia=3-4 = autonomía genuina = sube. sc2=0-1 = dependencia total = baja a 2.
+SERVICIO: sc1=4 = empatía + acción = sube. sc1=0-1 = actitud defensiva o pasiva = baja a 2-3.
+MADUREZ: metas concretas y realizables, reflexión real sobre el futuro = sube. "quiero aprender" genérico = 4-5.
+COMPATIBILIDAD: por_que menciona algo específico de Orbitec (reparación, tecnología, crecer) = sube. "busco experiencia" genérico = 3-4.
 
-Responde SOLO con JSON sin markdown:
-{"score_total":<0-10.1>,"scores":{"responsabilidad":<1-10>,"comunicacion":<1-10>,"tecnologia":<1-10>,"aprendizaje":<1-10>,"servicio_cliente":<1-10>,"madurez":<1-10>,"compatibilidad":<1-10>},"veredicto":<"A"|"B"|"C">,"veredicto_texto":<"Altamente recomendado"|"Con potencial — entrevista requerida"|"No recomendado por ahora">,"fortalezas":[<str>,<str>,<str>],"riesgos":[<str>,<str>],"siguiente_accion":<str>,"mensaje_candidato":<2-3 oraciones cálidas sin revelar score ni veredicto>}`;
+REGLAS DE VEREDICTO:
+- A (Prioritario): score_total >= 7.5 Y sc2>=3 Y sc3>=4. Actitud consistentemente buena.
+- B (Entrevistar): score_total 5.5-7.4 O una dimensión baja compensada por otras altas.
+- C (Descartar): score_total < 5.5 O sc3<=1 O sc2<=1. No importa el resto.
+
+Responde SOLO con JSON sin markdown ni texto adicional:
+{"score_total":<número decimal 1-10>,"scores":{"responsabilidad":<1-10>,"comunicacion":<1-10>,"tecnologia":<1-10>,"aprendizaje":<1-10>,"servicio_cliente":<1-10>,"madurez":<1-10>,"compatibilidad":<1-10>},"veredicto":"A"|"B"|"C","veredicto_texto":"Altamente recomendado"|"Con potencial — entrevista requerida"|"No recomendado por ahora","fortalezas":["fortaleza específica de SUS respuestas","fortaleza 2","fortaleza 3"],"riesgos":["riesgo específico o Ninguno detectado"],"siguiente_accion":"acción concreta","mensaje_candidato":"2-3 oraciones cálidas y personalizadas sin revelar score ni veredicto"}`
 
   let result;
   try{
