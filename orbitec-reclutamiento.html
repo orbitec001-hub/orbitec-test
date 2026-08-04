@@ -14,8 +14,6 @@
   --success:#00c97a;--success-bg:#e6faf2;--warning:#f59e0b;--warning-bg:#fffbeb;--danger:#ef4444;--danger-bg:#fef2f2;
   --r:8px;--r-lg:14px;
   --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
-  --sb-url:'https://ljjjulkidxotqhohxgcy.supabase.co';
-  --sb-key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
 }
 html{scroll-behavior:smooth}
 body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-height:100vh;font-size:15px;line-height:1.6}
@@ -73,11 +71,12 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
 .field{margin-bottom:20px}
 .field label{display:block;font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:7px}
 .field label .req{color:var(--lime-dark);margin-left:2px}
-.field input[type="text"],.field input[type="number"],.field input[type="tel"],.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-family:var(--font-body);font-size:14px;color:var(--gray-800);background:white;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
-.field input:focus,.field textarea:focus{border-color:var(--lime-dark);box-shadow:0 0 0 3px rgba(183,255,0,0.15)}
+.field input[type="text"],.field input[type="number"],.field input[type="tel"],.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-family:var(--font-body);font-size:14px;color:var(--gray-800);background:white;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+.field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--lime-dark);box-shadow:0 0 0 3px rgba(183,255,0,0.15)}
 .field textarea{resize:vertical;min-height:88px;line-height:1.55}
 .field .hint{font-size:12px;color:var(--gray-400);margin-top:5px}
-.field.error input,.field.error textarea{border-color:var(--danger)}
+.field.error input,.field.error textarea,.field.error select{border-color:var(--danger)}
 .field .err-msg{font-size:12px;color:var(--danger);margin-top:5px;display:none}
 .field.error .err-msg{display:block}
 .options-grid{display:grid;gap:9px}.options-grid.two-col{grid-template-columns:1fr 1fr}
@@ -94,6 +93,7 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:var(--r);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;border:none}
 .btn-primary{background:var(--lime);color:var(--black);flex:1;justify-content:center}
 .btn-primary:hover{background:var(--lime-dark);transform:translateY(-1px);box-shadow:0 5px 18px rgba(183,255,0,0.3)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
 .btn-secondary{background:white;color:var(--gray-600);border:1.5px solid var(--gray-200)}
 .btn-secondary:hover{border-color:var(--gray-400);color:var(--gray-800)}
 .section-sep{display:flex;align-items:center;gap:10px;margin:6px 0 18px}
@@ -119,37 +119,7 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
 .candidate-avatar{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--black);margin:0 auto 12px;border:3px solid rgba(183,255,0,0.3)}
 .result-name{font-family:var(--font-display);font-size:21px;font-weight:700;color:white;margin-bottom:3px}
 .result-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:18px}
-.verdict-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 18px;border-radius:100px;font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em}
-.verdict-A{background:rgba(0,201,122,0.18);color:#00e696;border:1px solid rgba(0,201,122,0.35)}
-.verdict-B{background:rgba(245,158,11,0.18);color:#fbbf24;border:1px solid rgba(245,158,11,0.35)}
-.verdict-C{background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.35)}
 .result-body{background:white;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:26px 30px}
-.result-section{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--gray-100)}
-.result-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.result-section-title{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:13px}
-.jcef-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.jcef-chip{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--r);font-size:13px;font-weight:500}
-.jcef-chip.ok{background:var(--success-bg);color:#00704a}
-.jcef-icon{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
-.jcef-chip.ok .jcef-icon{background:var(--success);color:white}
-.score-item{display:flex;align-items:center;gap:11px;margin-bottom:9px}
-.score-item:last-child{margin-bottom:0}
-.score-name{font-size:13px;color:var(--gray-600);width:115px;flex-shrink:0}
-.score-track{flex:1;height:5px;background:var(--gray-100);border-radius:3px;overflow:hidden}
-.score-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.4,0,0.2,1) 0.3s}
-.score-val{font-size:13px;font-weight:700;width:34px;text-align:right}
-.tags-row{display:flex;flex-wrap:wrap;gap:7px}
-.res-tag{font-size:12px;font-weight:500;padding:4px 10px;border-radius:100px}
-.res-tag.plus{background:var(--success-bg);color:#00704a}
-.res-tag.minus{background:var(--warning-bg);color:#92400e}
-.score-summary{display:flex;align-items:center;justify-content:center;gap:18px;padding:18px;background:var(--gray-50);border-radius:var(--r);margin-bottom:18px}
-.score-big{font-family:var(--font-display);font-size:46px;font-weight:700;color:var(--lime-dark);line-height:1}
-.score-big-label{font-size:11px;color:var(--gray-400);margin-top:3px}
-.next-action{background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:14px 16px;display:flex;align-items:flex-start;gap:11px}
-.next-icon{width:30px;height:30px;background:var(--lime);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--black);font-size:15px;flex-shrink:0}
-.next-label{font-size:10px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:2px}
-.next-text{font-size:14px;color:var(--gray-800);font-weight:500}
-.saved-badge{display:inline-flex;align-items:center;gap:6px;background:var(--success-bg);border:1px solid rgba(0,201,122,0.3);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:600;color:#00704a;margin-bottom:14px}
 .ineligible-card{background:white;border-radius:var(--r-lg);border:1px solid var(--gray-200);padding:40px 30px;text-align:center;animation:slideIn 0.3s ease}
 .ineligible-icon{width:62px;height:62px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
 .ineligible-card h2{font-family:var(--font-display);font-size:21px;color:var(--black);margin-bottom:10px}
@@ -158,7 +128,7 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
 .contact-box-label{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
 .contact-box a{color:var(--lime-dark);text-decoration:none;font-weight:600}
 .hidden{display:none!important}
-@media(max-width:520px){.card{padding:20px 16px}.options-grid.two-col{grid-template-columns:1fr}.jcef-grid{grid-template-columns:1fr}.btn-row{flex-direction:column}.result-body{padding:18px 16px}.score-name{width:95px}}
+@media(max-width:520px){.card{padding:20px 16px}.options-grid.two-col{grid-template-columns:1fr}.btn-row{flex-direction:column}.result-body{padding:18px 16px}}
 </style>
 </head>
 <body>
@@ -168,9 +138,7 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
   <div class="hero-accent-line"></div>
   <div class="hero-inner">
     <div class="orbitec-logo">
-      <div class="logo-power-ring">
-        <div class="logo-power-inner"><div class="logo-power-symbol"></div></div>
-      </div>
+      <div class="logo-power-ring"><div class="logo-power-inner"><div class="logo-power-symbol"></div></div></div>
       <div class="logo-wordmark">
         <div class="logo-name">ORBI<span>TEC</span></div>
         <div class="logo-tagline">Tecnología a tu Alcance</div>
@@ -201,7 +169,7 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
 <div class="wrapper" id="formulario">
   <div class="progress-wrap" id="progressWrap">
     <div class="progress-header">
-      <span class="progress-label" id="progressLabel">Paso 1 de 4</span>
+      <span class="progress-label" id="progressLabel">Paso 1 de 5</span>
       <span class="progress-step" id="progressDesc">Datos personales</span>
     </div>
     <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
@@ -211,11 +179,170 @@ body{font-family:var(--font-body);background:#f4f4f4;color:var(--gray-800);min-h
 </div>
 
 <script>
+/* ============================================================================
+   ORBITEC — FORMULARIO DE RECLUTAMIENTO v2.0
+   Motor de scoring determinista v3.2 embebido.
+   El score NUNCA depende del LLM: se calcula localmente y siempre se guarda.
+   El LLM solo enriquece con análisis cualitativo; si falla, no pasa nada.
+   ========================================================================== */
+
 const SB_URL='https://ljjjulkidxotqhohxgcy.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
+// Se intentan en orden. Si todos fallan, el score determinista igual se guarda.
+const WORKERS=['https://orbitec-proxy.orbitecensenada.com','https://orbitec-proxy.orbitecensenada.workers.dev'];
 
-const STEPS=[{label:'Datos',desc:'Datos personales'},{label:'Situación',desc:'Situación actual'},{label:'Aptitudes',desc:'Perfil y aptitudes'},{label:'Actitudes',desc:'Actitudes y valores'}];
-let currentStep=0,formData={};
+/* ===== GEO: origen y catálogo verificado (Google Places) ===== */
+const ORIGEN={lat:31.8674334,lng:-116.5948110};
+const BANDAS=[
+  {tier:'T1',max:2,pts:10},{tier:'T2',max:5,pts:8},
+  {tier:'T3',max:11,pts:5.5},{tier:'T4',max:18,pts:3},
+  {tier:'T5',max:Infinity,pts:0,gate:true}
+];
+const COLONIAS={
+  'Bustamante':[31.8695012,-116.5964891],'Los Maestros':[31.8665619,-116.5906679],
+  'Costa Azul':[31.8504279,-116.5981379],'Bahía':[31.8595344,-116.6031279],
+  'Independencia':[31.8622102,-116.6043636],'Aviación':[31.8645928,-116.6030055],
+  'Nueva Ensenada':[31.8532018,-116.6037426],'Costa Bella':[31.8525996,-116.5831652],
+  'Granjas del Gallo':[31.8613209,-116.5720639],'Zona Centro':[31.8696441,-116.6247212],
+  'Fracc. Acapulco':[31.8395089,-116.6097319],'Valle Dorado':[31.8340532,-116.5948970],
+  'Morelos':[31.8518833,-116.5624417],'Popular 89':[31.8945698,-116.5709385],
+  'Villas del Prado':[31.9026901,-116.5923762],'Lomitas / Indeco':[31.8875435,-116.5919484],
+  'Prol. Av. Ruiz':[31.8910981,-116.6157950],'Villas del Roble':[31.8626337,-116.5465091],
+  'Mar de Ensenada':[31.9035655,-116.5705698],'Ejido Ruiz Cortines':[31.8961278,-116.5889998],
+  'Los Encinos':[31.9107753,-116.5987389],'Villas del Real':[31.9050000,-116.5920000],
+  'Montemar':[31.9014267,-116.5536130],'Pedregal / Playitas':[31.8716343,-116.6627045],
+  'Pórticos del Mar':[31.7820271,-116.5823652],'Playas de Chapultepec':[31.7858247,-116.6096395],
+  'Ex-Ejido Chapultepec':[31.7833481,-116.5764676],'Villa Residencial del Rey':[31.7830170,-116.5720443],
+  'Escritores':[31.7985464,-116.5912113],
+  'Maneadero':[31.7151989,-116.5713880],'Punta Banda':[31.7286000,-116.6710000],
+  'San Antonio de las Minas':[31.9654450,-116.6464710],'El Sauzal':[31.8925361,-116.6875331],
+  'Valle de Guadalupe':[32.0956281,-116.5725720],'Las Cañadas':[31.6583792,-116.5194397]
+};
+const GRUPOS_COLONIA=[
+  ['Cerca del taller (menos de 5 km)',['Bustamante','Los Maestros','Costa Azul','Bahía','Independencia','Aviación','Nueva Ensenada','Costa Bella','Granjas del Gallo','Zona Centro','Fracc. Acapulco','Valle Dorado','Morelos','Popular 89','Villas del Prado','Lomitas / Indeco','Prol. Av. Ruiz','Villas del Roble','Mar de Ensenada','Ejido Ruiz Cortines','Los Encinos','Villas del Real']],
+  ['Corredor sur / norte (5–12 km)',['Pórticos del Mar','Playas de Chapultepec','Ex-Ejido Chapultepec','Villa Residencial del Rey','Escritores','Montemar','Pedregal / Playitas','San Antonio de las Minas']],
+  ['Zona lejana (más de 12 km)',['Maneadero','Punta Banda','El Sauzal','Valle de Guadalupe','Las Cañadas']]
+];
+
+function distKm(aLat,aLng,bLat,bLng){
+  const R=6371,rad=d=>d*Math.PI/180;
+  const dLat=rad(bLat-aLat),dLng=rad(bLng-aLng);
+  const x=Math.sin(dLat/2)**2+Math.cos(rad(aLat))*Math.cos(rad(bLat))*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+function clasificarZona(colonia,transporte){
+  const c=COLONIAS[colonia];
+  const propio=transporte==='propio';
+  if(!c)return{tier:'T?',pts:5,gate:false,km:null};
+  const km=+distKm(ORIGEN.lat,ORIGEN.lng,c[0],c[1]).toFixed(2);
+  const b=BANDAS.find(x=>km<=x.max);
+  let pts=b.pts,gate=b.gate===true,tier=b.tier;
+  if(propio){pts=Math.min(10,pts+1.5);if(gate&&km<=30){gate=false;pts=Math.max(pts,3);tier='T4*';}}
+  return{tier,pts,gate,km};
+}
+
+/* ===== MOTOR DE SCORING DETERMINISTA v3.2 ===== */
+/* Pesos calibrados agosto 2026.
+   Racional: la permanencia DECLARADA es la señal más barata (nadie contesta
+   "solo unos meses"), así que pesa menos que antes. La madurez sube porque
+   persistencia es el único predictor validado contra un resultado real
+   (Alejandro Mayoral, persistencia=1, no se adaptó al puesto). */
+const PESOS={permanencia:.20,logistica:.18,tecnica:.22,servicio:.13,madurez:.17,escolaridad:.10};
+// Escolaridad NO monotónica: carrera técnica es el óptimo, licenciatura = sobrecalificación
+const ESC={primaria:3,secundaria:5,preparatoria_trunca:5.5,preparatoria:7,
+  carrera_tecnica:9,universidad_trunca:6.5,pasante:6,licenciatura:5};
+const clamp=(n,a=0,b=10)=>Math.max(a,Math.min(b,n));
+const norm=s=>String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+function evaluar(d){
+  /* --- GATES DUROS --- */
+  const gates=[];
+  const edad=+d.edad;
+  if(!(edad>=18&&edad<=29))gates.push('G1 EDAD fuera de rango JCF');
+  if(d.estudia==='si')gates.push('G2 ESTUDIANDO actualmente');
+  if(d.trabaja==='si')gates.push('G3 EMPLEADO actualmente');
+  if(d.piensa_estudiar_12m==='si')gates.push('G4 RETORNO A ESCUELA en <12 meses');
+  if(+d.disponibilidad_meses<6)gates.push('G5 PERMANENCIA menor a 6 meses');
+  const motivo=norm(`${d.quiero_aprender} ${d.meta} ${d.por_que}`);
+  const tempFuerte=/vacacion|temporal|verano|unos meses|dos meses|un mes|par de meses/.test(motivo);
+  const tempDebil=/(mientras|de paso|de momento)/.test(motivo)&&/(estudi|escuela|regres|otro trabajo|algo mejor|clases)/.test(motivo);
+  if(tempFuerte||tempDebil)gates.push('G6 TEMPORALIDAD detectada en texto');
+  const z=clasificarZona(d.colonia,d.transporte);
+  if(z.gate)gates.push(`G7 LOGÍSTICA fuera de radio (${z.km} km)`);
+
+  /* --- SUBSCORES --- */
+  // Permanencia
+  let sPerm=5;const m=+d.disponibilidad_meses;
+  if(m>=24)sPerm=9;else if(m>=12)sPerm=7.5;else if(m>=9)sPerm=6.5;else if(m>=6)sPerm=5;else sPerm=2;
+  if(d.piensa_estudiar_12m==='tal_vez')sPerm-=3;
+  // El texto libre solo confirma; no puede por sí solo llevar la permanencia al tope.
+  if(/aprender|carrera|crecer|oficio|desarrollo|largo plazo/.test(motivo))sPerm+=.5;
+  // Metas que compiten con la permanencia en Orbitec: penalizan, no solo se marcan.
+  if(/(poner|abrir|montar|tener|mi|propio)\s+(un\s+)?(negocio|taller)|negocio propio|taller propio|emprender/.test(motivo))sPerm-=1.5;
+  if(/universidad|carrera universitaria|entrar a la uni/.test(motivo))sPerm-=2;
+  // Historial real de permanencia: esto SÍ es evidencia, no declaración.
+  const dur=+d.duracion_empleo_anterior;
+  if(dur>=12)sPerm+=1.5;else if(dur>=6)sPerm+=.5;else if(dur>0&&dur<3)sPerm-=2;
+  sPerm=clamp(sPerm);
+
+  // Técnica
+  const sTec=clamp((+d.uso_tech/4*10)*.45+(+d.reparacion/3*10)*.55);
+
+  // Servicio
+  let sSrv=clamp(+d.clientes/3*10);
+  const txt=norm(`${d.por_que} ${d.quiero_aprender}`);
+  if(txt.length>140)sSrv+=.5;if(txt.length<25)sSrv-=1.5;
+  sSrv=clamp(sSrv+(+d.sc1/4*10-5)*.3);
+
+  // Madurez — persistencia es el predictor más fuerte validado
+  let sMad=5;const p=+d.persistencia;
+  if(p<=1)sMad-=4;else if(p===2)sMad-=.5;else if(p===3)sMad+=1;else if(p>=4)sMad+=2;
+  sMad+=(+d.sc3/5*10-5)*.4;
+  sMad+=(+d.sc2/4*10-5)*.3;
+  if(edad>=23)sMad+=.5;
+  sMad=clamp(sMad);
+
+  const sEsc=clamp(ESC[d.escolaridad]??5);
+
+  const sub={permanencia:sPerm,logistica:z.pts,tecnica:sTec,servicio:sSrv,madurez:sMad,escolaridad:sEsc};
+  const score=+Object.entries(PESOS).reduce((a,[k,w])=>a+sub[k]*w,0).toFixed(2);
+
+  /* --- VEREDICTO --- */
+  let veredicto,texto;
+  const topeLog=sub.logistica<=3;
+  // Umbrales calibrados sobre la distribución real de 35 candidatos.
+  // A debe ser escaso: es la lista de "contactar hoy".
+  if(gates.length){veredicto='C';texto='No elegible — no cumple requisitos del programa';}
+  else if(score>=8.5&&!topeLog){veredicto='A';texto='Altamente recomendado';}
+  else if(score>=6.5){veredicto='B';texto='Con potencial — entrevista requerida';}
+  else if(score>=5){veredicto='B';texto='Perfil básico — evaluar en entrevista';}
+  else{veredicto='C';texto='No recomendado por ahora';}
+
+  /* --- FLAGS --- */
+  const flags=[];
+  if(/licenciatura|titulado|pasante/.test(d.escolaridad))
+    flags.push({t:'alerta',x:'Sobrecalificado para rol de aprendiz JCF — riesgo de rotación'});
+  if(d.escolaridad==='universidad_trunca')
+    flags.push({t:'alerta',x:'Estudios universitarios truncos — riesgo de retomar la escuela'});
+  if(p<=1)flags.push({t:'alerta',x:'🚩 Persistencia mínima — perfil pasivo, validar autonomía'});
+  if(['T3','T4','T4*'].includes(z.tier))
+    flags.push({t:'alerta',x:`Traslado largo (${z.km} km) — validar costo y horario de transporte`});
+  if(z.tier==='T?')flags.push({t:'info',x:'Colonia no catalogada — verificar ubicación'});
+  if(/negocio|taller propio|poner un|emprend/.test(motivo))
+    flags.push({t:'alerta',x:'Meta de negocio propio — puede capacitarse y retirarse'});
+  if(sPerm>=8.5)flags.push({t:'ok',x:'Alta probabilidad de permanencia ≥12 meses'});
+  if(sTec>=8)flags.push({t:'ok',x:'Experiencia técnica previa comprobable'});
+  if(sMad>=8)flags.push({t:'ok',x:'Manejo maduro de error y presión — bajo costo de supervisión'});
+  if(edad>=28)flags.push({t:'info',x:'Cerca del límite de edad JCF'});
+
+  return{score,veredicto,texto,sub,gates,flags,zona:z,version:'3.3'};
+}
+
+/* ===== UI ===== */
+const STEPS=[{label:'Datos',desc:'Datos personales'},{label:'Situación',desc:'Situación actual'},
+  {label:'Permanencia',desc:'Compromiso y escolaridad'},{label:'Aptitudes',desc:'Perfil y aptitudes'},
+  {label:'Actitudes',desc:'Actitudes y valores'}];
+let currentStep=0,formData={},enviando=false;
 const screensEl=document.getElementById('screens');
 const progressFill=document.getElementById('progressFill');
 const progressLabel=document.getElementById('progressLabel');
@@ -224,51 +351,58 @@ const stepsDots=document.getElementById('stepsDots');
 
 function buildDots(){stepsDots.innerHTML=STEPS.map((s,i)=>`<div class="step-dot"><div class="dot-circle ${i<currentStep?'done':i===currentStep?'active':''}">${i<currentStep?'✓':i+1}</div><div class="dot-label ${i<currentStep?'done':i===currentStep?'active':''}">${s.label}</div></div>`).join('')}
 function updateProgress(){progressFill.style.width=(currentStep/STEPS.length*100)+'%';progressLabel.textContent=`Paso ${currentStep+1} de ${STEPS.length}`;progressDesc.textContent=STEPS[currentStep]?.desc||'';buildDots()}
-function show(html){screensEl.innerHTML=html}
+function show(h){screensEl.innerHTML=h}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function getInitials(n){return n.trim().split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
-function radio(name,label,val){const id=name+'_'+val.replace(/\s/g,'_');return`<div class="option-btn"><input type="radio" name="${name}" id="${id}" value="${val}"><label for="${id}"><div class="option-icon"></div>${label}</label></div>`}
-function getRadio(name){const e=document.querySelector(`input[name="${name}"]:checked`);return e?e.value:null}
+function radio(name,label,val){const id=name+'_'+String(val).replace(/\W/g,'_');return`<div class="option-btn"><input type="radio" name="${name}" id="${id}" value="${val}"><label for="${id}"><div class="option-icon"></div>${label}</label></div>`}
+function getRadio(n){const e=document.querySelector(`input[name="${n}"]:checked`);return e?e.value:null}
 
-async function saveToSupabase(data){
-  try{
-    await fetch(`${SB_URL}/rest/v1/candidatos_jcef`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify(data)
-    });
-  }catch(e){console.warn('Supabase save failed:',e)}
-}
-
+/* ===== PASO 1 — Datos ===== */
 function showStep0(){
   currentStep=0;updateProgress();
+  const opts=GRUPOS_COLONIA.map(([g,list])=>
+    `<optgroup label="${g}">${list.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</optgroup>`).join('');
   show(`<div class="card">
     <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 1 — Datos personales</div>
     <h2>Cuéntanos quién eres</h2>
     <p class="desc">Completa tu información básica. Todos los datos son confidenciales y se usan únicamente para este proceso.</p>
-    <div class="field" id="f-nombre"><label>Nombre completo <span class="req">*</span></label><input type="text" id="nombre" placeholder="Ej. María González López"><div class="err-msg">Ingresa tu nombre completo.</div></div>
+    <div class="field" id="f-nombre"><label>Nombre completo <span class="req">*</span></label><input type="text" id="nombre" maxlength="80" placeholder="Ej. María González López"><div class="err-msg">Ingresa tu nombre completo.</div></div>
     <div class="field" id="f-edad"><label>Edad <span class="req">*</span></label><input type="number" id="edad" placeholder="Ej. 22" min="15" max="45"><div class="hint">Debes tener entre 18 y 29 años para el programa federal.</div><div class="err-msg">Ingresa tu edad.</div></div>
-    <div class="field" id="f-tel"><label>WhatsApp / Teléfono <span class="req">*</span></label><input type="tel" id="tel" placeholder="Ej. 646 123 4567"><div class="err-msg">Ingresa tu número de contacto.</div></div>
-    <div class="field" id="f-zona"><label>¿En qué zona de Ensenada vives? <span class="req">*</span></label><input type="text" id="zona" placeholder="Ej. Chapultepec, Centro, Cañadas..."><div class="err-msg">Indica tu colonia o zona.</div></div>
+    <div class="field" id="f-tel"><label>WhatsApp / Teléfono <span class="req">*</span></label><input type="tel" id="tel" maxlength="20" placeholder="Ej. 646 123 4567"><div class="err-msg">Ingresa un número válido de 10 dígitos.</div></div>
+    <div class="field" id="f-colonia"><label>¿En qué colonia vives? <span class="req">*</span></label>
+      <select id="colonia"><option value="">Selecciona tu colonia…</option>${opts}<option value="otra">Otra (no aparece en la lista)</option></select>
+      <div class="hint">Nos ayuda a estimar tu tiempo de traslado al taller.</div><div class="err-msg">Selecciona tu colonia.</div></div>
+    <div class="field hidden" id="f-colonia-otra"><label>Escribe tu colonia</label><input type="text" id="colonia_otra" maxlength="60" placeholder="Nombre de tu colonia"></div>
+    <div class="field" id="f-transporte"><label>¿Cómo te trasladarías al taller? <span class="req">*</span></label>
+      <div class="options-grid two-col">${radio('transporte','🚶 Caminando','caminando')}${radio('transporte','🚌 Transporte público','publico')}${radio('transporte','🚲 Bicicleta','bicicleta')}${radio('transporte','🚗 Vehículo propio','propio')}</div></div>
     <div class="btn-row"><button class="btn btn-primary" onclick="nextStep0()">Continuar →</button></div>
   </div>`);
+  document.getElementById('colonia').onchange=function(){
+    document.getElementById('f-colonia-otra').classList.toggle('hidden',this.value!=='otra');
+  };
 }
-
 function nextStep0(){
   const nombre=document.getElementById('nombre').value.trim();
   const edad=parseInt(document.getElementById('edad').value);
   const tel=document.getElementById('tel').value.trim();
-  const zona=document.getElementById('zona').value.trim();
+  let colonia=document.getElementById('colonia').value;
+  const transporte=getRadio('transporte');
+  if(colonia==='otra')colonia=document.getElementById('colonia_otra').value.trim()||'otra';
+  const telDigits=tel.replace(/\D/g,'');
   let ok=true;
-  if(!nombre){document.getElementById('f-nombre').classList.add('error');ok=false}else document.getElementById('f-nombre').classList.remove('error');
-  if(!edad){document.getElementById('f-edad').classList.add('error');ok=false}else document.getElementById('f-edad').classList.remove('error');
-  if(!tel){document.getElementById('f-tel').classList.add('error');ok=false}else document.getElementById('f-tel').classList.remove('error');
-  if(!zona){document.getElementById('f-zona').classList.add('error');ok=false}else document.getElementById('f-zona').classList.remove('error');
+  const mark=(id,cond)=>{document.getElementById(id).classList.toggle('error',!cond);if(!cond)ok=false};
+  mark('f-nombre',nombre.length>=3);
+  mark('f-edad',!!edad);
+  mark('f-tel',telDigits.length>=10);
+  mark('f-colonia',!!colonia);
+  if(!transporte){alert('Selecciona cómo te trasladarías al taller.');ok=false}
   if(!ok)return;
-  Object.assign(formData,{nombre,edad,tel,zona});
+  Object.assign(formData,{nombre,edad,tel,colonia,transporte});
   if(edad<18||edad>29){showIneligible('edad',nombre,edad);return}
   showStep1();
 }
 
+/* ===== PASO 2 — Situación (gates JCF) ===== */
 function showStep1(){
   currentStep=1;updateProgress();
   show(`<div class="card">
@@ -276,60 +410,104 @@ function showStep1(){
     <h2>Tu situación hoy</h2>
     <p class="desc">El programa Jóvenes Construyendo el Futuro tiene requisitos del gobierno federal. Responde con honestidad.</p>
     <div class="field"><label>¿Actualmente estás estudiando? <span class="req">*</span></label><div class="options-grid two-col">${radio('estudia','No estudio actualmente','no')}${radio('estudia','Sí, estoy estudiando','si')}</div></div>
-    <div class="field"><label>¿Actualmente tienes empleo o trabajo? <span class="req">*</span></label><div class="options-grid two-col">${radio('trabaja','No trabajo actualmente','no')}${radio('trabaja','Sí, tengo empleo','si')}</div></div>
+    <div class="field"><label>¿Actualmente tienes empleo formal? <span class="req">*</span></label><div class="options-grid two-col">${radio('trabaja','No trabajo actualmente','no')}${radio('trabaja','Sí, tengo empleo','si')}</div>
+      <div class="hint">Si tienes algo informal por tu cuenta, responde "No" y coméntanoslo después.</div></div>
     <div class="field"><label>¿Estás dado/a de alta en el IMSS o ISSSTE? <span class="req">*</span></label><div class="options-grid two-col">${radio('imss','No tengo seguro activo','no')}${radio('imss','Sí tengo seguro activo','si')}</div></div>
-    <div class="field"><label>¿Has participado antes en el programa Jóvenes Construyendo el Futuro? <span class="req">*</span></label><div class="options-grid two-col">${radio('jcef_prev','No he participado','no')}${radio('jcef_prev','Sí participé antes','si')}</div></div>
+    <div class="field"><label>¿Has participado antes en Jóvenes Construyendo el Futuro? <span class="req">*</span></label><div class="options-grid two-col">${radio('jcef_prev','No he participado','no')}${radio('jcef_prev','Sí participé antes','si')}</div></div>
     <div class="field"><label>¿Tienes disponibilidad lunes a sábado de 11:00 am a 7:00 pm? <span class="req">*</span></label><div class="options-grid two-col">${radio('disponibilidad','Sí, disponibilidad completa','si')}${radio('disponibilidad','No puedo en ese horario','no')}</div></div>
     <div class="btn-row"><button class="btn btn-secondary" onclick="showStep0()">← Atrás</button><button class="btn btn-primary" onclick="nextStep1()">Continuar →</button></div>
   </div>`);
 }
-
 function nextStep1(){
-  const estudia=getRadio('estudia'),trabaja=getRadio('trabaja'),imss=getRadio('imss'),jcef_prev=getRadio('jcef_prev'),disponibilidad=getRadio('disponibilidad');
-  if(!estudia||!trabaja||!imss||!jcef_prev||!disponibilidad){alert('Por favor responde todas las preguntas.');return}
-  Object.assign(formData,{estudia,trabaja,imss,jcef_prev,disponibilidad});
-  if(estudia==='si'){showIneligible('estudia',formData.nombre,formData.edad);return}
-  if(trabaja==='si'){showIneligible('trabaja',formData.nombre,formData.edad);return}
-  if(imss==='si'){showIneligible('imss',formData.nombre,formData.edad);return}
-  if(jcef_prev==='si'){showIneligible('jcef_prev',formData.nombre,formData.edad);return}
-  if(disponibilidad==='no'){showIneligible('disponibilidad',formData.nombre,formData.edad);return}
+  const v={estudia:getRadio('estudia'),trabaja:getRadio('trabaja'),imss:getRadio('imss'),
+    jcef_prev:getRadio('jcef_prev'),disponibilidad:getRadio('disponibilidad')};
+  if(Object.values(v).some(x=>!x)){alert('Por favor responde todas las preguntas.');return}
+  Object.assign(formData,v);
+  for(const k of ['estudia','trabaja','imss','jcef_prev'])
+    if(v[k]==='si'){showIneligible(k,formData.nombre,formData.edad);return}
+  if(v.disponibilidad==='no'){showIneligible('disponibilidad',formData.nombre,formData.edad);return}
   showStep2();
 }
 
+/* ===== PASO 3 — Permanencia y escolaridad (NUEVO) ===== */
 function showStep2(){
   currentStep=2;updateProgress();
   show(`<div class="card">
-    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 3 — Aptitudes</div>
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 3 — Compromiso y escolaridad</div>
+    <h2>Tu proyecto a futuro</h2>
+    <p class="desc">Buscamos personas que quieran quedarse y crecer con nosotros. Te capacitamos desde cero, así que el tiempo importa.</p>
+    <div class="field"><label>¿Hasta qué grado estudiaste? <span class="req">*</span></label>
+      <select id="escolaridad">
+        <option value="">Selecciona…</option>
+        <option value="primaria">Primaria</option>
+        <option value="secundaria">Secundaria terminada</option>
+        <option value="preparatoria_trunca">Preparatoria sin terminar</option>
+        <option value="preparatoria">Preparatoria / bachillerato terminado</option>
+        <option value="carrera_tecnica">Carrera técnica</option>
+        <option value="universidad_trunca">Universidad sin terminar</option>
+        <option value="pasante">Universidad terminada, sin titular (pasante)</option>
+        <option value="licenciatura">Licenciatura titulada</option>
+      </select>
+      <div class="hint">No buscamos títulos. Buscamos actitud — pero nos ayuda a saber desde dónde empezar.</div></div>
+    <div class="field"><label>¿Qué estudiaste? (si aplica)</label><input type="text" id="escolaridad_detalle" maxlength="60" placeholder="Ej. Mecatrónica, Informática, Administración…"></div>
+    <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Tu compromiso</div><div class="section-sep-line"></div></div>
+    <div class="field"><label>¿Piensas inscribirte a la escuela en los próximos 12 meses? <span class="req">*</span></label>
+      <div class="options-grid">${radio('piensa_estudiar_12m','No, no pienso estudiar','no')}${radio('piensa_estudiar_12m','Tal vez, no estoy seguro/a','tal_vez')}${radio('piensa_estudiar_12m','Sí, planeo regresar a estudiar','si')}</div>
+      <div class="hint">El programa federal requiere no estar inscrito en la escuela.</div></div>
+    <div class="field"><label>¿Cuánto tiempo buscas permanecer en este trabajo? <span class="req">*</span></label>
+      <div class="options-grid">${radio('disponibilidad_meses','Solo unos meses (2–3)','3')}${radio('disponibilidad_meses','Alrededor de 6 meses','6')}${radio('disponibilidad_meses','Un año completo','12')}${radio('disponibilidad_meses','De forma permanente, quiero hacer carrera aquí','24')}</div></div>
+    <div class="field"><label>¿Cuánto duraste en tu trabajo anterior?</label>
+      <div class="options-grid two-col">${radio('duracion_empleo_anterior','No he trabajado','0')}${radio('duracion_empleo_anterior','Menos de 3 meses','2')}${radio('duracion_empleo_anterior','3 a 6 meses','4')}${radio('duracion_empleo_anterior','6 a 12 meses','9')}${radio('duracion_empleo_anterior','Más de un año','18')}</div></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep1()">← Atrás</button><button class="btn btn-primary" onclick="nextStep2()">Continuar →</button></div>
+  </div>`);
+}
+function nextStep2(){
+  const escolaridad=document.getElementById('escolaridad').value;
+  const escolaridad_detalle=document.getElementById('escolaridad_detalle').value.trim();
+  const piensa=getRadio('piensa_estudiar_12m'),meses=getRadio('disponibilidad_meses');
+  const dur=getRadio('duracion_empleo_anterior');
+  if(!escolaridad){alert('Selecciona tu grado de estudios.');return}
+  if(!piensa){alert('Indica si piensas estudiar en los próximos 12 meses.');return}
+  if(!meses){alert('Indica cuánto tiempo buscas permanecer.');return}
+  Object.assign(formData,{escolaridad,escolaridad_detalle,piensa_estudiar_12m:piensa,
+    disponibilidad_meses:parseInt(meses),duracion_empleo_anterior:parseInt(dur||0)});
+  if(piensa==='si'){showIneligible('piensa_estudiar',formData.nombre,formData.edad);return}
+  showStep3();
+}
+
+/* ===== PASO 4 — Aptitudes ===== */
+function showStep3(){
+  currentStep=3;updateProgress();
+  show(`<div class="card">
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 4 — Aptitudes</div>
     <h2>Tu relación con la tecnología</h2>
     <p class="desc">No buscamos expertos. Queremos conocer tu afinidad y qué tan rápido puedes aprender.</p>
     <div class="field"><label>¿Qué tan seguido usas tecnología para resolver algo? <span class="req">*</span></label><div class="options-grid">${radio('uso_tech','Solo para WhatsApp y redes sociales','1')}${radio('uso_tech','También busco tutoriales y aprendo cosas nuevas','2')}${radio('uso_tech','Resuelvo problemas técnicos y configuro cosas por mi cuenta','3')}${radio('uso_tech','Tengo conocimiento avanzado en tecnología o reparación','4')}</div></div>
     <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Experiencia práctica</div><div class="section-sep-line"></div></div>
-    <div class="field"><label>¿Has reparado, destapado o configurado algún aparato electrónico?</label><div class="options-grid">${radio('reparacion','Nunca he intentado algo así','0')}${radio('reparacion','He visto tutoriales pero no lo he hecho','1')}${radio('reparacion','Sí, he intentado algo por mi cuenta','2')}${radio('reparacion','Sí, con resultado exitoso y cierta regularidad','3')}</div></div>
-    <div class="field"><label>¿Has tenido experiencia atendiendo clientes o en algún negocio?</label><div class="options-grid">${radio('clientes','No, ninguna experiencia','0')}${radio('clientes','Algo informal con familia o conocidos','1')}${radio('clientes','Sí, en algún trabajo o negocio','2')}${radio('clientes','Sí, tengo buena experiencia con clientes','3')}</div></div>
+    <div class="field"><label>¿Has reparado, destapado o configurado algún aparato electrónico? <span class="req">*</span></label><div class="options-grid">${radio('reparacion','Nunca he intentado algo así','0')}${radio('reparacion','He visto tutoriales pero no lo he hecho','1')}${radio('reparacion','Sí, he intentado algo por mi cuenta','2')}${radio('reparacion','Sí, con resultado exitoso y cierta regularidad','3')}</div></div>
+    <div class="field"><label>¿Has tenido experiencia atendiendo clientes o en algún negocio? <span class="req">*</span></label><div class="options-grid">${radio('clientes','No, ninguna experiencia','0')}${radio('clientes','Algo informal con familia o conocidos','1')}${radio('clientes','Sí, en algún trabajo o negocio','2')}${radio('clientes','Sí, tengo buena experiencia con clientes','3')}</div></div>
     <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Tu aprendizaje</div><div class="section-sep-line"></div></div>
-    <div class="field"><label>¿Qué te gustaría aprender trabajando en Orbitec? <span class="req">*</span></label><textarea id="quiero_aprender" placeholder="Cuéntanos en tus propias palabras. No hay respuesta incorrecta." rows="3"></textarea></div>
-    <div class="field"><label>¿Tienes alguna meta personal o profesional que quieras lograr este año? <span class="req">*</span></label><textarea id="meta" placeholder="Puede ser algo grande o algo concreto. Queremos conocerte." rows="3"></textarea></div>
-    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep1()">← Atrás</button><button class="btn btn-primary" onclick="nextStep2()">Continuar →</button></div>
+    <div class="field"><label>¿Qué te gustaría aprender trabajando en Orbitec? <span class="req">*</span></label><textarea id="quiero_aprender" maxlength="600" placeholder="Cuéntanos en tus propias palabras. No hay respuesta incorrecta." rows="3"></textarea></div>
+    <div class="field"><label>¿Tienes alguna meta personal o profesional que quieras lograr? <span class="req">*</span></label><textarea id="meta" maxlength="600" placeholder="Puede ser algo grande o algo concreto. Queremos conocerte." rows="3"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep2()">← Atrás</button><button class="btn btn-primary" onclick="nextStep3()">Continuar →</button></div>
   </div>`);
 }
-
-function nextStep2(){
-  const uso_tech=getRadio('uso_tech'),reparacion=getRadio('reparacion'),clientes=getRadio('clientes');
-  const quiero_aprender=document.getElementById('quiero_aprender').value.trim();
-  const meta=document.getElementById('meta').value.trim();
-  if(!uso_tech){alert('Por favor responde cómo usas la tecnología.');return}
-  if(!reparacion){alert('Por favor responde sobre experiencia en reparaciones.');return}
-  if(!clientes){alert('Por favor responde sobre experiencia con clientes.');return}
-  if(!quiero_aprender){alert('Cuéntanos qué quieres aprender.');return}
-  if(!meta){alert('Comparte tu meta personal o profesional.');return}
-  Object.assign(formData,{uso_tech:parseInt(uso_tech),reparacion:parseInt(reparacion),clientes:parseInt(clientes),quiero_aprender,meta});
-  showStep3();
+function nextStep3(){
+  const u=getRadio('uso_tech'),r=getRadio('reparacion'),c=getRadio('clientes');
+  const qa=document.getElementById('quiero_aprender').value.trim();
+  const mt=document.getElementById('meta').value.trim();
+  if(!u||!r||!c){alert('Por favor responde todas las preguntas de aptitudes.');return}
+  if(qa.length<10){alert('Cuéntanos con un poco más de detalle qué quieres aprender.');return}
+  if(mt.length<5){alert('Comparte tu meta personal o profesional.');return}
+  Object.assign(formData,{uso_tech:+u,reparacion:+r,clientes:+c,quiero_aprender:qa,meta:mt});
+  showStep4();
 }
 
-function showStep3(){
-  currentStep=3;updateProgress();
+/* ===== PASO 5 — Actitudes ===== */
+function showStep4(){
+  currentStep=4;updateProgress();
   show(`<div class="card">
-    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 4 — Actitudes y valores</div>
+    <div class="card-eyebrow"><div class="card-eyebrow-dot"></div>Paso 5 — Actitudes y valores</div>
     <h2>Cómo piensas y actúas</h2>
     <p class="desc">Estas preguntas no tienen respuesta correcta o incorrecta. Queremos conocerte de verdad.</p>
     <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Situaciones reales</div><div class="section-sep-line"></div></div>
@@ -338,22 +516,31 @@ function showStep3(){
     <div class="field"><div class="scenario-box">Cometiste un error que generó un problema para un cliente. Nadie lo notó todavía. ¿Qué haces?</div><div class="options-grid">${radio('sc3','Espero a ver si alguien lo nota','0')}${radio('sc3','Intento arreglarlo solo sin decir nada','1')}${radio('sc3','Se lo digo a mi jefe y propongo una solución','4')}${radio('sc3','Se lo digo a mi jefe, acepto mi responsabilidad y aprendo de ello','5')}</div></div>
     <div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-label">Sobre ti</div><div class="section-sep-line"></div></div>
     <div class="field"><label>¿Con cuál de estas palabras te identificas más? <span class="req">*</span></label><div class="options-grid two-col">${radio('identidad','Curioso por aprender','curioso')}${radio('identidad','Responsable y cumplido','responsable')}${radio('identidad','Me llevo bien con la gente','social')}${radio('identidad','Resuelvo problemas solo','resolutor')}</div></div>
-    <div class="field"><label>Cuando algo no te sale a la primera, ¿qué haces normalmente?</label><div class="options-grid">${radio('persistencia','Prefiero buscar a alguien que ya sepa','1')}${radio('persistencia','Lo intento un par de veces y si no, pido ayuda','2')}${radio('persistencia','Sigo intentando hasta entender por qué falla','3')}${radio('persistencia','Busco el error, aprendo la causa y lo corrijo','4')}</div></div>
-    <div class="field"><label>¿Por qué quieres entrar a Orbitec específicamente? <span class="req">*</span></label><textarea id="por_que" placeholder="Sé específico. ¿Qué es lo que te llama de esta oportunidad?" rows="4"></textarea></div>
-    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep2()">← Atrás</button><button class="btn btn-primary" onclick="submitForm()">Enviar mi perfil →</button></div>
+    <div class="field"><label>Cuando algo no te sale a la primera, ¿qué haces normalmente? <span class="req">*</span></label><div class="options-grid">${radio('persistencia','Prefiero buscar a alguien que ya sepa','1')}${radio('persistencia','Lo intento un par de veces y si no, pido ayuda','2')}${radio('persistencia','Sigo intentando hasta entender por qué falla','3')}${radio('persistencia','Busco el error, aprendo la causa y lo corrijo','4')}</div></div>
+    <div class="field"><label>Cuéntanos de algo que se te dificultó mucho y cómo lo resolviste <span class="req">*</span></label><textarea id="reto_superado" maxlength="600" rows="3" placeholder="Puede ser de escuela, trabajo o algo personal."></textarea>
+      <div class="hint">Nos interesa el cómo, no el qué.</div></div>
+    <div class="field"><label>¿Por qué quieres entrar a Orbitec específicamente? <span class="req">*</span></label><textarea id="por_que" maxlength="600" placeholder="Sé específico. ¿Qué es lo que te llama de esta oportunidad?" rows="4"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="showStep3()">← Atrás</button><button class="btn btn-primary" id="btnSubmit" onclick="submitForm()">Enviar mi perfil →</button></div>
   </div>`);
 }
 
 async function submitForm(){
+  if(enviando)return;
   const sc1=getRadio('sc1'),sc2=getRadio('sc2'),sc3=getRadio('sc3');
   const identidad=getRadio('identidad'),persistencia=getRadio('persistencia');
-  const por_que=document.getElementById('por_que').value.trim();
+  const reto=document.getElementById('reto_superado').value.trim();
+  const pq=document.getElementById('por_que').value.trim();
   if(!sc1||!sc2||!sc3){alert('Por favor responde todos los escenarios.');return}
   if(!identidad){alert('Elige la palabra con la que más te identificas.');return}
-  if(!por_que){alert('Cuéntanos por qué quieres entrar a Orbitec.');return}
-  Object.assign(formData,{sc1:parseInt(sc1),sc2:parseInt(sc2),sc3:parseInt(sc3),identidad,persistencia:parseInt(persistencia||1),por_que});
+  if(!persistencia){alert('Indica qué haces cuando algo no te sale.');return}
+  if(reto.length<15){alert('Cuéntanos con un poco más de detalle sobre ese reto.');return}
+  if(pq.length<15){alert('Cuéntanos por qué quieres entrar a Orbitec.');return}
+  enviando=true;
+  document.getElementById('btnSubmit').disabled=true;
+  Object.assign(formData,{sc1:+sc1,sc2:+sc2,sc3:+sc3,identidad,persistencia:+persistencia,
+    reto_superado:reto,por_que:pq});
   showLoading();
-  await evaluateWithClaude();
+  await procesarYGuardar();
 }
 
 function showLoading(){
@@ -361,128 +548,170 @@ function showLoading(){
   screensEl.innerHTML=`<div class="loading-screen"><div class="orbit-spinner"><div class="orbit-ring"></div><div class="orbit-ring"></div></div><h3>Analizando tu perfil...</h3><p>Estamos evaluando tu información con el sistema Orbitec.</p></div>`;
 }
 
-async function evaluateWithClaude(){
-  const prompt=`Eres el evaluador de talento de Orbitec Hightech, empresa de reparación tecnológica en Ensenada, México. Evalúas candidatos para "Asistente Técnico Comercial" — programa JCEF, sin experiencia requerida.
-
-DATOS DEL CANDIDATO:
-Nombre: ${formData.nombre} | Edad: ${formData.edad} | Zona: ${formData.zona}
-Uso tecnología (1=solo redes, 2=busca tutoriales, 3=resuelve problemas, 4=avanzado): ${formData.uso_tech}
-Reparación (0=nunca, 1=vio tutoriales, 2=intentó, 3=éxito real): ${formData.reparacion}
-Clientes (0=ninguna, 1=informal, 2=trabajo/negocio, 3=buena exp): ${formData.clientes}
-Cliente molesto (0=espera jefe, 1=culpa técnico, 3=escucha y ayuda, 4=disculpa+solución): ${formData.sc1}
-Aprendizaje autónomo (0=pide que le enseñen, 1=espera, 3=busca tutoriales, 4=busca+intenta+pregunta específico): ${formData.sc2}
-Manejo de error propio (0=espera que lo noten, 1=arregla solo sin decir, 4=dice al jefe+propone, 5=dice+acepta+aprende): ${formData.sc3}
-Identidad: ${formData.identidad} | Persistencia (1=busca a alguien, 2=intenta 2-3 veces, 3=sigue hasta entender, 4=busca causa y corrige): ${formData.persistencia}
-Qué quiere aprender: "${formData.quiero_aprender}"
-Meta personal: "${formData.meta}"
-Por qué Orbitec: "${formData.por_que}"
-
-CRITERIOS DE PUNTUACIÓN — USA TODO EL RANGO 1-10, no te centres en 6-8:
-- 9-10: Respuesta excepcional, va más allá, demuestra madurez real y pensamiento propio
-- 7-8: Buena respuesta, actitud positiva, potencial claro
-- 5-6: Aceptable pero genérica, vaga o inconsistente
-- 3-4: Señal de alerta, actitud pasiva o respuesta preocupante
-- 1-2: Descarta al candidato en esa dimensión
-
-DIMENSIONES — sé estricto y diferenciador:
-RESPONSABILIDAD: sc3 alto (4-5) = honestidad ante error = sube. sc3 bajo (0-1) = oculta errores = baja a 2-3.
-COMUNICACIÓN: respuestas abiertas específicas, con ejemplos propios = sube. Frases genéricas de una línea = baja a 3-4.
-TECNOLOGÍA: uso_tech=3-4 + reparacion=2-3 = curiosidad real = sube. Solo redes + nunca intentó = 2-3.
-APRENDIZAJE: sc2=4 + persistencia=3-4 = autonomía genuina = sube. sc2=0-1 = dependencia total = baja a 2.
-SERVICIO: sc1=4 = empatía + acción = sube. sc1=0-1 = actitud defensiva o pasiva = baja a 2-3.
-MADUREZ: metas concretas y realizables, reflexión real sobre el futuro = sube. "quiero aprender" genérico = 4-5.
-COMPATIBILIDAD: por_que menciona algo específico de Orbitec (reparación, tecnología, crecer) = sube. "busco experiencia" genérico = 3-4.
-
-REGLAS DE VEREDICTO:
-- A (Prioritario): score_total >= 7.5 Y sc2>=3 Y sc3>=4. Actitud consistentemente buena.
-- B (Entrevistar): score_total 5.5-7.4 O una dimensión baja compensada por otras altas.
-- C (Descartar): score_total < 5.5 O sc3<=1 O sc2<=1. No importa el resto.
-
-Responde SOLO con JSON sin markdown ni texto adicional:
-{"score_total":<número decimal 1-10>,"scores":{"responsabilidad":<1-10>,"comunicacion":<1-10>,"tecnologia":<1-10>,"aprendizaje":<1-10>,"servicio_cliente":<1-10>,"madurez":<1-10>,"compatibilidad":<1-10>},"veredicto":"A"|"B"|"C","veredicto_texto":"Altamente recomendado"|"Con potencial — entrevista requerida"|"No recomendado por ahora","fortalezas":["fortaleza específica de SUS respuestas","fortaleza 2","fortaleza 3"],"riesgos":["riesgo específico o Ninguno detectado"],"siguiente_accion":"acción concreta","mensaje_candidato":"2-3 oraciones cálidas y personalizadas sin revelar score ni veredicto"}`
-
-  let result;
+/* ===== Duplicados ===== */
+async function yaRegistrado(tel){
+  // Usa una funcion SECURITY DEFINER que solo devuelve booleano.
+  // El rol anonimo NO puede leer la tabla de candidatos (RLS).
   try{
-    const resp=await fetch('https://orbitec-proxy.orbitecensenada.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
-    const data=await resp.json();
-    result=JSON.parse((data.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
-  }catch(e){
-    result={score_total:7.0,scores:{responsabilidad:7,comunicacion:7,tecnologia:7,aprendizaje:7,servicio_cliente:7,madurez:7,compatibilidad:7},veredicto:'B',veredicto_texto:'Con potencial — entrevista requerida',fortalezas:['Completó el proceso completo','Mostró interés en Orbitec','Disponibilidad confirmada'],riesgos:['Requiere validación presencial','Pendiente de verificar'],siguiente_accion:'Agendar entrevista presencial en Orbitec — Av. México #1322 Local 1',mensaje_candidato:`Gracias ${formData.nombre} por completar nuestro proceso. Revisaremos tu perfil y te contactaremos pronto.`};
-  }
-
-  await saveToSupabase({
-    nombre:formData.nombre,edad:formData.edad,telefono:formData.tel,zona:formData.zona,
-    estudia:formData.estudia,trabaja:formData.trabaja,imss:formData.imss,
-    jcef_prev:formData.jcef_prev,disponibilidad:formData.disponibilidad,
-    uso_tech:formData.uso_tech,reparacion:formData.reparacion,clientes:formData.clientes,
-    quiero_aprender:formData.quiero_aprender,meta:formData.meta,
-    sc1:formData.sc1,sc2:formData.sc2,sc3:formData.sc3,
-    identidad:formData.identidad,persistencia:formData.persistencia,por_que:formData.por_que,
-    score_total:result.score_total,
-    score_responsabilidad:result.scores?.responsabilidad,score_comunicacion:result.scores?.comunicacion,
-    score_tecnologia:result.scores?.tecnologia,score_aprendizaje:result.scores?.aprendizaje,
-    score_servicio:result.scores?.servicio_cliente,score_madurez:result.scores?.madurez,
-    score_compatibilidad:result.scores?.compatibilidad,
-    veredicto:result.veredicto,veredicto_texto:result.veredicto_texto,
-    fortalezas:result.fortalezas,riesgos:result.riesgos,
-    siguiente_accion:result.siguiente_accion,mensaje_candidato:result.mensaje_candidato,
-    estatus:'pendiente'
-  });
-
-  showResult(result);
+    const r=await fetch(`${SB_URL}/rest/v1/rpc/telefono_ya_registrado`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`},
+      body:JSON.stringify({tel})});
+    if(!r.ok)return false;
+    return await r.json()===true;
+  }catch(e){return false}
 }
 
-function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
+/* ===== Guardado — el score determinista SIEMPRE se guarda ===== */
+async function procesarYGuardar(){
+  const ev=evaluar(formData);
 
-function showResult(r){
-  const initials=getInitials(formData.nombre);
-  const nombre=formData.nombre.split(' ')[0];
+  if(await yaRegistrado(formData.tel)){
+    screensEl.innerHTML=`<div class="ineligible-card">
+      <div class="ineligible-icon">📄</div>
+      <h2>Ya tenemos tu solicitud, ${esc(formData.nombre.split(' ')[0])}</h2>
+      <p>Este número ya está registrado en nuestro proceso. No necesitas llenar el formulario otra vez — nuestro equipo revisará tu perfil y te contactará.</p>
+      <div class="contact-box"><div class="contact-box-label">Contacto Orbitec</div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:3px">📱 WhatsApp: <a href="https://wa.me/526462694010">646 269-4010</a></div>
+        <div style="font-size:13px;color:var(--gray-600)">Av. México #1322 Local 1, Ensenada, B.C.</div></div>
+    </div>`;
+    return;
+  }
+
+  // Análisis cualitativo opcional — si falla, no afecta el score
+  let ia=null;
+  try{ia=await analisisIA(ev)}catch(e){}
+
+  const payload={
+    nombre:formData.nombre,edad:formData.edad,telefono:formData.tel,zona:formData.colonia,
+    transporte:formData.transporte,
+    estudia:formData.estudia,trabaja:formData.trabaja,imss:formData.imss,
+    jcef_prev:formData.jcef_prev,disponibilidad:formData.disponibilidad,
+    escolaridad:formData.escolaridad,escolaridad_detalle:formData.escolaridad_detalle,
+    piensa_estudiar_12m:formData.piensa_estudiar_12m,
+    disponibilidad_meses:formData.disponibilidad_meses,
+    duracion_empleo_anterior_meses:formData.duracion_empleo_anterior,
+    uso_tech:formData.uso_tech,reparacion:formData.reparacion,clientes:formData.clientes,
+    quiero_aprender:formData.quiero_aprender,meta:formData.meta,por_que:formData.por_que,
+    reto_superado:formData.reto_superado,
+    sc1:formData.sc1,sc2:formData.sc2,sc3:formData.sc3,
+    identidad:formData.identidad,persistencia:formData.persistencia,
+    // --- Motor determinista (fuente de verdad) ---
+    score_total:ev.score,
+    score_responsabilidad:Math.round(ev.sub.madurez),
+    score_comunicacion:Math.round(ev.sub.servicio),
+    score_tecnologia:Math.round(ev.sub.tecnica),
+    score_aprendizaje:Math.round(ev.sub.escolaridad),
+    score_servicio:Math.round(ev.sub.servicio),
+    score_madurez:Math.round(ev.sub.madurez),
+    score_compatibilidad:Math.round(ev.sub.logistica),
+    veredicto:ev.veredicto,veredicto_texto:ev.texto,
+    zona_tier:ev.zona.tier,zona_km:ev.zona.km,
+    subscores:ev.sub,gates_fallidos:ev.gates,flags:ev.flags,
+    version_motor:ev.version,
+    fortalezas:ev.flags.filter(f=>f.t==='ok').map(f=>f.x),
+    riesgos:ev.flags.filter(f=>f.t==='alerta').map(f=>f.x),
+    siguiente_accion:ev.gates.length?'No elegible — no contactar':
+      ev.veredicto==='A'?'Contactar hoy — perfil prioritario':
+      'Confirmar datos por WhatsApp y agendar entrevista',
+    analisis_llm:ia?JSON.stringify(ia):null,
+    analisis_llm_at:ia?new Date().toISOString():null,
+    estatus:'pendiente'
+  };
+
+  try{
+    await fetch(`${SB_URL}/rest/v1/candidatos_jcef`,{method:'POST',
+      headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,Prefer:'return=minimal'},
+      body:JSON.stringify(payload)});
+  }catch(e){console.warn('Error al guardar',e)}
+
+  showResult(ia);
+}
+
+async function analisisIA(ev){
+  const d=formData;
+  const prompt=`Eres Director de RR.HH. senior evaluando un candidato para Orbitec Hightech (reparación tecnológica, Ensenada, México). Puesto: Asistente Técnico Comercial vía programa JCEF, sin experiencia requerida.
+
+CANDIDATO: ${d.nombre}, ${d.edad} años, ${d.colonia} (${ev.zona.tier}, ${ev.zona.km??'?'} km del taller, transporte: ${d.transporte})
+Escolaridad: ${d.escolaridad} ${d.escolaridad_detalle||''}
+Permanencia declarada: ${d.disponibilidad_meses} meses | ¿Volverá a estudiar?: ${d.piensa_estudiar_12m}
+Uso tecnología: ${d.uso_tech}/4 | Reparación: ${d.reparacion}/3 | Clientes: ${d.clientes}/3 | Persistencia: ${d.persistencia}/4
+Identidad: ${d.identidad}
+Escenarios — cliente molesto: ${d.sc1}/4 | aprendizaje autónomo: ${d.sc2}/4 | manejo de error: ${d.sc3}/5
+"Quiere aprender": "${d.quiero_aprender}"
+"Meta": "${d.meta}"
+"Por qué Orbitec": "${d.por_que}"
+"Reto superado": "${d.reto_superado}"
+
+SCORE DETERMINISTA YA CALCULADO: ${ev.score}/10 — veredicto ${ev.veredicto}
+Subscores: ${JSON.stringify(ev.sub)}
+Alertas del sistema: ${ev.flags.filter(f=>f.t==='alerta').map(f=>f.x).join('; ')||'ninguna'}
+
+No recalcules el score. Tu trabajo es el análisis CUALITATIVO que el sistema no puede hacer:
+1. PERMANENCIA: cruza lo que declaró en las preguntas cerradas contra el texto libre. ¿Hay incoherencia? ¿Señales de búsqueda temporal o de "mientras encuentro algo mejor"?
+2. CALIDAD DE LAS RESPUESTAS ABIERTAS: ¿son específicas y propias, o genéricas? El "reto superado" es la prueba más honesta de persistencia real.
+3. RIESGO DE ROTACIÓN: sobrecalificación, metas ajenas al puesto, negocio propio, traslado costoso.
+
+Responde SOLO JSON sin markdown:
+{"decision_rapida":"<SÍ contratar / NO contratar / Entrevistar primero — motivo en 10 palabras>","analisis_ejecutivo":"<3-4 oraciones, específico a SUS respuestas>","fortalezas_clave":["<basada en sus respuestas>","<2>","<3>"],"señales_alerta":["<concreta o NINGUNA>","<2 o NINGUNA>"],"preguntas_entrevista":["<específica para validar algo de este candidato>","<2>","<3>"],"potencial_crecimiento":"<dónde puede llegar en 6-12 meses>","recomendacion_final":"<postura clara: qué hacer, cuándo, cómo>","mensaje_candidato":"<2-3 oraciones cálidas para el candidato, sin revelar score ni veredicto>"}`;
+
+  for(const w of WORKERS){
+    try{
+      const r=await fetch(w,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
+      if(!r.ok)continue;
+      const j=await r.json();
+      const raw=(j.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
+      return JSON.parse(raw);
+    }catch(e){continue}
+  }
+  return null;
+}
+
+function showResult(ia){
+  const nombre=esc(formData.nombre.split(' ')[0]);
+  const msg=ia?.mensaje_candidato||`Gracias ${nombre} por completar nuestro proceso. Revisaremos tu perfil con atención y te contactaremos pronto.`;
   screensEl.innerHTML=`<div class="result-screen">
     <div class="result-hero">
       <div class="result-hero-grid"></div><div class="result-hero-accent"></div>
       <div class="result-hero-inner">
         <div class="mini-logo"><div class="mini-logo-icon"><div class="mini-logo-inner"></div></div><div class="mini-logo-name">ORBI<span>TEC</span></div></div>
-        <div class="candidate-avatar">${initials}</div>
-        <div class="result-name">${formData.nombre}</div>
-        <div class="result-sub">${formData.edad} años · ${formData.zona}, Ensenada</div>
+        <div class="candidate-avatar">${esc(getInitials(formData.nombre))}</div>
+        <div class="result-name">${esc(formData.nombre)}</div>
+        <div class="result-sub">${esc(formData.edad)} años · ${esc(formData.colonia)}, Ensenada</div>
       </div>
     </div>
     <div class="result-body">
-
       <div style="text-align:center;padding:8px 0 20px">
         <div style="width:56px;height:56px;background:rgba(183,255,0,0.12);border:2px solid rgba(183,255,0,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px">✓</div>
         <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--black);margin-bottom:10px">¡Gracias, ${nombre}!</div>
-        <div style="font-size:14px;color:var(--gray-600);line-height:1.7;max-width:400px;margin:0 auto">${r.mensaje_candidato}</div>
+        <div style="font-size:14px;color:var(--gray-600);line-height:1.7;max-width:400px;margin:0 auto">${esc(msg)}</div>
       </div>
-
       <div style="background:rgba(183,255,0,0.06);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:16px 18px;margin-bottom:16px">
         <div style="font-size:10px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">Tus datos fueron registrados</div>
         <div style="display:flex;flex-direction:column;gap:7px">
-          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)"><span style="color:var(--success);font-weight:700">✓</span> Perfil guardado en el sistema Orbitec</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)"><span style="color:var(--success);font-weight:700">✓</span> Elegibilidad JCEF verificada</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)"><span style="color:var(--success);font-weight:700">✓</span> En revisión por el equipo Orbitec</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--success);font-weight:700">✓</span> Perfil guardado en el sistema Orbitec</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--success);font-weight:700">✓</span> Elegibilidad JCEF verificada</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--success);font-weight:700">✓</span> En revisión por el equipo Orbitec</div>
         </div>
       </div>
-
       <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--r);padding:16px 18px;text-align:center">
         <div style="font-size:13px;color:var(--gray-600);margin-bottom:10px">¿Tienes alguna duda? Escríbenos directamente</div>
-        <a href="https://wa.me/526462694010" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#25d366;color:white;border:none;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:600;text-decoration:none;font-family:var(--font-body)">
-          💬 WhatsApp Orbitec
-        </a>
+        <a href="https://wa.me/526462694010" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#25d366;color:white;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:600;text-decoration:none">💬 WhatsApp Orbitec</a>
         <div style="font-size:11px;color:var(--gray-400);margin-top:8px">646 269-4010 · Av. México #1322 Local 1, Ensenada</div>
       </div>
-
     </div>
   </div>`;
 }
 
 const msgs={
   edad:(n,e)=>({icon:'📋',title:`Gracias por tu interés, ${n.split(' ')[0]}`,body:`El programa Jóvenes Construyendo el Futuro está dirigido a jóvenes de 18 a 29 años. Con ${e} años no cumples con ese requisito en este momento. Te invitamos a estar pendiente de otras convocatorias de Orbitec.`}),
-  estudia:(n)=>({icon:'🎓',title:`Hola ${n.split(' ')[0]}, ¡tu educación importa!`,body:`El programa está diseñado para personas que no estudian actualmente. Al terminar tus estudios, estaremos encantados de considerarte. Guarda nuestro contacto y escríbenos cuando estés listo.`}),
-  trabaja:(n)=>({icon:'💼',title:`Gracias ${n.split(' ')[0]}`,body:`El programa JCEF está dirigido a jóvenes sin empleo actualmente. Si tu situación cambia, no dudes en volver a aplicar. Apreciamos tu interés en Orbitec.`}),
-  imss:(n)=>({icon:'🏥',title:`Gracias por tu interés, ${n.split(' ')[0]}`,body:`El programa requiere que no estés dado de alta como derechohabiente activo del IMSS o ISSSTE. Si tu situación cambia, con gusto te consideramos.`}),
-  jcef_prev:(n)=>({icon:'📌',title:`Ya conoces el programa, ${n.split(' ')[0]}`,body:`El programa solo permite un registro por persona. Agradecemos tu experiencia previa y tu interés en Orbitec.`}),
-  disponibilidad:(n)=>({icon:'🕐',title:`Gracias ${n.split(' ')[0]}`,body:`El puesto requiere disponibilidad de lunes a sábado de 11:00 am a 7:00 pm. Si tu situación cambia, con gusto te consideramos.`}),
+  estudia:n=>({icon:'🎓',title:`Hola ${n.split(' ')[0]}, ¡tu educación importa!`,body:`El programa está diseñado para personas que no estudian actualmente. Al terminar tus estudios, estaremos encantados de considerarte. Guarda nuestro contacto y escríbenos cuando estés listo.`}),
+  trabaja:n=>({icon:'💼',title:`Gracias ${n.split(' ')[0]}`,body:`El programa JCEF está dirigido a jóvenes sin empleo formal actualmente. Si tu situación cambia, no dudes en volver a aplicar.`}),
+  imss:n=>({icon:'🏥',title:`Gracias por tu interés, ${n.split(' ')[0]}`,body:`El programa requiere que no estés dado de alta como derechohabiente activo del IMSS o ISSSTE. Si tu situación cambia, con gusto te consideramos.`}),
+  jcef_prev:n=>({icon:'📌',title:`Ya conoces el programa, ${n.split(' ')[0]}`,body:`El programa solo permite un registro por persona. Agradecemos tu experiencia previa y tu interés en Orbitec.`}),
+  disponibilidad:n=>({icon:'🕐',title:`Gracias ${n.split(' ')[0]}`,body:`El puesto requiere disponibilidad de lunes a sábado de 11:00 am a 7:00 pm. Si tu situación cambia, con gusto te consideramos.`}),
+  piensa_estudiar:n=>({icon:'🎓',title:`Nos alegra que sigas estudiando, ${n.split(' ')[0]}`,body:`El programa federal requiere no estar inscrito en la escuela durante los 12 meses de capacitación. Como planeas regresar a estudiar, no podrías completar el programa. Te deseamos mucho éxito y te esperamos en una futura convocatoria.`}),
 };
 
 function showIneligible(reason,nombre,edad){
@@ -490,7 +719,7 @@ function showIneligible(reason,nombre,edad){
   const m=msgs[reason](nombre,edad);
   screensEl.innerHTML=`<div class="ineligible-card">
     <div class="ineligible-icon">${m.icon}</div>
-    <h2>${m.title}</h2><p>${m.body}</p>
+    <h2>${esc(m.title)}</h2><p>${esc(m.body)}</p>
     <div class="contact-box">
       <div class="contact-box-label">Contacto Orbitec</div>
       <div style="font-size:14px;color:var(--gray-800);font-weight:500;margin-bottom:3px">📱 WhatsApp: <a href="https://wa.me/526462694010">646 269-4010</a></div>

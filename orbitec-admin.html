@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orbitec — Panel de Candidatos</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -12,21 +13,22 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 
 /* LOGIN */
 .login-overlay{position:fixed;inset:0;background:var(--black);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{background:#111;border:1px solid rgba(183,255,0,0.2);border-radius:16px;padding:40px 32px;width:100%;max-width:360px;text-align:center}
-.login-logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.login-box{background:#111;border:1px solid rgba(183,255,0,0.2);border-radius:16px;padding:40px 32px;width:100%;max-width:380px;text-align:center}
+.login-logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:26px}
 .ll-ring{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--lime);display:flex;align-items:center;justify-content:center}
 .ll-inner{width:16px;height:16px;border-radius:50%;background:var(--lime)}
 .ll-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:white}
 .ll-name span{color:var(--lime)}
 .login-title{font-family:var(--font-display);font-size:16px;font-weight:600;color:white;margin-bottom:6px}
-.login-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:24px}
-.login-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:var(--r);color:white;font-size:18px;font-family:var(--font-body);outline:none;text-align:center;letter-spacing:0.2em;margin-bottom:14px;transition:border-color 0.2s}
+.login-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:22px}
+.login-input{width:100%;padding:11px 14px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:var(--r);color:white;font-size:14px;font-family:var(--font-body);outline:none;margin-bottom:11px;transition:border-color 0.2s}
 .login-input:focus{border-color:var(--lime)}
 .login-input.shake{animation:shake 0.3s ease;border-color:var(--danger)}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .login-btn{width:100%;padding:12px;background:var(--lime);color:var(--black);border:none;border-radius:var(--r);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
 .login-btn:hover{background:var(--lime-dark)}
-.login-err{font-size:12px;color:var(--danger);margin-top:8px;min-height:18px}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-err{font-size:12px;color:var(--danger);margin-top:10px;min-height:18px;line-height:1.4}
 
 /* TOPBAR */
 .topbar{background:var(--black);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(183,255,0,0.15)}
@@ -37,42 +39,48 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .tl-name span{color:var(--lime)}
 .topbar-title{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500}
 .topbar-actions{display:flex;align-items:center;gap:8px}
-.btn-refresh{display:flex;align-items:center;gap:6px;background:rgba(183,255,0,0.1);border:1px solid rgba(183,255,0,0.25);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
-.btn-refresh:hover{background:rgba(183,255,0,0.2)}
-.btn-export{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
-.btn-export:hover{background:rgba(255,255,255,0.12);color:white}
-.btn-rank{display:flex;align-items:center;gap:6px;background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
-.btn-rank:hover{background:rgba(183,255,0,0.15)}
+.tb-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r);cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
+.tb-btn:hover{background:rgba(255,255,255,0.12);color:white}
+.tb-btn.lime{background:rgba(183,255,0,0.1);border-color:rgba(183,255,0,0.25);color:var(--lime)}
+.tb-btn.lime:hover{background:rgba(183,255,0,0.2)}
 
 /* MAIN */
-.main{max-width:1100px;margin:0 auto;padding:28px 20px}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.main{max-width:1180px;margin:0 auto;padding:28px 20px}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:16px 18px}
-.stat-val{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--black);line-height:1}
-.stat-label{font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;font-weight:600}
-.stat-card.green .stat-val{color:var(--success)}.stat-card.yellow .stat-val{color:var(--warning)}.stat-card.red .stat-val{color:var(--danger)}.stat-card.lime .stat-val{color:var(--lime-dark)}
-.filters{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.stat-val{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--black);line-height:1}
+.stat-label{font-size:10px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em;margin-top:4px;font-weight:600}
+.stat-card.green .stat-val{color:var(--success)}.stat-card.yellow .stat-val{color:var(--warning)}.stat-card.red .stat-val{color:var(--danger)}.stat-card.lime .stat-val{color:var(--lime-dark)}.stat-card.gray .stat-val{color:var(--gray-400)}
+.filters{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .filter-label{font-size:12px;font-weight:600;color:var(--gray-600)}
 .filter-btn{padding:5px 12px;border-radius:100px;border:1.5px solid var(--gray-200);background:white;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
 .filter-btn:hover{border-color:var(--gray-400)}
 .filter-btn.active{background:var(--lime);border-color:var(--lime);color:var(--black)}
 .filter-sep{width:1px;height:20px;background:var(--gray-200)}
-.search-input{padding:5px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);outline:none;font-family:var(--font-body);flex:1;min-width:160px}
+.search-input{padding:5px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);outline:none;font-family:var(--font-body);flex:1;min-width:150px}
 .search-input:focus{border-color:var(--lime-dark)}
 .table-wrap{background:white;border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden}
-.table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr 1fr;gap:0;padding:10px 18px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
-.th{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.09em}
-.row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr 1fr;gap:0;padding:13px 18px;border-bottom:1px solid var(--gray-100);align-items:center;transition:background 0.1s;cursor:pointer}
+.table-header,.row{display:grid;grid-template-columns:2.1fr .7fr .7fr 1fr 1.1fr .9fr 1fr;gap:0;align-items:center}
+.table-header{padding:10px 18px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+.th{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em}
+.row{padding:12px 18px;border-bottom:1px solid var(--gray-100);transition:background 0.1s;cursor:pointer}
 .row:last-child{border-bottom:none}.row:hover{background:var(--gray-50)}
+.row.archived{opacity:.55;background:#fafafa}
 .cname{font-weight:600;color:var(--black);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.czone{font-size:12px;color:var(--gray-400);margin-top:1px}
+.czone{font-size:11px;color:var(--gray-400);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cage{font-size:13px;color:var(--gray-600)}
 .cscore{font-family:var(--font-display);font-size:16px;font-weight:700}
 .cscore.high{color:var(--success)}.cscore.mid{color:var(--warning)}.cscore.low{color:var(--danger)}
-.vbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700}
+.vbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700;white-space:nowrap}
 .vbadge.A{background:rgba(0,201,122,0.12);color:#00704a}.vbadge.B{background:rgba(245,158,11,0.12);color:#92400e}.vbadge.C{background:rgba(239,68,68,0.12);color:#b91c1c}
-.cdate{font-size:12px;color:var(--gray-400)}
-.cstatus select{padding:4px 8px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;color:var(--gray-800);background:white;cursor:pointer;font-family:var(--font-body);outline:none}
+.tier-chip{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:700;background:var(--gray-100);color:var(--gray-600)}
+.tier-chip.t1{background:rgba(0,201,122,.14);color:#00704a}
+.tier-chip.t2{background:rgba(140,204,0,.16);color:#5c7a00}
+.tier-chip.t3{background:rgba(245,158,11,.14);color:#92400e}
+.tier-chip.t4{background:rgba(239,68,68,.12);color:#b91c1c}
+.tier-chip.t5{background:rgba(239,68,68,.22);color:#7f1d1d}
+.cstatus select{padding:4px 8px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;color:var(--gray-800);background:white;cursor:pointer;font-family:var(--font-body);outline:none;width:100%}
+.gate-chip{display:inline-block;font-size:10px;font-weight:700;color:#b91c1c;background:rgba(239,68,68,.1);padding:2px 6px;border-radius:4px;margin-top:2px}
 .empty-state{padding:56px 32px;text-align:center;color:var(--gray-400)}
 .empty-state h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:8px}
 .loading-row{padding:40px;text-align:center;color:var(--gray-400);font-size:14px}
@@ -81,7 +89,7 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
 .modal-overlay.hidden{display:none}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:white;border-radius:14px;width:100%;max-width:580px;max-height:92vh;overflow-y:auto;animation:slideUp 0.25s ease}
+.modal{background:white;border-radius:14px;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;animation:slideUp 0.25s ease}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-header{background:var(--black);border-radius:14px 14px 0 0;padding:22px 24px;position:relative}
 .modal-header-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent);border-radius:14px 14px 0 0}
@@ -97,87 +105,87 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
 .detail-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:12px}
 .detail-label{font-size:12px;color:var(--gray-600);flex-shrink:0;width:130px;font-weight:500}
 .detail-val{font-size:13px;color:var(--gray-800);font-weight:500;text-align:right;flex:1}
-.detail-text{font-size:13px;color:var(--gray-800);line-height:1.6;padding:10px 12px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
 .ms-score{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .ms-name{font-size:12px;color:var(--gray-600);width:105px;flex-shrink:0}
 .ms-bar{flex:1;height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden}
 .ms-fill{height:100%;border-radius:2px}
-.ms-val{font-size:12px;font-weight:700;width:28px;text-align:right}
-.tag{font-size:11px;font-weight:500;padding:3px 9px;border-radius:100px}
-.tag.plus{background:rgba(0,201,122,0.1);color:#00704a}
-.tag.minus{background:rgba(245,158,11,0.1);color:#92400e}
-.tags-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.ms-val{font-size:12px;font-weight:700;width:30px;text-align:right}
 .next-box{background:rgba(183,255,0,0.08);border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--gray-800);font-weight:500;line-height:1.5}
-.msg-box{font-size:13px;color:var(--gray-600);line-height:1.6;padding:12px;background:var(--gray-50);border-radius:var(--r);border:1px solid var(--gray-200)}
-.status-select{width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);font-family:var(--font-body);outline:none;cursor:pointer}
-.status-select:focus{border-color:var(--lime-dark)}
+.status-select,.notas-area{width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;color:var(--gray-800);font-family:var(--font-body);outline:none}
+.status-select{cursor:pointer}
+.status-select:focus,.notas-area:focus{border-color:var(--lime-dark)}
+.notas-area{resize:vertical;min-height:70px;line-height:1.5}
 .btn-wa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:white;border:none;padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font-body)}
 .btn-wa:hover{background:#1ebe5d}
-.btn-recalc{display:inline-flex;align-items:center;gap:6px;background:rgba(183,255,0,0.1);border:1.5px solid rgba(183,255,0,0.3);color:var(--lime-dark);border-radius:var(--r);padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all 0.2s}
-.btn-recalc:hover{background:rgba(183,255,0,0.2)}.btn-recalc:disabled{opacity:0.5;cursor:not-allowed}
-
-/* Respuestas candidato */
+.btn-sm{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r);padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all 0.2s;border:1.5px solid var(--gray-200);background:white;color:var(--gray-600)}
+.btn-sm:hover{border-color:var(--gray-400);color:var(--gray-800)}
+.btn-sm.lime{background:rgba(183,255,0,0.1);border-color:rgba(183,255,0,0.3);color:#5c7a00}
+.btn-sm.lime:hover{background:rgba(183,255,0,0.2)}
+.btn-sm.danger{color:#b91c1c;border-color:rgba(239,68,68,.3)}
+.btn-sm.danger:hover{background:#fef2f2;border-color:var(--danger)}
+.btn-sm:disabled{opacity:.5;cursor:not-allowed}
 .respuesta-item{margin-bottom:12px}
 .respuesta-pregunta{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
 .respuesta-texto{font-size:13px;color:var(--gray-800);line-height:1.55;padding:9px 12px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
-
-/* Justificación IA */
 .justificacion-box{background:linear-gradient(135deg,rgba(183,255,0,0.05),rgba(183,255,0,0.02));border:1px solid rgba(183,255,0,0.2);border-radius:var(--r);padding:14px 16px}
 .justificacion-loading{text-align:center;padding:20px;color:var(--gray-400);font-size:13px}
 .just-bloque{margin-bottom:10px}
 .just-bloque-titulo{font-size:11px;font-weight:700;color:var(--lime-dark);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
-.just-bloque-texto{font-size:13px;color:var(--gray-700);line-height:1.6}
+.just-bloque-texto{font-size:13px;color:#444;line-height:1.6}
+.flag-item{font-size:12px;padding:6px 9px;border-radius:6px;margin-bottom:4px;line-height:1.4;font-weight:500}
+.flag-item.alerta{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.22);color:#854d0e}
+.flag-item.ok{background:rgba(0,201,122,0.07);border:1px solid rgba(0,201,122,0.2);color:#006640}
+.flag-item.info{background:var(--gray-50);border:1px solid var(--gray-200);color:var(--gray-600)}
+.gate-item{font-size:12px;padding:6px 9px;border-radius:6px;margin-bottom:4px;background:#fef2f2;border:1px solid rgba(239,68,68,.25);color:#b91c1c;font-weight:600}
 
-/* ===== RANKING PANEL ===== */
+/* CONFIRM */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px}
+.confirm-overlay.hidden{display:none}
+.confirm-box{background:white;border-radius:12px;padding:24px;max-width:420px;width:100%}
+.confirm-box.danger{border-top:3px solid var(--danger)}
+.confirm-box h3{font-family:var(--font-display);font-size:16px;margin-bottom:10px;color:var(--black)}
+.confirm-box p{font-size:13px;color:var(--gray-600);line-height:1.6;margin-bottom:14px}
+.confirm-box label{display:block;font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 5px}
+.confirm-box select,.confirm-box input,.confirm-box textarea{width:100%;padding:9px 11px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:13px;font-family:var(--font-body);outline:none}
+.confirm-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:18px}
+.confirm-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-800);margin:12px 0}
+.confirm-check input{width:auto}
+
+/* RANKING */
 .rank-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
 .rank-overlay.hidden{display:none}
-.rank-panel{background:white;border-radius:14px;width:100%;max-width:760px;max-height:92vh;overflow-y:auto;animation:slideUp 0.25s ease}
+.rank-panel{background:white;border-radius:14px;width:100%;max-width:780px;max-height:92vh;overflow-y:auto}
 .rank-header{background:var(--black);border-radius:14px 14px 0 0;padding:20px 24px;position:relative;display:flex;align-items:center;justify-content:space-between}
-.rank-header-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent)}
 .rank-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:white}
 .rank-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px}
-.rank-close{background:rgba(255,255,255,0.1);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-.rank-close:hover{background:rgba(255,255,255,0.2)}
+.rank-close{background:rgba(255,255,255,0.1);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px}
 .rank-body{padding:22px 24px}
-.rank-controls{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
-.rank-sort-label{font-size:12px;font-weight:600;color:var(--gray-600)}
-.rank-sort-btn{padding:5px 12px;border-radius:100px;border:1.5px solid var(--gray-200);background:white;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
-.rank-sort-btn.active{background:var(--lime);border-color:var(--lime);color:var(--black)}
-.rank-filter-v{padding:5px 12px;border:1.5px solid var(--gray-200);border-radius:100px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;background:white;font-family:var(--font-body)}
-.rank-card{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.15s}
+.rank-card{background:white;border:1px solid var(--gray-200);border-radius:var(--r);padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all 0.15s}
 .rank-card:hover{border-color:var(--lime);background:rgba(183,255,0,0.03)}
-.rank-pos{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--gray-200);width:28px;flex-shrink:0;text-align:center}
+.rank-pos{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--gray-200);width:28px;flex-shrink:0;text-align:center}
 .rank-pos.gold{color:#f59e0b}.rank-pos.silver{color:#94a3b8}.rank-pos.bronze{color:#cd7c3c}
-.rank-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--black);flex-shrink:0}
+.rank-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--black);flex-shrink:0}
 .rank-info{flex:1;min-width:0}
 .rank-name{font-weight:700;font-size:14px;color:var(--black);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rank-meta{font-size:12px;color:var(--gray-400);margin-top:2px}
-.rank-bars{display:flex;flex-direction:column;gap:3px;width:160px;flex-shrink:0}
-.rank-bar-row{display:flex;align-items:center;gap:5px}
-.rank-bar-label{font-size:10px;color:var(--gray-400);width:60px;flex-shrink:0}
-.rank-bar-track{flex:1;height:3px;background:var(--gray-100);border-radius:2px;overflow:hidden}
-.rank-bar-fill{height:100%;border-radius:2px}
-.rank-score-big{font-family:var(--font-display);font-size:24px;font-weight:700;flex-shrink:0;width:44px;text-align:right}
-.rank-badge{flex-shrink:0}
-.rank-empty{text-align:center;padding:40px;color:var(--gray-400)}
+.rank-meta{font-size:11px;color:var(--gray-400);margin-top:2px}
+.rank-score-big{font-family:var(--font-display);font-size:23px;font-weight:700;flex-shrink:0;width:46px;text-align:right}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--black);color:white;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;border-left:3px solid var(--lime);z-index:9999;animation:toastIn 0.3s ease;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--black);color:white;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;border-left:3px solid var(--lime);z-index:9999;animation:toastIn 0.3s ease;box-shadow:0 8px 24px rgba(0,0,0,0.3);max-width:340px;line-height:1.4}
 .toast.error{border-left-color:var(--danger)}
 @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-@media(max-width:700px){
+@media(max-width:820px){
   .stats-row{grid-template-columns:1fr 1fr}
   .table-header{display:none}
-  .row{grid-template-columns:1fr;gap:4px;padding:14px 16px}
+  .row{grid-template-columns:1fr;gap:5px;padding:14px 16px}
   .topbar-title{display:none}
-  .rank-bars{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN — Supabase Auth real -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
     <div class="login-logo">
@@ -186,34 +194,14 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800
     </div>
     <div class="login-title">Panel de Reclutamiento</div>
     <div class="login-sub">Acceso restringido — solo personal autorizado</div>
-    <input class="login-input" type="password" id="loginInput" placeholder="••••••" maxlength="20"
-      onkeydown="if(event.key==='Enter')checkLogin()">
-    <button class="login-btn" onclick="checkLogin()">Ingresar →</button>
+    <input class="login-input" type="email" id="loginEmail" placeholder="correo@orbitec.mx" autocomplete="username">
+    <input class="login-input" type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Ingresar →</button>
     <div class="login-err" id="loginErr"></div>
   </div>
 </div>
 
-<script>
-if(sessionStorage.getItem('orbitec_auth')==='ok'){
-  document.getElementById('loginOverlay').style.display='none';
-}
-function checkLogin(){
-  const val=document.getElementById('loginInput').value;
-  const input=document.getElementById('loginInput');
-  const err=document.getElementById('loginErr');
-  if(val==='197311'){
-    document.getElementById('loginOverlay').style.display='none';
-    sessionStorage.setItem('orbitec_auth','ok');
-  } else {
-    input.classList.add('shake');
-    err.textContent='Contraseña incorrecta. Intenta de nuevo.';
-    input.value='';
-    setTimeout(()=>input.classList.remove('shake'),400);
-  }
-}
-</script>
-
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-logo">
     <div class="tl-ring"><div class="tl-inner"></div></div>
@@ -221,18 +209,20 @@ function checkLogin(){
   </div>
   <div class="topbar-title">Panel de candidatos — JCEF 2026</div>
   <div class="topbar-actions">
-    <button class="btn-rank" onclick="openRanking()">🏆 Ranking</button>
-    <button class="btn-export" onclick="showExportMenu()">⬇ Exportar</button>
-    <button class="btn-refresh" onclick="loadCandidatos()">↻ Actualizar</button>
+    <button class="tb-btn lime" onclick="openRanking()">🏆 Ranking</button>
+    <button class="tb-btn" onclick="exportXLSX()">⬇ Exportar</button>
+    <button class="tb-btn lime" onclick="loadCandidatos()">↻ Actualizar</button>
+    <button class="tb-btn" onclick="doLogout()">Salir</button>
   </div>
 </div>
 
 <div class="main">
   <div class="stats-row">
-    <div class="stat-card lime"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Total candidatos</div></div>
+    <div class="stat-card lime"><div class="stat-val" id="statTotal">—</div><div class="stat-label">Activos</div></div>
     <div class="stat-card green"><div class="stat-val" id="statA">—</div><div class="stat-label">Recomendados ⭐</div></div>
     <div class="stat-card yellow"><div class="stat-val" id="statB">—</div><div class="stat-label">Con potencial 🟡</div></div>
-    <div class="stat-card red"><div class="stat-val" id="statC">—</div><div class="stat-label">No recomendados 🔴</div></div>
+    <div class="stat-card red"><div class="stat-val" id="statC">—</div><div class="stat-label">No elegibles 🔴</div></div>
+    <div class="stat-card gray"><div class="stat-val" id="statArch">—</div><div class="stat-label">Archivados 📥</div></div>
   </div>
 
   <div class="filters">
@@ -240,626 +230,501 @@ function checkLogin(){
     <button class="filter-btn active" onclick="setFilter('all',this)">Todos</button>
     <button class="filter-btn" onclick="setFilter('A',this)">⭐ Recomendados</button>
     <button class="filter-btn" onclick="setFilter('B',this)">🟡 Con potencial</button>
-    <button class="filter-btn" onclick="setFilter('C',this)">🔴 No recomendados</button>
+    <button class="filter-btn" onclick="setFilter('C',this)">🔴 No elegibles</button>
+    <button class="filter-btn" onclick="setFilter('arch',this)">📥 Papelera</button>
     <div class="filter-sep"></div>
     <input class="search-input" type="text" placeholder="Buscar por nombre o zona..." oninput="setSearch(this.value)">
   </div>
 
   <div class="table-wrap">
     <div class="table-header">
-      <div class="th">Candidato</div>
-      <div class="th">Edad</div>
-      <div class="th">Score</div>
-      <div class="th">Veredicto</div>
-      <div class="th">Fecha</div>
-      <div class="th">Estatus</div>
+      <div class="th">Candidato</div><div class="th">Edad</div><div class="th">Score</div>
+      <div class="th">Veredicto</div><div class="th">Zona</div><div class="th">Fecha</div><div class="th">Estatus</div>
     </div>
-    <div id="tableBody"><div class="loading-row">Cargando candidatos...</div></div>
+    <div id="tableBody"><div class="loading-row">Inicia sesión para ver los candidatos.</div></div>
   </div>
 </div>
 
-<!-- MODAL CANDIDATO -->
-<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal"></div>
-</div>
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal(event)"><div class="modal" id="modal"></div></div>
+<div class="confirm-overlay hidden" id="confirmOverlay"><div class="confirm-box" id="confirmBox"></div></div>
 
-<!-- RANKING PANEL -->
-<div class="rank-overlay hidden" id="rankOverlay" onclick="closeRankingClick(event)">
-  <div class="rank-panel" id="rankPanel">
+<div class="rank-overlay hidden" id="rankOverlay" onclick="if(event.target===this)closeRanking()">
+  <div class="rank-panel">
     <div class="rank-header">
-      <div class="rank-header-accent"></div>
-      <div>
-        <div class="rank-title">🏆 Ranking de Candidatos</div>
-        <div class="rank-sub">Comparativa general — ordenado por score total</div>
-      </div>
+      <div><div class="rank-title">🏆 Ranking de Candidatos</div>
+        <div class="rank-sub">Solo activos — ordenado por score del motor determinista</div></div>
       <button class="rank-close" onclick="closeRanking()">✕</button>
     </div>
-    <div class="rank-body">
-      <div class="rank-controls">
-        <span class="rank-sort-label">Ordenar por:</span>
-        <button class="rank-sort-btn active" onclick="setRankSort('score_total',this)">Score total</button>
-        <button class="rank-sort-btn" onclick="setRankSort('score_actitud',this)">Actitud</button>
-        <button class="rank-sort-btn" onclick="setRankSort('score_tecnologia',this)">Tecnología</button>
-        <button class="rank-sort-btn" onclick="setRankSort('score_aprendizaje',this)">Aprendizaje</button>
-        <button class="rank-sort-btn" onclick="setRankSort('score_responsabilidad',this)">Responsabilidad</button>
-        <select class="rank-filter-v" onchange="setRankFilter(this.value)">
-          <option value="all">Todos los veredictos</option>
-          <option value="A">⭐ Solo recomendados</option>
-          <option value="B">🟡 Solo con potencial</option>
-          <option value="AB">⭐🟡 A + B</option>
-        </select>
-      </div>
-      <div id="rankList"></div>
-    </div>
+    <div class="rank-body"><div id="rankList"></div></div>
   </div>
-</div>
-
-<!-- EXPORT MENU (floating) -->
-<div id="exportMenu" style="display:none;position:fixed;top:64px;right:20px;background:white;border:1px solid var(--gray-200);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:500;min-width:200px;overflow:hidden">
-  <div style="padding:10px 14px;font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--gray-100)">Exportar candidatos</div>
-  <button onclick="exportCSV('all')" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">📄 CSV — Todos</button>
-  <button onclick="exportCSV('A')" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">⭐ CSV — Solo recomendados (A)</button>
-  <button onclick="exportCSV('AB')" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">⭐🟡 CSV — A + B (entrevistar)</button>
-  <button onclick="exportXLSX()" style="width:100%;padding:11px 14px;text-align:left;border:none;background:white;cursor:pointer;font-size:13px;color:var(--gray-800);font-family:var(--font-body);display:flex;align-items:center;gap:8px;border-top:1px solid var(--gray-100)" onmouseover="this.style.background='#f7f7f7'" onmouseout="this.style.background='white'">📊 Excel — Completo (.xlsx)</button>
 </div>
 
 <script>
+/* ============================================================================
+   ORBITEC — PANEL DE CANDIDATOS v2.0
+   · Autenticación real vía Supabase Auth (antes: contraseña en texto plano)
+   · Escape HTML en todo dato de candidato (antes: XSS vía innerHTML)
+   · Análisis IA cacheado en base (antes: se regeneraba y cobraba cada vez)
+   · Archivar / eliminar candidatos
+   ========================================================================== */
+
 const SB_URL='https://ljjjulkidxotqhohxgcy.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqamp1bGtpZHhvdHFob2h4Z2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMTUwOTgsImV4cCI6MjA5NDc5MTA5OH0.mRYoQTEahtDyw3y2iMXJ9P_czJ_Q1_gPzw24W1EgTZo';
-const WORKER='https://orbitec-proxy.orbitecensenada.com';
+const WORKERS=['https://orbitec-proxy.orbitecensenada.com','https://orbitec-proxy.orbitecensenada.workers.dev'];
 
-let allData=[],filterV='all',searchQ='',rankSort='score_total',rankFilter='all';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let allData=[],filterV='all',searchQ='';
 
-function getInitials(n){return(n||'').trim().split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+/* ===== SEGURIDAD: escape obligatorio en todo dato de candidato ===== */
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function escAttr(s){return esc(s).replace(/`/g,'&#96;')}
+
+/* ===== AUTH ===== */
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginErr');
+  const btn=document.getElementById('loginBtn');
+  if(!email||!pass){err.textContent='Ingresa correo y contraseña.';return}
+  btn.disabled=true;btn.textContent='Verificando...';
+  const {error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.disabled=false;btn.textContent='Ingresar →';
+  if(error){
+    document.getElementById('loginPass').classList.add('shake');
+    setTimeout(()=>document.getElementById('loginPass').classList.remove('shake'),400);
+    err.textContent=error.message==='Invalid login credentials'
+      ?'Correo o contraseña incorrectos.':esc(error.message);
+    document.getElementById('loginPass').value='';
+    return;
+  }
+  err.textContent='';
+  document.getElementById('loginOverlay').style.display='none';
+  loadCandidatos();
+}
+async function doLogout(){
+  await sb.auth.signOut();
+  location.reload();
+}
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){document.getElementById('loginOverlay').style.display='none';loadCandidatos()}
+})();
+
+/* ===== HELPERS ===== */
+function getInitials(n){return(n||'').trim().split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()}
 function scoreColor(n){return n>=8?'#00c97a':n>=6?'#8fcc00':'#ef4444'}
 function scoreClass(n){return n>=8?'high':n>=6?'mid':'low'}
-function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}
-function fmtDateFull(d){if(!d)return'';const dt=new Date(d);return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}
+function fmtDateFull(d){if(!d)return'';return new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast'+(type==='error'?' error':'');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3400)}
 
-const uso_tech_labels=['','Solo redes sociales','Busca tutoriales y aprende','Resuelve problemas técnicos solo','Conocimiento avanzado'];
-const reparacion_labels=['Nunca ha intentado','Ha visto tutoriales','Ha intentado por su cuenta','Con resultado exitoso'];
-const clientes_labels=['Sin experiencia','Algo informal','En algún trabajo/negocio','Buena experiencia con clientes'];
-const sc1_labels={0:'Espera al jefe',1:'Culpa al técnico anterior',3:'Escucha y busca ayuda',4:'Escucha, pide disculpas y busca solución'};
-const sc2_labels={0:'Dice que necesita que le enseñen',1:'Espera a que haya alguien',3:'Busca tutoriales y lo intenta',4:'Busca recursos, intenta y pregunta lo específico'};
-const sc3_labels={0:'Espera a que alguien lo note',1:'Lo arregla solo sin decir nada',4:'Se lo dice al jefe y propone solución',5:'Lo dice, acepta responsabilidad y aprende'};
-const persistencia_labels=['','Busca a alguien que ya sepa','Intenta 2-3 veces y pide ayuda','Sigue hasta entender por qué falla','Busca el error, aprende y lo corrige'];
+const L={
+  uso_tech:['','Solo redes sociales','Busca tutoriales y aprende','Resuelve problemas técnicos solo','Conocimiento avanzado'],
+  reparacion:['Nunca ha intentado','Ha visto tutoriales','Ha intentado por su cuenta','Con resultado exitoso'],
+  clientes:['Sin experiencia','Algo informal','En algún trabajo/negocio','Buena experiencia con clientes'],
+  sc1:{0:'Espera al jefe',1:'Culpa al técnico anterior',3:'Escucha y busca ayuda',4:'Escucha, se disculpa y busca solución'},
+  sc2:{0:'Pide que le enseñen',1:'Espera a que haya alguien',3:'Busca tutoriales y lo intenta',4:'Busca, intenta y pregunta lo específico'},
+  sc3:{0:'Espera a que lo noten',1:'Lo arregla solo sin decir',4:'Lo dice al jefe y propone',5:'Lo dice, acepta y aprende'},
+  persistencia:['','Busca a alguien que ya sepa','Intenta 2-3 veces y pide ayuda','Sigue hasta entender','Busca la causa y corrige'],
+  escolaridad:{primaria:'Primaria',secundaria:'Secundaria',preparatoria_trunca:'Prepa sin terminar',
+    preparatoria:'Preparatoria',carrera_tecnica:'Carrera técnica',universidad_trunca:'Universidad trunca',
+    pasante:'Pasante',licenciatura:'Licenciatura'},
+  transporte:{caminando:'🚶 Caminando',publico:'🚌 T. público',bicicleta:'🚲 Bicicleta',propio:'🚗 Vehículo propio'}
+};
 
-// ===== TOAST =====
-function toast(msg, type='ok'){
-  const t=document.createElement('div');
-  t.className='toast'+(type==='error'?' error':'');
-  t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),3000);
-}
-
-// ===== LOAD =====
+/* ===== CARGA ===== */
 async function loadCandidatos(){
   document.getElementById('tableBody').innerHTML='<div class="loading-row">Cargando...</div>';
-  try{
-    const resp=await fetch(`${SB_URL}/rest/v1/candidatos_jcef?select=*&order=created_at.desc`,{headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}});
-    allData=await resp.json();
-    updateStats();renderTable();
-  }catch(e){document.getElementById('tableBody').innerHTML='<div class="loading-row">Error al cargar. Verifica la conexión.</div>'}
+  const {data,error}=await sb.from('candidatos_jcef').select('*')
+    .order('veredicto',{ascending:true}).order('score_total',{ascending:false});
+  if(error){
+    document.getElementById('tableBody').innerHTML=
+      `<div class="loading-row">Error: ${esc(error.message)}</div>`;
+    if(error.message.includes('JWT')||error.code==='PGRST301'){
+      document.getElementById('loginOverlay').style.display='flex';
+    }
+    return;
+  }
+  allData=data||[];
+  updateStats();renderTable();
 }
 
 function updateStats(){
-  document.getElementById('statTotal').textContent=allData.length;
-  document.getElementById('statA').textContent=allData.filter(c=>c.veredicto==='A').length;
-  document.getElementById('statB').textContent=allData.filter(c=>c.veredicto==='B').length;
-  document.getElementById('statC').textContent=allData.filter(c=>c.veredicto==='C').length;
+  const act=allData.filter(c=>!c.archivado);
+  document.getElementById('statTotal').textContent=act.length;
+  document.getElementById('statA').textContent=act.filter(c=>c.veredicto==='A').length;
+  document.getElementById('statB').textContent=act.filter(c=>c.veredicto==='B').length;
+  document.getElementById('statC').textContent=act.filter(c=>c.veredicto==='C').length;
+  document.getElementById('statArch').textContent=allData.filter(c=>c.archivado).length;
 }
 
 function setFilter(v,btn){filterV=v;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTable()}
 function setSearch(v){searchQ=v.toLowerCase();renderTable()}
 
+function tierClass(t){if(!t)return'';const n=t.replace('*','').toLowerCase();return n}
+
 function renderTable(){
-  let data=allData;
-  if(filterV!=='all')data=data.filter(c=>c.veredicto===filterV);
+  let data=filterV==='arch'?allData.filter(c=>c.archivado):allData.filter(c=>!c.archivado);
+  if(['A','B','C'].includes(filterV))data=data.filter(c=>c.veredicto===filterV);
   if(searchQ)data=data.filter(c=>(c.nombre||'').toLowerCase().includes(searchQ)||(c.zona||'').toLowerCase().includes(searchQ));
-  if(!data.length){document.getElementById('tableBody').innerHTML=`<div class="empty-state"><h3>Sin candidatos</h3><p>No hay candidatos que coincidan con el filtro.</p></div>`;return}
-  document.getElementById('tableBody').innerHTML=data.map(c=>`
-    <div class="row" onclick="openModal('${c.id}')">
-      <div><div class="cname">${c.nombre||'—'}</div><div class="czone">${c.zona||''}</div></div>
-      <div class="cage">${c.edad||'—'} años</div>
+  if(!data.length){document.getElementById('tableBody').innerHTML=
+    `<div class="empty-state"><h3>Sin candidatos</h3><p>No hay candidatos que coincidan con el filtro.</p></div>`;return}
+
+  document.getElementById('tableBody').innerHTML=data.map(c=>{
+    const gates=Array.isArray(c.gates_fallidos)?c.gates_fallidos:[];
+    const gateChip=gates.length?`<div class="gate-chip">⛔ ${esc(gates[0].split('—')[0].trim())}</div>`:'';
+    const km=c.zona_km!=null?` · ${c.zona_km} km`:'';
+    return `<div class="row ${c.archivado?'archived':''}" onclick="openModal('${escAttr(c.id)}')">
+      <div><div class="cname">${esc(c.nombre)||'—'}</div>
+        <div class="czone">${esc(c.zona)||''}${esc(km)}</div>${gateChip}</div>
+      <div class="cage">${esc(c.edad)||'—'} años</div>
       <div class="cscore ${scoreClass(c.score_total)}">${c.score_total!=null?parseFloat(c.score_total).toFixed(1):'—'}</div>
-      <div><span class="vbadge ${c.veredicto||'B'}">${c.veredicto==='A'?'⭐ Recomendado':c.veredicto==='B'?'🟡 Potencial':'🔴 No rec.'}</span></div>
-      <div class="cdate">${fmtDate(c.created_at)}</div>
+      <div><span class="vbadge ${esc(c.veredicto)||'B'}">${c.veredicto==='A'?'⭐ Recomendado':c.veredicto==='B'?'🟡 Potencial':'🔴 No elegible'}</span></div>
+      <div>${c.zona_tier?`<span class="tier-chip ${tierClass(c.zona_tier)}">${esc(c.zona_tier)}</span>`:'—'}</div>
+      <div class="cdate" style="font-size:12px;color:var(--gray-400)">${fmtDate(c.created_at)}</div>
       <div class="cstatus" onclick="event.stopPropagation()">
-        <select onchange="updateStatus('${c.id}',this.value)">
-          <option value="pendiente" ${c.estatus==='pendiente'?'selected':''}>Pendiente</option>
-          <option value="contactado" ${c.estatus==='contactado'?'selected':''}>Contactado</option>
-          <option value="entrevista" ${c.estatus==='entrevista'?'selected':''}>Entrevista</option>
-          <option value="aceptado" ${c.estatus==='aceptado'?'selected':''}>Aceptado</option>
-          <option value="rechazado" ${c.estatus==='rechazado'?'selected':''}>Rechazado</option>
-        </select>
-      </div>
-    </div>`).join('');
+        <select onchange="updateStatus('${escAttr(c.id)}',this.value)">
+          ${['pendiente','contactado','entrevista','aceptado','rechazado'].map(s=>
+            `<option value="${s}" ${c.estatus===s?'selected':''}>${{pendiente:'⏳ Pendiente',contactado:'📞 Contactado',entrevista:'🤝 Entrevista',aceptado:'✅ Aceptado',rechazado:'❌ Rechazado'}[s]}</option>`).join('')}
+        </select></div>
+    </div>`}).join('');
 }
 
 async function updateStatus(id,status){
-  await fetch(`${SB_URL}/rest/v1/candidatos_jcef?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`},body:JSON.stringify({estatus:status})});
-  const idx=allData.findIndex(c=>c.id===id);
-  if(idx>-1)allData[idx].estatus=status;
+  const {error}=await sb.from('candidatos_jcef').update({estatus:status}).eq('id',id);
+  if(error){toast('No se pudo actualizar: '+error.message,'error');return}
+  const i=allData.findIndex(c=>c.id===id);if(i>-1)allData[i].estatus=status;
+  toast('Estatus actualizado');
 }
 
-// ===== EXPORTAR =====
-function showExportMenu(){
-  const menu=document.getElementById('exportMenu');
-  menu.style.display=menu.style.display==='none'?'block':'none';
+/* ===== ARCHIVAR / ELIMINAR ===== */
+const MOTIVOS=[['no_funciono_prueba','No funcionó en prueba de trabajo'],['desistio','Desistió / dejó de responder'],
+  ['no_elegible','No elegible JCF'],['rechazo_oferta','Rechazó la oferta'],['contratado','Contratado'],['otro','Otro motivo']];
+
+function showConfirm(html,danger){
+  const box=document.getElementById('confirmBox');
+  box.className='confirm-box'+(danger?' danger':'');
+  box.innerHTML=html;
+  document.getElementById('confirmOverlay').classList.remove('hidden');
 }
-document.addEventListener('click',function(e){
-  if(!e.target.closest('#exportMenu')&&!e.target.closest('.btn-export'))
-    document.getElementById('exportMenu').style.display='none';
-});
+function hideConfirm(){document.getElementById('confirmOverlay').classList.add('hidden')}
 
-function getExportData(filter){
-  if(filter==='all') return allData;
-  if(filter==='A') return allData.filter(c=>c.veredicto==='A');
-  if(filter==='AB') return allData.filter(c=>c.veredicto==='A'||c.veredicto==='B');
-  return allData;
+function askArchivar(id){
+  const c=allData.find(x=>x.id===id);if(!c)return;
+  showConfirm(`<h3>Archivar a ${esc(c.nombre)}</h3>
+    <p>El registro <strong>se conserva</strong>. Sale del panel activo pero sigue disponible para comparar lo que el sistema predijo contra lo que realmente pasó — así el modelo mejora.</p>
+    <label>Motivo</label>
+    <select id="cfMotivo">${MOTIVOS.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select>
+    <label>¿Qué pasó exactamente?</label>
+    <textarea id="cfNota" rows="3" placeholder="Ej: vino a prueba de trabajo, perfil pasivo, requería supervisión constante"></textarea>
+    <div class="confirm-actions">
+      <button class="btn-sm" onclick="hideConfirm()">Cancelar</button>
+      <button class="btn-sm lime" onclick="doArchivar('${escAttr(id)}')">Archivar</button>
+    </div>`,false);
 }
-
-function escapeCsv(v){
-  if(v==null)return'';
-  const s=String(v).replace(/"/g,'""');
-  return s.includes(',')||s.includes('"')||s.includes('\n')?`"${s}"`:s;
+async function doArchivar(id){
+  const motivo=document.getElementById('cfMotivo').value;
+  const nota=document.getElementById('cfNota').value.trim();
+  const {error}=await sb.from('candidatos_jcef').update({
+    archivado:true,archivado_motivo:nota||motivo,archivado_at:new Date().toISOString(),
+    resultado_real:motivo,estatus:'rechazado'}).eq('id',id);
+  hideConfirm();
+  if(error){toast('Error al archivar: '+error.message,'error');return}
+  document.getElementById('modalOverlay').classList.add('hidden');
+  toast('Candidato archivado — el histórico se conserva');
+  loadCandidatos();
 }
-
-function exportCSV(filter){
-  document.getElementById('exportMenu').style.display='none';
-  const data=getExportData(filter);
-  if(!data.length){toast('No hay candidatos para exportar','error');return}
-
-  const headers=['Nombre','Edad','Teléfono','Zona','Score Total','Veredicto','Veredicto Texto',
-    'Responsabilidad','Comunicación','Tecnología','Aprendizaje','Servicio','Madurez','Compatibilidad',
-    'Uso Tech','Reparación','Clientes','Sc1 Cliente Molesto','Sc2 Aprendizaje','Sc3 Error',
-    'Persistencia','Identidad','Estudia','Trabaja','IMSS','JCEF Previo','Disponibilidad',
-    'Qué quiere aprender','Meta','Por qué Orbitec','Estatus','Fortalezas','Riesgos','Siguiente Acción','Fecha'];
-
-  const rows=data.map(c=>[
-    c.nombre,c.edad,c.telefono,c.zona,c.score_total,c.veredicto,c.veredicto_texto,
-    c.score_responsabilidad,c.score_comunicacion,c.score_tecnologia,c.score_aprendizaje,c.score_servicio,c.score_madurez,c.score_compatibilidad,
-    uso_tech_labels[c.uso_tech]||c.uso_tech,reparacion_labels[c.reparacion]||c.reparacion,clientes_labels[c.clientes]||c.clientes,
-    sc1_labels[c.sc1]||c.sc1,sc2_labels[c.sc2]||c.sc2,sc3_labels[c.sc3]||c.sc3,
-    persistencia_labels[c.persistencia]||c.persistencia,c.identidad,c.estudia,c.trabaja,c.imss,c.jcef_prev,c.disponibilidad,
-    c.quiero_aprender,c.meta,c.por_que,c.estatus,
-    (c.fortalezas||[]).join(' | '),(c.riesgos||[]).join(' | '),c.siguiente_accion,
-    fmtDateFull(c.created_at)
-  ].map(escapeCsv).join(','));
-
-  const bom='\uFEFF'; // BOM para Excel en español
-  const csv=bom+[headers.join(','),...rows].join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=`orbitec-candidatos-${filter}-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast(`✓ CSV exportado — ${data.length} candidatos`);
+async function doRestaurar(id){
+  const {error}=await sb.from('candidatos_jcef').update({
+    archivado:false,archivado_motivo:null,archivado_at:null,resultado_real:null,estatus:'pendiente'}).eq('id',id);
+  if(error){toast('Error: '+error.message,'error');return}
+  document.getElementById('modalOverlay').classList.add('hidden');
+  toast('Candidato restaurado al panel activo');
+  loadCandidatos();
 }
 
-function exportXLSX(){
-  document.getElementById('exportMenu').style.display='none';
-  const data=allData;
-  if(!data.length){toast('No hay candidatos para exportar','error');return}
-
-  // Generar HTML table que Excel puede abrir como .xls
-  const headers=['Nombre','Edad','Tel','Zona','Score','Veredicto','Responsabilidad','Comunicación',
-    'Tecnología','Aprendizaje','Servicio','Madurez','Compatibilidad','Estatus','Fecha','Qué quiere aprender','Meta','Por qué Orbitec'];
-
-  const rows=data.map(c=>`<tr>
-    <td>${c.nombre||''}</td><td>${c.edad||''}</td><td>${c.telefono||''}</td><td>${c.zona||''}</td>
-    <td>${c.score_total!=null?parseFloat(c.score_total).toFixed(1):''}</td><td>${c.veredicto||''}</td>
-    <td>${c.score_responsabilidad||''}</td><td>${c.score_comunicacion||''}</td>
-    <td>${c.score_tecnologia||''}</td><td>${c.score_aprendizaje||''}</td>
-    <td>${c.score_servicio||''}</td><td>${c.score_madurez||''}</td><td>${c.score_compatibilidad||''}</td>
-    <td>${c.estatus||''}</td><td>${fmtDateFull(c.created_at)}</td>
-    <td>${(c.quiero_aprender||'').replace(/</g,'&lt;')}</td>
-    <td>${(c.meta||'').replace(/</g,'&lt;')}</td>
-    <td>${(c.por_que||'').replace(/</g,'&lt;')}</td>
-  </tr>`).join('');
-
-  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-  <head><meta charset="UTF-8">
-  <style>
-    table{border-collapse:collapse}th{background:#B7FF00;font-weight:bold;padding:6px 10px;border:1px solid #ccc}
-    td{padding:5px 10px;border:1px solid #ddd}tr:nth-child(even){background:#f9f9f9}
-  </style></head>
-  <body><table>
-    <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
-    <tbody>${rows}</tbody>
-  </table></body></html>`;
-
-  const blob=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=`orbitec-candidatos-${new Date().toISOString().slice(0,10)}.xls`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast(`✓ Excel exportado — ${data.length} candidatos`);
+function askEliminar(id){
+  const c=allData.find(x=>x.id===id);if(!c)return;
+  showConfirm(`<h3>⚠️ Eliminar definitivamente</h3>
+    <p><strong>${esc(c.nombre)}</strong> — ${esc(c.zona)||'s/zona'} — ${esc(c.telefono)||'s/tel'}</p>
+    <p>Esta acción <strong>no se puede deshacer</strong>. Úsala solo para registros de prueba.
+    Si fue una persona real que no funcionó, <strong>archívala</strong> — el histórico es lo único que
+    permite saber si el sistema predice bien.</p>
+    <div class="confirm-check"><input type="checkbox" id="cfChk" onchange="valChk()">
+      <label for="cfChk" style="margin:0;text-transform:none;font-size:13px;color:var(--gray-800);letter-spacing:0">Confirmo que es un registro de prueba, no una persona real</label></div>
+    <label>Escribe ELIMINAR para continuar</label>
+    <input type="text" id="cfTxt" placeholder="ELIMINAR" autocomplete="off" oninput="valChk()">
+    <div class="confirm-actions">
+      <button class="btn-sm" onclick="hideConfirm()">Cancelar</button>
+      <button class="btn-sm danger" id="cfDel" disabled onclick="doEliminar('${escAttr(id)}')">Eliminar</button>
+    </div>`,true);
+}
+function valChk(){
+  document.getElementById('cfDel').disabled=
+    !(document.getElementById('cfChk').checked&&document.getElementById('cfTxt').value.trim()==='ELIMINAR');
+}
+async function doEliminar(id){
+  const {error}=await sb.from('candidatos_jcef').delete().eq('id',id);
+  hideConfirm();
+  if(error){toast('Error al eliminar: '+error.message,'error');return}
+  document.getElementById('modalOverlay').classList.add('hidden');
+  toast('Registro eliminado definitivamente');
+  loadCandidatos();
 }
 
-// ===== RANKING =====
-function openRanking(){
-  document.getElementById('rankOverlay').classList.remove('hidden');
-  renderRanking();
-}
-function closeRanking(){document.getElementById('rankOverlay').classList.add('hidden')}
-function closeRankingClick(e){if(e.target===document.getElementById('rankOverlay'))closeRanking()}
-
-function setRankSort(key,btn){
-  rankSort=key;
-  document.querySelectorAll('.rank-sort-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderRanking();
-}
-function setRankFilter(v){rankFilter=v;renderRanking()}
-
-function calcActitudScore(c){
-  // Score sintético de actitud basado en escenarios + persistencia
-  const sc1n=(c.sc1||0)/4*10;
-  const sc2n=(c.sc2||0)/4*10;
-  const sc3n=(c.sc3||0)/5*10;
-  const persn=((c.persistencia||1)-1)/3*10;
-  return Math.round((sc1n+sc2n+sc3n+persn)/4*10)/10;
+/* ===== NOTAS ===== */
+let notasTimer;
+function guardarNota(id,val){
+  clearTimeout(notasTimer);
+  notasTimer=setTimeout(async()=>{
+    const {error}=await sb.from('candidatos_jcef').update({notas_admin:val}).eq('id',id);
+    if(!error){const i=allData.findIndex(c=>c.id===id);if(i>-1)allData[i].notas_admin=val;toast('Nota guardada')}
+  },900);
 }
 
-function renderRanking(){
-  let data=[...allData];
-  if(rankFilter==='A') data=data.filter(c=>c.veredicto==='A');
-  else if(rankFilter==='B') data=data.filter(c=>c.veredicto==='B');
-  else if(rankFilter==='AB') data=data.filter(c=>c.veredicto==='A'||c.veredicto==='B');
-
-  // Ordenar
-  data.sort((a,b)=>{
-    if(rankSort==='score_actitud'){
-      return calcActitudScore(b)-calcActitudScore(a);
-    }
-    const ka=parseFloat(a[rankSort])||0;
-    const kb=parseFloat(b[rankSort])||0;
-    return kb-ka;
-  });
-
-  if(!data.length){
-    document.getElementById('rankList').innerHTML='<div class="rank-empty">No hay candidatos con el filtro seleccionado.</div>';
-    return;
-  }
-
-  const posClass=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
-  const posLabel=(i)=>i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`;
-
-  document.getElementById('rankList').innerHTML=data.map((c,i)=>{
-    const sc=parseFloat(c.score_total)||0;
-    const actitud=calcActitudScore(c);
-    const scoreToShow=rankSort==='score_total'?sc
-      :rankSort==='score_actitud'?actitud
-      :parseFloat(c[rankSort])||0;
-
-    const bars=[
-      {label:'Score',val:sc,max:10,color:scoreColor(sc)},
-      {label:'Actitud',val:actitud,max:10,color:scoreColor(actitud)},
-      {label:'Tecnología',val:c.score_tecnologia||0,max:10,color:scoreColor(c.score_tecnologia)},
-      {label:'Aprend.',val:c.score_aprendizaje||0,max:10,color:scoreColor(c.score_aprendizaje)},
-    ];
-
-    return`<div class="rank-card" onclick="closeRanking();openModal('${c.id}')">
-      <div class="rank-pos ${posClass(i)}">${posLabel(i)}</div>
-      <div class="rank-avatar">${getInitials(c.nombre)}</div>
-      <div class="rank-info">
-        <div class="rank-name">${c.nombre}</div>
-        <div class="rank-meta">${c.edad} años · ${c.zona} · <span class="vbadge ${c.veredicto||'B'}" style="font-size:10px;padding:2px 7px">${c.veredicto==='A'?'⭐ A':c.veredicto==='B'?'🟡 B':'🔴 C'}</span></div>
-      </div>
-      <div class="rank-bars">
-        ${bars.map(b=>`<div class="rank-bar-row">
-          <div class="rank-bar-label">${b.label}</div>
-          <div class="rank-bar-track"><div class="rank-bar-fill" style="width:${(b.val/b.max)*100}%;background:${b.color}"></div></div>
-        </div>`).join('')}
-      </div>
-      <div class="rank-score-big" style="color:${scoreColor(scoreToShow)}">${scoreToShow.toFixed(1)}</div>
-    </div>`;
-  }).join('');
-}
-
-// ===== IA JUSTIFICACIÓN =====
-async function generarJustificacion(c, containerId){
+/* ===== ANÁLISIS IA — con caché en base ===== */
+async function generarJustificacion(c,containerId,forzar){
   const el=document.getElementById(containerId);
   if(!el)return;
+
+  // Caché: si ya existe, se muestra sin volver a pagar la llamada
+  if(!forzar&&c.analisis_llm){
+    try{renderJust(el,JSON.parse(c.analisis_llm),c.analisis_llm_at);return}catch(e){}
+  }
   el.innerHTML='<div class="justificacion-loading">⏳ Generando análisis con IA...</div>';
 
-  const prompt=`Eres un Director Internacional de Recursos Humanos con 50 años de experiencia en selección de talento para empresas tecnológicas. Trabajas para Orbitec, empresa tecnológica en Ensenada, México especializada en reparación de celulares, computadoras y sistemas digitales.
+  const gates=Array.isArray(c.gates_fallidos)?c.gates_fallidos:[];
+  const flags=Array.isArray(c.flags)?c.flags:[];
+  const prompt=`Eres Director de RR.HH. senior. Evalúas un candidato para Orbitec Hightech (reparación tecnológica, Ensenada, México). Puesto: Asistente Técnico Comercial vía programa JCEF, sin experiencia requerida. El dueño necesita decidir rápido y con criterio, no descripciones genéricas.
 
-Tu misión es ayudar al dueño de Orbitec a tomar una decisión de contratación en el menor tiempo posible, con la mayor información posible. El dueño es un empresario ocupado que necesita tu criterio experto, no descripciones genéricas.
+CANDIDATO: ${c.nombre}, ${c.edad} años, ${c.zona} (${c.zona_tier||'?'}, ${c.zona_km??'?'} km del taller)
+Transporte: ${c.transporte||'no especificado'} | Escolaridad: ${L.escolaridad[c.escolaridad]||c.escolaridad||'no capturada'} ${c.escolaridad_detalle||''}
+Permanencia declarada: ${c.disponibilidad_meses??'?'} meses | ¿Volverá a estudiar?: ${c.piensa_estudiar_12m??'?'}
+Uso tecnología: ${L.uso_tech[c.uso_tech]||c.uso_tech} | Reparación: ${L.reparacion[c.reparacion]||c.reparacion}
+Clientes: ${L.clientes[c.clientes]||c.clientes} | Persistencia: ${L.persistencia[c.persistencia]||c.persistencia}
+Identidad: ${c.identidad}
+Cliente molesto: ${L.sc1[c.sc1]||c.sc1} | Aprendizaje autónomo: ${L.sc2[c.sc2]||c.sc2} | Manejo de error: ${L.sc3[c.sc3]||c.sc3}
+"Quiere aprender": "${c.quiero_aprender||''}"
+"Meta": "${c.meta||''}"
+"Por qué Orbitec": "${c.por_que||''}"
+"Reto superado": "${c.reto_superado||'no capturado'}"
 
-CANDIDATO: ${c.nombre}, ${c.edad} años, zona ${c.zona}
-SCORE TOTAL: ${c.score_total}/10 | VEREDICTO: ${c.veredicto} — ${c.veredicto_texto}
+SCORE DETERMINISTA: ${c.score_total}/10 — veredicto ${c.veredicto}
+Subscores: ${JSON.stringify(c.subscores||{})}
+Gates fallidos: ${gates.join('; ')||'ninguno'}
+Alertas del sistema: ${flags.filter(f=>f.t==='alerta').map(f=>f.x).join('; ')||'ninguna'}
 
-SCORES DETALLADOS (1-10):
-Responsabilidad:${c.score_responsabilidad} | Comunicación:${c.score_comunicacion} | Tecnología:${c.score_tecnologia} | Aprendizaje:${c.score_aprendizaje} | Servicio:${c.score_servicio} | Madurez:${c.score_madurez} | Compatibilidad:${c.score_compatibilidad}
+No recalcules el score — ya está calculado. Haz el análisis CUALITATIVO que el sistema no puede:
+1. PERMANENCIA: cruza las respuestas cerradas contra el texto libre. ¿Incoherencias? ¿Señales de búsqueda temporal?
+2. CALIDAD DE RESPUESTAS ABIERTAS: ¿específicas y propias, o genéricas? El "reto superado" es la prueba más honesta de persistencia real.
+3. RIESGO DE ROTACIÓN: sobrecalificación, metas ajenas al puesto, negocio propio, traslado costoso.
 
-RESPUESTAS DEL CANDIDATO:
-- Nivel tecnológico: ${uso_tech_labels[c.uso_tech]||c.uso_tech}
-- Experiencia reparación: ${reparacion_labels[c.reparacion]||c.reparacion}
-- Experiencia con clientes: ${clientes_labels[c.clientes]||c.clientes}
-- Ante cliente molesto (sin culpa propia): ${sc1_labels[c.sc1]||c.sc1}
-- Ante aprendizaje autónomo bajo presión: ${sc2_labels[c.sc2]||c.sc2}
-- Ante un error que cometió: ${sc3_labels[c.sc3]||c.sc3}
-- Nivel de persistencia: ${persistencia_labels[c.persistencia]||c.persistencia}
-- Se identifica como: ${c.identidad}
-- Qué quiere aprender: "${c.quiero_aprender}"
-- Meta personal/profesional: "${c.meta}"
-- Por qué Orbitec: "${c.por_que}"
+Responde SOLO JSON sin markdown:
+{"decision_rapida":"<SÍ contratar / NO contratar / Entrevistar primero — motivo en 10 palabras>","analisis_ejecutivo":"<3-4 oraciones específicas a SUS respuestas>","fortalezas_clave":["<basada en sus respuestas>","<2>","<3>"],"señales_alerta":["<concreta o NINGUNA>","<2 o NINGUNA>"],"preguntas_entrevista":["<específica para este candidato>","<2>","<3>"],"potencial_crecimiento":"<dónde puede llegar en 6-12 meses>","recomendacion_final":"<postura clara: qué hacer, cuándo, cómo>"}`;
 
-PERFIL BUSCADO POR ORBITEC: No se requiere experiencia técnica. Se prioriza actitud, responsabilidad, autonomía, curiosidad tecnológica y potencial de crecimiento. La persona será capacitada desde cero en reparación, ventas y sistemas digitales.
-
-Dame un análisis ejecutivo completo. Sé directo, opina con criterio, no te limites a describir. Dime si lo contrato o no y por qué.
-
-Responde SOLO con este JSON exacto sin markdown:
-{"decision_rapida":"<Una línea directa: SÍ contratar / NO contratar / Entrevistar primero — y el motivo en 10 palabras>","analisis_ejecutivo":"<3-4 oraciones con tu análisis profesional real. Menciona lo que más te llamó la atención positiva o negativamente. Sé específico con las respuestas del candidato.>","fortalezas_clave":["<fortaleza específica basada en sus respuestas>","<fortaleza 2>","<fortaleza 3>"],"señales_alerta":["<señal de alerta concreta o NINGUNA>","<señal 2 o NINGUNA>"],"preguntas_entrevista":["<pregunta específica para validar algo de este candidato>","<pregunta 2>","<pregunta 3>"],"potencial_crecimiento":"<Dónde puede llegar este candidato dentro de Orbitec en 6-12 meses si se le capacita bien. Sé específico.>","recomendacion_final":"<Tu recomendación final como Director de RR.HH. senior. Una postura clara: qué hacer, cuándo y cómo abordarlo.>"}`;
-
-  try{
-    const resp=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
-    const data=await resp.json();
-    const raw=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
-    const j=JSON.parse(raw);
-
-    const dec=(j.decision_rapida||'').toLowerCase();
-    const decColor=dec.includes('sí')||dec.includes('si ')?'#00c97a':dec.includes('no ')||dec.includes('no c')?'#ef4444':'#f59e0b';
-
-    el.innerHTML=`
-      <div style="background:${decColor}18;border:1.5px solid ${decColor}50;border-radius:8px;padding:13px 15px;margin-bottom:16px">
-        <div style="font-size:10px;font-weight:700;color:${decColor};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px">⚡ Decisión rápida</div>
-        <div style="font-size:14px;font-weight:700;color:#111;line-height:1.4">${j.decision_rapida||'—'}</div>
-      </div>
-
-      <div class="just-bloque" style="margin-bottom:14px">
-        <div class="just-bloque-titulo">📋 Análisis ejecutivo</div>
-        <div class="just-bloque-texto" style="line-height:1.7">${j.analisis_ejecutivo||'—'}</div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-        <div>
-          <div class="just-bloque-titulo" style="margin-bottom:7px">✅ Fortalezas clave</div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            ${(j.fortalezas_clave||[]).map(p=>`<div style="font-size:12px;background:rgba(0,201,122,0.07);border:1px solid rgba(0,201,122,0.2);border-radius:6px;padding:6px 9px;color:#006640;font-weight:500;line-height:1.4">+ ${p}</div>`).join('')}
-          </div>
-        </div>
-        <div>
-          <div class="just-bloque-titulo" style="margin-bottom:7px">⚠️ Señales de alerta</div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            ${(j.señales_alerta||[]).filter(p=>p&&p.toUpperCase()!=='NINGUNA').map(p=>`<div style="font-size:12px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:6px 9px;color:#854d0e;font-weight:500;line-height:1.4">△ ${p}</div>`).join('')||'<div style="font-size:12px;color:#aaa;padding:4px">Sin señales detectadas</div>'}
-          </div>
-        </div>
-      </div>
-
-      <div class="just-bloque" style="margin-bottom:14px">
-        <div class="just-bloque-titulo">🎯 Preguntas clave para la entrevista</div>
-        <div style="display:flex;flex-direction:column;gap:7px">
-          ${(j.preguntas_entrevista||[]).map((p,i)=>`<div style="font-size:13px;color:#333;padding:8px 12px;background:#f7f7f7;border-radius:6px;border-left:3px solid var(--lime);line-height:1.5"><span style="font-weight:700;color:var(--lime-dark);margin-right:6px">${i+1}.</span>${p}</div>`).join('')}
-        </div>
-      </div>
-
-      <div class="just-bloque" style="margin-bottom:14px">
-        <div class="just-bloque-titulo">🚀 Potencial de crecimiento en Orbitec</div>
-        <div class="just-bloque-texto" style="line-height:1.7">${j.potencial_crecimiento||'—'}</div>
-      </div>
-
-      <div style="background:var(--black);border-radius:8px;padding:14px 16px">
-        <div style="font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">→ Recomendación final del Director de RR.HH.</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.88);font-weight:500;line-height:1.65">${j.recomendacion_final||'—'}</div>
-      </div>
-    `;
-  }catch(e){
-    el.innerHTML='<div style="font-size:13px;color:var(--gray-400);padding:8px">No se pudo generar el análisis. Verifica la conexión al Worker.</div>';
+  let j=null;
+  for(const w of WORKERS){
+    try{
+      const r=await fetch(w,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
+      if(!r.ok)continue;
+      const d=await r.json();
+      j=JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
+      break;
+    }catch(e){continue}
   }
+  if(!j){
+    el.innerHTML='<div style="font-size:13px;color:var(--gray-400);padding:8px">No se pudo generar el análisis. El score y los gates del motor determinista siguen siendo válidos — no dependen de la IA.</div>';
+    return;
+  }
+  const at=new Date().toISOString();
+  await sb.from('candidatos_jcef').update({analisis_llm:JSON.stringify(j),analisis_llm_at:at}).eq('id',c.id);
+  const i=allData.findIndex(x=>x.id===c.id);
+  if(i>-1){allData[i].analisis_llm=JSON.stringify(j);allData[i].analisis_llm_at=at}
+  renderJust(el,j,at);
 }
 
-// ===== RECALCULAR SCORE =====
-const uso_tech_labels_r=['','Solo redes sociales','Busca tutoriales y aprende','Resuelve problemas técnicos solo','Conocimiento avanzado'];
-const reparacion_labels_r=['Nunca ha intentado','Ha visto tutoriales','Ha intentado por su cuenta','Con resultado exitoso'];
-const clientes_labels_r=['Sin experiencia','Algo informal','En algún trabajo/negocio','Buena experiencia con clientes'];
-const sc1_labels_r={0:'espera jefe',1:'culpa técnico',3:'escucha y ayuda',4:'disculpa+solución'};
-const sc2_labels_r={0:'pide que le enseñen',1:'espera',3:'busca tutoriales',4:'busca+intenta+pregunta específico'};
-const sc3_labels_r={0:'espera que lo noten',1:'arregla solo sin decir',4:'dice al jefe+propone',5:'dice+acepta+aprende'};
-const persistencia_labels_r=['','busca a alguien','intenta 2-3 veces','sigue hasta entender','busca causa y corrige'];
-
-async function recalcularScore(id){
-  const c=allData.find(x=>x.id===id);
-  if(!c)return;
-  const btn=document.getElementById('btn-recalc-'+id);
-  if(btn){btn.disabled=true;btn.textContent='⏳ Calculando...';}
-
-  const prompt=`Eres el evaluador de talento de Orbitec Hightech, empresa de reparación tecnológica en Ensenada, México. Evalúas candidatos para "Asistente Técnico Comercial" — programa JCEF, sin experiencia requerida.
-
-DATOS DEL CANDIDATO:
-Nombre: ${c.nombre} | Edad: ${c.edad} | Zona: ${c.zona}
-Uso tecnología (1=solo redes, 2=busca tutoriales, 3=resuelve problemas, 4=avanzado): ${c.uso_tech}
-Reparación (0=nunca, 1=vio tutoriales, 2=intentó, 3=éxito real): ${c.reparacion}
-Clientes (0=ninguna, 1=informal, 2=trabajo/negocio, 3=buena exp): ${c.clientes}
-Cliente molesto (0=espera jefe, 1=culpa técnico, 3=escucha y ayuda, 4=disculpa+solución): ${c.sc1}
-Aprendizaje autónomo (0=pide que le enseñen, 1=espera, 3=busca tutoriales, 4=busca+intenta+pregunta específico): ${c.sc2}
-Manejo de error propio (0=espera que lo noten, 1=arregla solo sin decir, 4=dice al jefe+propone, 5=dice+acepta+aprende): ${c.sc3}
-Identidad: ${c.identidad} | Persistencia (1=busca a alguien, 2=intenta 2-3 veces, 3=sigue hasta entender, 4=busca causa y corrige): ${c.persistencia}
-Qué quiere aprender: "${c.quiero_aprender}"
-Meta personal: "${c.meta}"
-Por qué Orbitec: "${c.por_que}"
-
-CRITERIOS DE PUNTUACIÓN — USA TODO EL RANGO 1-10, no te centres en 6-8:
-- 9-10: Respuesta excepcional, va más allá, demuestra madurez real y pensamiento propio
-- 7-8: Buena respuesta, actitud positiva, potencial claro
-- 5-6: Aceptable pero genérica, vaga o inconsistente
-- 3-4: Señal de alerta, actitud pasiva o respuesta preocupante
-- 1-2: Descarta al candidato en esa dimensión
-
-DIMENSIONES — sé estricto y diferenciador:
-RESPONSABILIDAD: sc3 alto (4-5)=honestidad ante error=sube. sc3 bajo (0-1)=oculta errores=baja a 2-3.
-COMUNICACIÓN: respuestas abiertas específicas con ejemplos propios=sube. Frases genéricas de una línea=baja a 3-4.
-TECNOLOGÍA: uso_tech=3-4 + reparacion=2-3=curiosidad real=sube. Solo redes + nunca intentó=2-3.
-APRENDIZAJE: sc2=4 + persistencia=3-4=autonomía genuina=sube. sc2=0-1=dependencia total=baja a 2.
-SERVICIO: sc1=4=empatía+acción=sube. sc1=0-1=actitud defensiva o pasiva=baja a 2-3.
-MADUREZ: metas concretas y realizables, reflexión real=sube. genérico=4-5.
-COMPATIBILIDAD: por_que menciona algo específico de Orbitec=sube. genérico=3-4.
-
-REGLAS DE VEREDICTO:
-- A: score_total >= 7.5 Y sc2>=3 Y sc3>=4
-- B: score_total 5.5-7.4 O una dimensión baja compensada
-- C: score_total < 5.5 O sc3<=1 O sc2<=1
-
-Responde SOLO con JSON sin markdown:
-{"score_total":<número decimal 1-10>,"scores":{"responsabilidad":<1-10>,"comunicacion":<1-10>,"tecnologia":<1-10>,"aprendizaje":<1-10>,"servicio_cliente":<1-10>,"madurez":<1-10>,"compatibilidad":<1-10>},"veredicto":"A"|"B"|"C","veredicto_texto":"Altamente recomendado"|"Con potencial — entrevista requerida"|"No recomendado por ahora","fortalezas":["str","str","str"],"riesgos":["str"],"siguiente_accion":"str","mensaje_candidato":"str"}`;
-
-  try{
-    const resp=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
-    const data=await resp.json();
-    const raw=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
-    const r=JSON.parse(raw);
-
-    // Actualizar en Supabase
-    await fetch(`${SB_URL}/rest/v1/candidatos_jcef?id=eq.${id}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`},
-      body:JSON.stringify({
-        score_total:r.score_total,
-        score_responsabilidad:r.scores.responsabilidad,
-        score_comunicacion:r.scores.comunicacion,
-        score_tecnologia:r.scores.tecnologia,
-        score_aprendizaje:r.scores.aprendizaje,
-        score_servicio:r.scores.servicio_cliente,
-        score_madurez:r.scores.madurez,
-        score_compatibilidad:r.scores.compatibilidad,
-        veredicto:r.veredicto,
-        veredicto_texto:r.veredicto_texto,
-        fortalezas:r.fortalezas,
-        riesgos:r.riesgos,
-        siguiente_accion:r.siguiente_accion
-      })
-    });
-
-    // Actualizar en memoria
-    const idx=allData.findIndex(x=>x.id===id);
-    if(idx>-1){
-      allData[idx]={...allData[idx],...{
-        score_total:r.score_total,
-        score_responsabilidad:r.scores.responsabilidad,
-        score_comunicacion:r.scores.comunicacion,
-        score_tecnologia:r.scores.tecnologia,
-        score_aprendizaje:r.scores.aprendizaje,
-        score_servicio:r.scores.servicio_cliente,
-        score_madurez:r.scores.madurez,
-        score_compatibilidad:r.scores.compatibilidad,
-        veredicto:r.veredicto,
-        veredicto_texto:r.veredicto_texto,
-        fortalezas:r.fortalezas,
-        riesgos:r.riesgos,
-        siguiente_accion:r.siguiente_accion
-      }};
-    }
-
-    renderTable();
-    updateStats();
-    toast(`✓ Score recalculado: ${r.score_total}/10 — Veredicto ${r.veredicto}`);
-    if(btn){btn.textContent='✓ Recalculado';btn.style.color='var(--success)';}
-
-    // Refrescar justificación en el modal
-    const justId=`just_${id.replace(/-/g,'')}`;
-    const justEl=document.getElementById(justId);
-    if(justEl) generarJustificacion(allData.find(x=>x.id===id), justId);
-
-  }catch(e){
-    toast('Error al recalcular. Intenta de nuevo.','error');
-    if(btn){btn.disabled=false;btn.textContent='⚡ Recalcular score IA';}
-  }
+function renderJust(el,j,at){
+  const dec=(j.decision_rapida||'').toLowerCase();
+  const col=/\bs[íi]\b/.test(dec)?'#00c97a':/\bno\b/.test(dec)?'#ef4444':'#f59e0b';
+  el.innerHTML=`
+    <div style="background:${col}18;border:1.5px solid ${col}50;border-radius:8px;padding:13px 15px;margin-bottom:16px">
+      <div style="font-size:10px;font-weight:700;color:${col};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px">⚡ Decisión rápida</div>
+      <div style="font-size:14px;font-weight:700;color:#111;line-height:1.4">${esc(j.decision_rapida)||'—'}</div>
+    </div>
+    <div class="just-bloque" style="margin-bottom:14px">
+      <div class="just-bloque-titulo">📋 Análisis ejecutivo</div>
+      <div class="just-bloque-texto">${esc(j.analisis_ejecutivo)||'—'}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div><div class="just-bloque-titulo" style="margin-bottom:7px">✅ Fortalezas clave</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+        ${(j.fortalezas_clave||[]).map(p=>`<div class="flag-item ok">+ ${esc(p)}</div>`).join('')}</div></div>
+      <div><div class="just-bloque-titulo" style="margin-bottom:7px">⚠️ Señales de alerta</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+        ${(j.señales_alerta||[]).filter(p=>p&&p.toUpperCase()!=='NINGUNA').map(p=>`<div class="flag-item alerta">△ ${esc(p)}</div>`).join('')||'<div style="font-size:12px;color:#aaa;padding:4px">Sin señales detectadas</div>'}</div></div>
+    </div>
+    <div class="just-bloque" style="margin-bottom:14px">
+      <div class="just-bloque-titulo">🎯 Preguntas clave para la entrevista</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+      ${(j.preguntas_entrevista||[]).map((p,i)=>`<div style="font-size:13px;color:#333;padding:8px 12px;background:#f7f7f7;border-radius:6px;border-left:3px solid var(--lime);line-height:1.5"><span style="font-weight:700;color:var(--lime-dark);margin-right:6px">${i+1}.</span>${esc(p)}</div>`).join('')}</div>
+    </div>
+    <div class="just-bloque" style="margin-bottom:14px">
+      <div class="just-bloque-titulo">🚀 Potencial de crecimiento</div>
+      <div class="just-bloque-texto">${esc(j.potencial_crecimiento)||'—'}</div>
+    </div>
+    <div style="background:var(--black);border-radius:8px;padding:14px 16px">
+      <div style="font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">→ Recomendación final</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.88);font-weight:500;line-height:1.65">${esc(j.recomendacion_final)||'—'}</div>
+    </div>
+    ${at?`<div style="font-size:10px;color:var(--gray-400);margin-top:9px;text-align:right">Análisis guardado ${fmtDateFull(at)} · <a href="#" onclick="event.preventDefault();regenerar()" style="color:var(--lime-dark)">regenerar</a></div>`:''}`;
 }
+let modalCand=null;
+function regenerar(){if(modalCand)generarJustificacion(modalCand,`just_${modalCand.id.replace(/-/g,'')}`,true)}
 
-// ===== MODAL =====
+/* ===== MODAL ===== */
 function openModal(id){
-  const c=allData.find(x=>x.id===id);
-  if(!c)return;
-  const scoreLabels={score_responsabilidad:'Responsabilidad',score_comunicacion:'Comunicación',score_tecnologia:'Tecnología',score_aprendizaje:'Aprendizaje',score_servicio:'Servicio',score_madurez:'Madurez',score_compatibilidad:'Compatibilidad'};
-  const scoreBars=Object.entries(scoreLabels).map(([k,l])=>{const v=c[k]||0;return`<div class="ms-score"><div class="ms-name">${l}</div><div class="ms-bar"><div class="ms-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="ms-val" style="color:${scoreColor(v)}">${v}</div></div>`;}).join('');
-  const waLink=`https://wa.me/52${(c.telefono||'').replace(/\D/g,'')}`;
+  const c=allData.find(x=>x.id===id);if(!c)return;
+  modalCand=c;
+  const SL={score_responsabilidad:'Responsabilidad',score_tecnologia:'Tecnología',
+    score_servicio:'Servicio',score_madurez:'Madurez',score_aprendizaje:'Escolaridad',score_compatibilidad:'Logística'};
+  const bars=Object.entries(SL).map(([k,l])=>{const v=c[k]||0;
+    return`<div class="ms-score"><div class="ms-name">${l}</div><div class="ms-bar"><div class="ms-fill" style="width:${v*10}%;background:${scoreColor(v)}"></div></div><div class="ms-val" style="color:${scoreColor(v)}">${v}</div></div>`}).join('');
+  const wa=`https://wa.me/52${(c.telefono||'').replace(/\D/g,'')}`;
   const justId=`just_${c.id.replace(/-/g,'')}`;
+  const gates=Array.isArray(c.gates_fallidos)?c.gates_fallidos:[];
+  const flags=Array.isArray(c.flags)?c.flags:[];
 
   document.getElementById('modal').innerHTML=`
     <div class="modal-header">
       <div class="modal-header-accent"></div>
       <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.add('hidden')">✕</button>
-      <div class="modal-avatar">${getInitials(c.nombre)}</div>
-      <div class="modal-name">${c.nombre}</div>
-      <div class="modal-sub">${c.edad} años · ${c.zona} · ${fmtDate(c.created_at)}</div>
+      <div class="modal-avatar">${esc(getInitials(c.nombre))}</div>
+      <div class="modal-name">${esc(c.nombre)}</div>
+      <div class="modal-sub">${esc(c.edad)} años · ${esc(c.zona)} ${c.zona_km!=null?`(${esc(c.zona_tier)} · ${esc(c.zona_km)} km)`:''} · ${fmtDate(c.created_at)}</div>
     </div>
     <div class="modal-body">
+      ${c.archivado?`<div class="modal-section"><div class="gate-item">📥 ARCHIVADO — ${esc(c.archivado_motivo)||''}</div>
+        <button class="btn-sm lime" style="margin-top:8px" onclick="doRestaurar('${escAttr(c.id)}')">↩ Restaurar al panel activo</button></div>`:''}
+
+      ${gates.length?`<div class="modal-section"><div class="modal-section-title">⛔ No cumple requisitos</div>
+        ${gates.map(g=>`<div class="gate-item">${esc(g)}</div>`).join('')}</div>`:''}
 
       <div class="modal-section">
         <div class="modal-section-title">Contacto</div>
-        <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-val">${c.telefono||'—'}</span></div>
-        <div class="detail-row"><span class="detail-label">Zona</span><span class="detail-val">${c.zona||'—'}</span></div>
-        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-          <a class="btn-wa" href="${waLink}" target="_blank">💬 Abrir WhatsApp</a>
-          <button class="btn-recalc" id="btn-recalc-${c.id}" onclick="recalcularScore('${c.id}')">⚡ Recalcular score IA</button>
+        <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-val">${esc(c.telefono)||'—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Zona</span><span class="detail-val">${esc(c.zona)||'—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Traslado</span><span class="detail-val">${esc(L.transporte[c.transporte]||c.transporte||'—')}</span></div>
+        <div class="detail-row"><span class="detail-label">Escolaridad</span><span class="detail-val">${esc(L.escolaridad[c.escolaridad]||'no capturada')} ${esc(c.escolaridad_detalle||'')}</span></div>
+        <div class="detail-row"><span class="detail-label">Permanencia</span><span class="detail-val">${c.disponibilidad_meses?esc(c.disponibilidad_meses)+' meses':'—'}</span></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn-wa" href="${escAttr(wa)}" target="_blank" rel="noopener">💬 WhatsApp</a>
+          ${!c.archivado?`<button class="btn-sm" onclick="askArchivar('${escAttr(c.id)}')">📥 Archivar</button>`:''}
+          <button class="btn-sm danger" onclick="askEliminar('${escAttr(c.id)}')">🗑 Eliminar</button>
         </div>
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title">🤖 Análisis IA — Justificación del veredicto</div>
-        <div class="justificacion-box" id="${justId}">
-          <div class="justificacion-loading">Cargando análisis...</div>
-        </div>
+        <div class="modal-section-title">🤖 Análisis IA — justificación</div>
+        <div class="justificacion-box" id="${justId}"><div class="justificacion-loading">Cargando…</div></div>
       </div>
 
+      ${flags.length?`<div class="modal-section"><div class="modal-section-title">Señales del motor</div>
+        ${flags.map(f=>`<div class="flag-item ${esc(f.t)}">${esc(f.x)}</div>`).join('')}</div>`:''}
+
       <div class="modal-section">
-        <div class="modal-section-title">Scores de evaluación</div>
-        ${scoreBars}
+        <div class="modal-section-title">Scores del motor determinista (v${esc(c.version_motor||'—')})</div>
+        ${bars}
       </div>
 
       <div class="modal-section">
         <div class="modal-section-title">Respuestas del candidato</div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Uso de tecnología</div><div class="respuesta-texto">${uso_tech_labels[c.uso_tech]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Experiencia en reparación</div><div class="respuesta-texto">${reparacion_labels[c.reparacion]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Experiencia con clientes</div><div class="respuesta-texto">${clientes_labels[c.clientes]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Escenario — Cliente molesto</div><div class="respuesta-texto">${sc1_labels[c.sc1]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Escenario — Aprendizaje autónomo</div><div class="respuesta-texto">${sc2_labels[c.sc2]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Escenario — Manejo de error</div><div class="respuesta-texto">${sc3_labels[c.sc3]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Persistencia</div><div class="respuesta-texto">${persistencia_labels[c.persistencia]||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Se identifica como</div><div class="respuesta-texto">${c.identidad||'—'}</div></div>
+        ${[['Uso de tecnología',L.uso_tech[c.uso_tech]],['Experiencia en reparación',L.reparacion[c.reparacion]],
+           ['Experiencia con clientes',L.clientes[c.clientes]],['Cliente molesto',L.sc1[c.sc1]],
+           ['Aprendizaje autónomo',L.sc2[c.sc2]],['Manejo de error',L.sc3[c.sc3]],
+           ['Persistencia',L.persistencia[c.persistencia]],['Se identifica como',c.identidad]]
+          .map(([q,a])=>`<div class="respuesta-item"><div class="respuesta-pregunta">${q}</div><div class="respuesta-texto">${esc(a)||'—'}</div></div>`).join('')}
       </div>
 
       <div class="modal-section">
         <div class="modal-section-title">Respuestas abiertas</div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">¿Qué quiere aprender en Orbitec?</div><div class="respuesta-texto">${c.quiero_aprender||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">Meta personal o profesional</div><div class="respuesta-texto">${c.meta||'—'}</div></div>
-        <div class="respuesta-item"><div class="respuesta-pregunta">¿Por qué Orbitec?</div><div class="respuesta-texto">${c.por_que||'—'}</div></div>
+        ${[['¿Qué quiere aprender?',c.quiero_aprender],['Meta personal',c.meta],
+           ['¿Por qué Orbitec?',c.por_que],['Reto que superó',c.reto_superado]]
+          .map(([q,a])=>`<div class="respuesta-item"><div class="respuesta-pregunta">${q}</div><div class="respuesta-texto">${esc(a)||'—'}</div></div>`).join('')}
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title">Siguiente acción recomendada</div>
-        <div class="next-box">${c.siguiente_accion||'—'}</div>
+        <div class="modal-section-title">Siguiente acción</div>
+        <div class="next-box">${esc(c.siguiente_accion)||'—'}</div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Mis notas</div>
+        <textarea class="notas-area" placeholder="Notas privadas sobre este candidato…"
+          oninput="guardarNota('${escAttr(c.id)}',this.value)">${esc(c.notas_admin||'')}</textarea>
       </div>
 
       <div class="modal-section">
         <div class="modal-section-title">Actualizar estatus</div>
-        <select class="status-select" onchange="updateStatus('${c.id}',this.value);allData.find(x=>x.id==='${c.id}').estatus=this.value;renderTable()">
-          <option value="pendiente" ${c.estatus==='pendiente'?'selected':''}>⏳ Pendiente</option>
-          <option value="contactado" ${c.estatus==='contactado'?'selected':''}>📞 Contactado</option>
-          <option value="entrevista" ${c.estatus==='entrevista'?'selected':''}>🤝 Entrevista agendada</option>
-          <option value="aceptado" ${c.estatus==='aceptado'?'selected':''}>✅ Aceptado</option>
-          <option value="rechazado" ${c.estatus==='rechazado'?'selected':''}>❌ Rechazado</option>
+        <select class="status-select" onchange="updateStatus('${escAttr(c.id)}',this.value);renderTable()">
+          ${['pendiente','contactado','entrevista','aceptado','rechazado'].map(s=>
+            `<option value="${s}" ${c.estatus===s?'selected':''}>${{pendiente:'⏳ Pendiente',contactado:'📞 Contactado',entrevista:'🤝 Entrevista agendada',aceptado:'✅ Aceptado',rechazado:'❌ Rechazado'}[s]}</option>`).join('')}
         </select>
       </div>
-
     </div>`;
-
   document.getElementById('modalOverlay').classList.remove('hidden');
-  generarJustificacion(c, justId);
+  generarJustificacion(c,justId,false);
+}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.add('hidden')}
+
+/* ===== RANKING ===== */
+function openRanking(){document.getElementById('rankOverlay').classList.remove('hidden');renderRanking()}
+function closeRanking(){document.getElementById('rankOverlay').classList.add('hidden')}
+function renderRanking(){
+  const data=allData.filter(c=>!c.archivado&&c.veredicto!=='C')
+    .sort((a,b)=>(parseFloat(b.score_total)||0)-(parseFloat(a.score_total)||0));
+  if(!data.length){document.getElementById('rankList').innerHTML='<div class="empty-state">Sin candidatos elegibles.</div>';return}
+  const pc=i=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  const pl=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`;
+  document.getElementById('rankList').innerHTML=data.map((c,i)=>{
+    const sc=parseFloat(c.score_total)||0;
+    return`<div class="rank-card" onclick="closeRanking();openModal('${escAttr(c.id)}')">
+      <div class="rank-pos ${pc(i)}">${pl(i)}</div>
+      <div class="rank-avatar">${esc(getInitials(c.nombre))}</div>
+      <div class="rank-info"><div class="rank-name">${esc(c.nombre)}</div>
+        <div class="rank-meta">${esc(c.edad)} años · ${esc(c.zona)} ${c.zona_tier?`· <span class="tier-chip ${tierClass(c.zona_tier)}">${esc(c.zona_tier)}</span>`:''}
+        · <span class="vbadge ${esc(c.veredicto)||'B'}" style="font-size:10px;padding:2px 7px">${c.veredicto==='A'?'⭐ A':'🟡 B'}</span></div></div>
+      <div class="rank-score-big" style="color:${scoreColor(sc)}">${sc.toFixed(1)}</div>
+    </div>`}).join('');
 }
 
-function closeModal(e){
-  if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.add('hidden');
+/* ===== EXPORTAR ===== */
+function exportXLSX(){
+  const data=allData.filter(c=>!c.archivado);
+  if(!data.length){toast('No hay candidatos para exportar','error');return}
+  const H=['Nombre','Edad','Tel','Zona','Tier','Km','Escolaridad','Permanencia (meses)','Transporte',
+    'Score','Veredicto','Responsabilidad','Tecnología','Servicio','Madurez','Logística',
+    'Uso Tech','Reparación','Clientes','Persistencia','Identidad','Estatus','Gates','Fecha',
+    'Qué quiere aprender','Meta','Por qué Orbitec','Reto superado','Notas'];
+  const rows=data.map(c=>`<tr>${[
+    c.nombre,c.edad,c.telefono,c.zona,c.zona_tier,c.zona_km,L.escolaridad[c.escolaridad]||c.escolaridad,
+    c.disponibilidad_meses,c.transporte,
+    c.score_total!=null?parseFloat(c.score_total).toFixed(1):'',c.veredicto,
+    c.score_responsabilidad,c.score_tecnologia,c.score_servicio,c.score_madurez,c.score_compatibilidad,
+    L.uso_tech[c.uso_tech],L.reparacion[c.reparacion],L.clientes[c.clientes],L.persistencia[c.persistencia],
+    c.identidad,c.estatus,(Array.isArray(c.gates_fallidos)?c.gates_fallidos:[]).join(' | '),fmtDateFull(c.created_at),
+    c.quiero_aprender,c.meta,c.por_que,c.reto_superado,c.notas_admin
+  ].map(v=>`<td>${esc(v??'')}</td>`).join('')}</tr>`).join('');
+  const html=`<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8">
+    <style>table{border-collapse:collapse}th{background:#B7FF00;font-weight:bold;padding:6px 10px;border:1px solid #ccc}
+    td{padding:5px 10px;border:1px solid #ddd}tr:nth-child(even){background:#f9f9f9}</style></head>
+    <body><table><thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></body></html>`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'}));
+  a.download=`orbitec-candidatos-${new Date().toISOString().slice(0,10)}.xls`;
+  a.click();URL.revokeObjectURL(a.href);
+  toast(`✓ Exportado — ${data.length} candidatos`);
 }
-
-loadCandidatos();
 </script>
 </body>
 </html>
